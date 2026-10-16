@@ -3,6 +3,7 @@ name: Kelly O’Rourke
 last_name: O’Rourke
 role: Graduate Student
 category: Graduate Students
+photo: /assets/images/people/kelly-orourke.jpg
 status: current
 seniority: 40
 joined_year: 2024
