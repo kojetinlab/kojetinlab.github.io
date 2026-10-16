@@ -1,6 +1,6 @@
 # The defaults visitors see before making their own choice.
 # Palette options: default, vandy, colorblind
-site_palette: colorblind
+site_palette: vandy
 
 # Mol* is the site's molecular renderer.
 # Hide either dropdown if you prefer a fixed palette or PDB structure.

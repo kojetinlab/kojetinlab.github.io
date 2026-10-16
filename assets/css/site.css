@@ -290,6 +290,76 @@ small,
   position: relative;
   width: 100%;
   aspect-ratio: 1;
+  overflow: hidden;
+}
+.molecule-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  transform-origin: center;
+}
+.cell-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+}
+.cell-scene .cell-artboard {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.cell-artboard,
+.cell-art {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+}
+.cell-illustration {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.cell-labels {
+  opacity: var(--cell-label-opacity, 1);
+}
+.cell-label {
+  position: absolute;
+  padding: 3px 7px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
+  color: var(--ink);
+  font-size: var(--text-caption);
+  line-height: 1.3;
+}
+.cell-label-nucleus {
+  left: 7%;
+  top: 50%;
+}
+.cell-label-lipid {
+  left: 52%;
+  top: 47%;
+}
+.cell-label-cytoplasm {
+  left: 34%;
+  top: 83%;
+}
+.cell-static {
+  margin: 24px 0 0;
+  width: 100%;
+  max-width: 500px;
+}
+.cell-static figcaption {
+  font-size: var(--text-caption);
+  line-height: 1.5;
+  color: var(--muted);
+}
+.cell-transition-enabled .cell-static,
+.pdb-link[hidden] {
+  display: none;
 }
 .molecule-view canvas,
 .molecule-poster {
@@ -318,6 +388,7 @@ small,
   background: color-mix(in srgb, var(--paper) 85%, transparent);
   border-radius: 3px;
   padding-right: 5px;
+  opacity: var(--molecule-label-opacity, 1);
 }
 .molecule-label:before {
   content: "";

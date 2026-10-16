@@ -63,13 +63,15 @@ Run `bundle install` again if `Gemfile` or `Gemfile.lock` changes.
 
 ## Explore safely
 
-Start with `_data/display.yml` for defaults, `_data/structures.yml` for individual PDB cameras, and `_data/hero_animation.yml` for movement. YAML uses spaces for indentation; keep the existing indentation and avoid tabs.
+Start with `_data/display.yml` for defaults, `_data/structures.yml` for individual PDB cameras, and `_data/hero_animation.yml` for molecular movement, and `_data/cell_scene.yml` for the adipocyte transition. YAML uses spaces for indentation; keep the existing indentation and avoid tabs.
 
 Saved browser choices override YAML defaults. Use **Site defaults** in the arrow menu, or temporarily set `remember_choices: false` while editing. The browser-based dropdowns do not edit the YAML files.
 
 Do not edit `_site/`: Jekyll regenerates it. The standalone HTML preview is also a snapshot; saving source files does not update that download.
 
 When you like the result, review the changes in GitHub Desktop, commit, and push. Only a push to the repository's default branch publishes the change.
+
+To import a later downloadable release, use `update-site.sh` as described in [Importing release updates](release-updates.md). It previews changes, preserves local-only edits, and detects overlapping file changes before copying.
 
 ## Build without a live server
 
@@ -82,7 +84,7 @@ The generated website is written to `_site/`. You do not need to upload that dir
 Python is optional for content checks and making a new standalone preview. With Python 3.10 or later:
 
 ```sh
-python3 scripts/make_offline_preview.py _site ../Kojetin-Lab-Preview-v5.7.html
+python3 scripts/make_offline_preview.py _site ../Kojetin-Lab-Preview-v5.8.html
 ```
 
 This writes the preview beside the source folder. Node.js and PyMOL are not required for routine editing or the Mol* viewer.

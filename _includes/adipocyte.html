@@ -1,0 +1,18 @@
+<!-- Reused for the animated view and the accessible still fallback. -->
+<div class="cell-artboard">
+  <div class="cell-art">
+    <img
+      class="cell-illustration"
+      src="{{ site.data.cell_scene.image | relative_url }}"
+      alt="{{ site.data.cell_scene.alt | escape }}"
+      width="1254"
+      height="1254"
+      decoding="async"
+    >
+    <div class="cell-labels" aria-hidden="true">
+      <span class="cell-label cell-label-nucleus">Nucleus</span>
+      <span class="cell-label cell-label-lipid">Lipid droplet</span>
+      <span class="cell-label cell-label-cytoplasm">Cytoplasm</span>
+    </div>
+  </div>
+</div>

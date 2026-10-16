@@ -21,15 +21,22 @@ layout: default
       data-assets="{{ '/assets/' | relative_url }}"
     >
       <div class="molecule-view">
-        <img
-          class="molecule-poster"
-          src="{{ '/assets/molecular/' | append: site.data.display.molecular_structure | append: '/posters/' | append: site.data.display.site_palette | append: '.webp' | relative_url }}"
-          alt="{{ molecule.receptor }} with {{ molecule.ligand }} and {{ molecule.peptide }} {{ molecule.peptide_role }}, PDB {{ molecule.pdb_id }}."
-          width="640"
-          height="640"
-          fetchpriority="high"
-        >
-        <div class="molecule-renderer" aria-hidden="true"></div>
+        {% if site.data.cell_scene.enabled %}
+          <div class="cell-scene" aria-hidden="true">
+            {% include adipocyte.html %}
+          </div>
+        {% endif %}
+        <div class="molecule-layer">
+          <img
+            class="molecule-poster"
+            src="{{ '/assets/molecular/' | append: site.data.display.molecular_structure | append: '/posters/' | append: site.data.display.site_palette | append: '.webp' | relative_url }}"
+            alt="{{ molecule.receptor }} with {{ molecule.ligand }} and {{ molecule.peptide }} {{ molecule.peptide_role }}, PDB {{ molecule.pdb_id }}."
+            width="640"
+            height="640"
+            fetchpriority="high"
+          >
+          <div class="molecule-renderer" aria-hidden="true"></div>
+        </div>
         <span class="molecule-label label-peptide">
           <span class="component-name">{{ molecule.peptide }}</span>
           <small>{{ molecule.peptide_role }}</small>
@@ -102,6 +109,14 @@ layout: default
         We test structure–function findings in cells to determine how molecular interactions control
         receptor activity, transcription, and gene expression.
       </p>
+      {% if site.data.cell_scene.enabled %}
+        <figure class="cell-static">
+          {% include adipocyte.html %}
+          <figcaption>
+            {{ site.data.cell_scene.caption }}. {{ site.data.cell_scene.note }}
+          </figcaption>
+        </figure>
+      {% endif %}
     </article>
     <article class="story-step" data-step="5">
       <span class="eyebrow">Mechanistically informed chemical biology</span>
@@ -193,6 +208,9 @@ layout: default
     <span>↗</span>
   </a>
 </section>
+<script type="application/json" id="cell-config">
+  {{ site.data.cell_scene | jsonify }}
+</script>
 <script type="application/json" id="hero-config">
   {{ site.data.hero_animation.presentation | jsonify }}
 </script>

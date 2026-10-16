@@ -8,6 +8,12 @@
   const button = figure.querySelector(".motion-toggle");
   const status = figure.querySelector(".renderer-status");
   const options = JSON.parse(document.getElementById("hero-config").textContent);
+  const cellOptions = JSON.parse(document.getElementById("cell-config")?.textContent || "{}");
+  const cellScene = figure.querySelector(".cell-scene");
+  const cellImage = figure.querySelector(".cell-illustration");
+  const cellArtboard = figure.querySelector(".cell-artboard");
+  const cellArt = figure.querySelector(".cell-art");
+  const moleculeLayer = figure.querySelector(".molecule-layer");
   const display = window.KojetinDisplay;
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const scripts = new Map();
@@ -22,6 +28,8 @@
     generation = 0,
     paletteGeneration = 0;
   let visible = true;
+  let cellReady = false,
+    cellProgress = 0;
   let domainStrength = 0,
     motionTime = 0,
     lastMotionTime = 0,
@@ -38,6 +46,44 @@
   const embedded = (path) => window.KojetinPreviewAssets?.[assetPath(path)];
   const assetURL = (path) => `${assetPath(path)}?v=${figure.dataset.version}`;
   const imageURL = (path) => embedded(path) || assetURL(path);
+
+  function cellEnabled() {
+    return !!(cellOptions.enabled && cellReady && adapter && !reduced.matches);
+  }
+
+  function updateCellMode() {
+    document.documentElement.classList.toggle("cell-transition-enabled", cellEnabled());
+  }
+
+  function drawCellTransition() {
+    const t = cellEnabled() ? cellProgress : 0;
+    const size = Math.min(host.clientWidth, host.clientHeight);
+    const anchor = cellOptions.nucleus_anchor || [0.19, 0.51];
+    const x = (clamp(Number(anchor[0])) - 0.5) * size;
+    const y = (clamp(Number(anchor[1])) - 0.5) * size;
+    const zoom = clamp(Number(cellOptions.start_zoom) || 4.5, 1, 8);
+    if (cellScene) {
+      cellArtboard.style.width = cellArtboard.style.height = `${size}px`;
+      cellArt.style.transformOrigin = `${clamp(Number(anchor[0])) * 100}% ${clamp(Number(anchor[1])) * 100}%`;
+      // Keep the nucleus and molecular center registered throughout the pullback.
+      cellArt.style.transform = `translate(${-x * (1 - t)}px, ${-y * (1 - t)}px) scale(${Math.pow(zoom, 1 - t)})`;
+      cellScene.style.opacity = String(smooth(0, 0.3, t));
+      cellScene.style.setProperty("--cell-label-opacity", String(smooth(0.7, 1, t)));
+      cellScene.setAttribute("aria-hidden", String(t < 0.6));
+    }
+    moleculeLayer.style.transform = `translate(${x * t}px, ${y * t}px) scale(${Math.pow(0.035, t)})`;
+    moleculeLayer.style.opacity = String(1 - smooth(0.55, 0.92, t));
+    moleculeLayer.setAttribute("aria-hidden", String(t >= 0.6));
+    figure.style.setProperty("--molecule-label-opacity", String(1 - smooth(0, 0.18, t)));
+    figure
+      .querySelectorAll(".molecule-label")
+      .forEach((element) => element.setAttribute("aria-hidden", String(t > 0.1)));
+    figure.querySelector(".figure-index").textContent =
+      t >= 0.6 ? cellOptions.caption : "MOLECULAR INTERACTIONS";
+    figure.querySelector(".pdb-link").hidden = t >= 0.6;
+    figure.dataset.cellProgress = t.toFixed(4);
+    return t;
+  }
 
   async function readJSON(path) {
     if (!jsonCache.has(path))
@@ -155,7 +201,6 @@
       lastMotionTime = 0;
       return;
     }
-    adapter.setSuspended(false);
     // Limit continuous motion to 30 fps, including on high-refresh displays.
     if (now - lastDrawTime < 1000 / 30) {
       requestRender();
@@ -165,11 +210,25 @@
     if (!paused && !reduced.matches) {
       const storyTop = story.getBoundingClientRect().top;
       // Complete the molecular separation during the first three concepts.
-      // The cellular and chemical-biology sections retain the final molecular view.
+      // The cellular section has its own later, headline-driven transition.
       const third = story.querySelector('[data-step="3"]');
       const motionLength = third.getBoundingClientRect().bottom - storyTop - innerHeight;
       progress = clamp(-storyTop / Math.max(1, motionLength));
       const mobile = innerWidth <= 700;
+      const timing = cellOptions[mobile ? "mobile" : "desktop"] || {};
+      const start = clamp(
+        Number.isFinite(Number(timing.start)) ? Number(timing.start) : mobile ? 0.95 : 0.85,
+        0.01,
+        1,
+      );
+      const end = clamp(
+        Number.isFinite(Number(timing.end)) ? Number(timing.end) : mobile ? 0.6 : 0.4,
+        0,
+        start - 0.01,
+      );
+      cellProgress = cellEnabled()
+        ? 1 - smooth(end, start, fourthHeading.getBoundingClientRect().top / innerHeight)
+        : 0;
       // The first two transitions retain their original scroll timing. Rock only
       // after separation finishes, and ease back to rest before the fourth topic.
       domainStrength =
@@ -186,6 +245,7 @@
               fourthHeading.getBoundingClientRect().top / innerHeight,
             )
           : 0;
+      domainStrength *= 1 - cellProgress;
     }
     const moving = !paused && !reduced.matches && domainStrength > 0;
     if (moving) {
@@ -196,8 +256,11 @@
       if (!paused) motionTime = 0;
     }
     const state = stateAt(reduced.matches ? 0 : progress);
+    const cellT = drawCellTransition();
     try {
-      adapter.render(state);
+      // The finished cell is a still image; stop spending GPU time on hidden Mol*.
+      adapter.setSuspended(cellT >= 0.92);
+      if (cellT < 0.92) adapter.render(state);
     } catch (error) {
       console.warn("Molecular rendering stopped.", error);
       showStaticStructure();
@@ -212,10 +275,12 @@
     figure.dataset.domainAngle = state.domainAngle.toFixed(6);
     figure.dataset.wiggleAmplitude = state.wiggleAmplitude.toFixed(4);
     const note =
-      preset().note +
-      (domainStrength > 0 && !reduced.matches
-        ? " Motion illustrates conformational flexibility; it is not an MD simulation."
-        : "");
+      cellT >= 0.6
+        ? cellOptions.note
+        : preset().note +
+          (domainStrength > 0 && !reduced.matches
+            ? " Motion illustrates conformational flexibility; it is not an MD simulation."
+            : "");
     const noteElement = figure.querySelector(".figure-note");
     if (noteElement.textContent !== note) noteElement.textContent = note;
     document.documentElement.style.setProperty(
@@ -284,6 +349,7 @@
         return;
       }
       adapter = next;
+      updateCellMode();
       figure.dataset.renderer = "molstar";
       figure.classList.add("molecule-ready");
       document.documentElement.classList.toggle("motion-enabled", !reduced.matches);
@@ -309,6 +375,9 @@
     figure.dataset.renderer = "static";
     figure.querySelector(".figure-note").textContent = preset().note;
     document.documentElement.classList.remove("motion-enabled");
+    cellProgress = 0;
+    updateCellMode();
+    drawCellTransition();
     button.hidden = true;
     status.textContent =
       "Showing a still structure because the interactive Mol* view is unavailable.";
@@ -363,11 +432,28 @@
   document.addEventListener("visibilitychange", requestRender);
   reduced.addEventListener("change", () => {
     document.documentElement.classList.toggle("motion-enabled", !!adapter && !reduced.matches);
+    cellProgress = 0;
+    updateCellMode();
     button.hidden = reduced.matches || !adapter;
     requestRender();
   });
   if (!options.enable_labels)
     figure.querySelectorAll(".molecule-label").forEach((element) => (element.hidden = true));
+  if (cellOptions.enabled && cellImage) {
+    const imageReady = () => {
+      cellReady = cellImage.naturalWidth > 0;
+      updateCellMode();
+      requestRender();
+    };
+    cellImage.addEventListener("load", imageReady);
+    cellImage.addEventListener("error", () => {
+      cellReady = false;
+      cellProgress = 0;
+      updateCellMode();
+      requestRender();
+    });
+    if (cellImage.complete) imageReady();
+  }
   // Reduced motion uses the same Mol* view, held at its initial pose.
   loadStructure();
 })();

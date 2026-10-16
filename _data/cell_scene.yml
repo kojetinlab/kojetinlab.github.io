@@ -1,0 +1,17 @@
+# Scroll from the molecular view into an illustrated adipocyte.
+# Save this file and rebuild Jekyll to see changes.
+enabled: true
+image: /assets/images/science/adipocyte-cutaway.png
+alt: "Illustrated white adipocyte in cutaway: a large gold lipid droplet, a teal nucleus at the left edge, and mitochondria and endoplasmic reticulum in the surrounding cytoplasm."
+caption: "Adipocyte · cellular context"
+note: "Nucleus, lipid droplet, and surrounding cytoplasm. Conceptual illustration; not to scale."
+
+# Position within the square artwork, from 0 (left/top) to 1 (right/bottom).
+# The protein recedes toward this point as the whole cell comes into view.
+nucleus_anchor: [0.19, 0.51]
+start_zoom: 4.5
+
+# Fourth headline's distance from the viewport top, as a fraction of height.
+# Start must be greater than end. At end, the complete cell is visible.
+desktop: { start: 0.85, end: 0.4 }
+mobile: { start: 0.95, end: 0.6 }

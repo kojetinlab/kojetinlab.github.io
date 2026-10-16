@@ -10,3 +10,7 @@
 - PyMOL was used to ray trace the included molecular frame images. No PyMOL executable is distributed with this site. Source/software information: https://pymol.org/
 
 - Building photograph and Vanderbilt School of Medicine Basic Sciences logos (including the black-text SVG and PNG) supplied by the site owner on 16 October 2026. Original image bytes are retained as website assets; rights remain with their respective owners. The Vanderbilt mark is not covered by the implementation code license.
+
+## Generated artwork
+
+- `assets/images/science/adipocyte-cutaway.png` was created for this website using OpenAI image generation on 16 October 2026. It is a conceptual white-adipocyte cutaway, not a microscope image or experimental observation. Anatomy references and editing instructions are in `docs/molecular-animation.md`.

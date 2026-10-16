@@ -118,7 +118,7 @@ The first script checks the selected assembly, reads deposited polymer coordinat
 
 The site uses locally hosted Mol* 5.13.1. There is no renderer selector. Saved Three.js or PyMOL choices from earlier versions are ignored. Palette, PDB, Illustrative cartoon, and SSGI controls remain available. See [Mol*](https://molstar.org/) and its [plugin documentation](https://molstar.org/docs/v5/plugin/instance/).
 
-The peptide and ligand separation retain their original timing. Once separation is complete, the receptor visibly flexes and rocks while **Beyond a single structure** is in view. It settles as Functional regulation arrives; the remaining sections retain the final molecular view. Scrolling backward reverses the separation and fades both motions away. **Pause motion** freezes both effects.
+The peptide and ligand separation retain their original timing. Once separation is complete, the receptor visibly flexes and rocks while **Beyond a single structure** is in view. As **From structure to cellular function** arrives, the protein shrinks toward the nucleus of an illustrated adipocyte and the view pulls back to reveal the complete cell. The cell remains visible through the final chemical-biology topic. Scrolling backward reverses the transition. **Pause motion** freezes the wiggle, rocking, and zoom.
 
 ### Receptor motion at “Beyond a single structure”
 
@@ -153,6 +153,34 @@ Mol* also supports real MD trajectory playback. To replace this illustration wit
 
 Implementation references: [Mol* animation parameters](https://github.com/molstar/molstar/blob/v5.13.1/src/mol-geo/geometry/animation.ts) and [procedural animation shader](https://github.com/molstar/molstar/blob/v5.13.1/src/mol-gl/shader/chunks/common-animation.glsl.ts).
 
+## From the molecule to an adipocyte
+
+Version 5.8 adds a scroll-controlled change of scale between the third and fourth topics. The live Mol* image shrinks and fades into the nucleus while the adipocyte illustration pulls back. The finished cell shows a large lipid droplet, a peripheral nucleus, and cytoplasm containing smaller organelles. Labels appear near the end of the transition. This is a conceptual illustration, not a measured scale animation or an experimental cell image.
+
+Edit `_data/cell_scene.yml` and rebuild Jekyll:
+
+```yaml
+enabled: true
+image: /assets/images/science/adipocyte-cutaway.png
+nucleus_anchor: [0.19, 0.51]
+start_zoom: 4.5
+desktop: { start: 0.85, end: 0.4 }
+mobile: { start: 0.95, end: 0.6 }
+```
+
+- `enabled: false` removes both the transition and the still cell figure. The molecular story then holds its final structure through the later sections.
+- `image` selects the artwork. The included transparent PNG is **1254 × 1254 pixels**. A replacement should be square; keep the nucleus position in sync with `nucleus_anchor` and update `alt` with a description of the new image.
+- `nucleus_anchor` is the point where the molecular image lands: `[horizontal, vertical]`, measured from 0 to 1 across the image. `[0, 0]` is the upper-left corner and `[1, 1]` is the lower-right.
+- `start_zoom` is the cell artwork's initial magnification. A larger value begins closer to the nucleus; the final zoom is always 1. Values are limited to 1–8.
+- `start` and `end` are the fourth headline's position as a fraction of viewport height. On desktop, the transition begins when the headline is 85% down the window and finishes at 40%. Keep `start` greater than `end`; a wider interval produces a longer scroll transition. Mobile has separate values so the headline remains below the sticky illustration.
+- `caption`, `note`, and `alt` edit the cell's description. Visible labels live in `_includes/adipocyte.html`; their positions and typography are in `assets/css/site.css`.
+
+Pause freezes the current transition; resume catches up to the current scroll position. Reverse scrolling returns to the protein, including its selected PDB and camera. Mol* rendering suspends once it is hidden behind the complete cell. The art has a fixed cream/gold/teal palette; the text and label backgrounds follow the selected website palette.
+
+With reduced motion, without JavaScript, or when WebGL is unavailable, a still adipocyte appears directly in the fourth section. If the cell image cannot load, the animated molecular panel stays visible and the inline image retains its alternative description.
+
+The illustration was created for this website with OpenAI image generation. White-adipocyte anatomy was checked against the University of Minnesota Histology Guide's [light-microscopy description](https://www.histologyguide.com/slideview/MHS-213-lymph-nodes/03-slide-1.html) and [electron micrograph](https://histologyguide.com/EM-view/EM-120-adipocyte/03-photo-1.html). The artwork is interpretive and was not copied from those images.
+
 ## Editable implementation
 
 | File | Purpose |
@@ -160,6 +188,9 @@ Implementation references: [Mol* animation parameters](https://github.com/molsta
 | `_data/structures.yml` | Independent PDB cameras, scientific selections, and labels |
 | `_data/display.yml` | Default structure, palette, and Mol* appearance |
 | `_data/hero_animation.yml` | Separation switches, internal wiggle, rocking, and live pixel ratio |
+| `_data/cell_scene.yml` | Cell transition, timing, artwork path, and nucleus landing point |
+| `_includes/adipocyte.html` | Cell illustration and visible labels |
+| `assets/images/science/adipocyte-cutaway.png` | Transparent illustrated cell used by the webpage |
 | `_data/palettes.yml` | Website and molecular colors |
 | `assets/js/molecular-view.js` | Convert original-PDB cameras to prepared coordinates |
 | `assets/js/molecular-viewer.js` | Scroll, labels, structure switching, and motion controls |
@@ -171,6 +202,6 @@ Earlier Three.js/PyMOL source files and frame sequences remain in the source dow
 
 ## Accessibility and failure handling
 
-Reduced-motion preference uses Mol* held at its initial pose, with separation, rocking, and internal wiggle disabled. Without JavaScript or if Mol* cannot initialize WebGL, the still poster and complete scientific text remain visible. Changing the PDB also changes its fallback image. Each supplied poster matches that preset's initial camera; after a future camera edit, replace its still images if you want the fallback pose to match. The live Mol* camera updates immediately after rebuilding Jekyll.
+Reduced-motion preference uses Mol* held at its initial pose, with separation, rocking, internal wiggle, and the zoom disabled. The still cell illustration remains in the fourth section. Without JavaScript or if Mol* cannot initialize WebGL, the still poster and complete scientific text remain visible. Changing the PDB also changes its fallback image. Each supplied poster matches that preset's initial camera; after a future camera edit, replace its still images if you want the fallback pose to match. The live Mol* camera updates immediately after rebuilding Jekyll.
 
 Component identity is always labeled. Mobile uses a shorter sticky molecular panel above the text. Unsupported SSGI disables only that lighting option, leaving the ordinary cartoon usable.

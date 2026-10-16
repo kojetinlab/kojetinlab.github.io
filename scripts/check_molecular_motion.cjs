@@ -11,26 +11,33 @@ const html = fs.readFileSync(path.join(root, "_site/index.html"), "utf8");
 const config = id => JSON.parse(html.match(new RegExp(`<script[^>]*id="${id}"[^>]*>([\\s\\S]*?)<\\/script>`))[1]);
 const { structures, palettes } = config("display-config");
 const presentation = config("hero-config");
+const cellPresentation = config("cell-config");
 const colors = Object.fromEntries(Object.entries(palettes).map(([key, value]) => [key, value.molecule]));
 const settle = () => new Promise(resolve => setImmediate(resolve));
 
-async function fixture(renderer = "molstar", structure = "6onj", motion = true) {
+async function fixture(renderer = "molstar", structure = "6onj", motion = true, cell = {}) {
   const listeners = new Map(), frames = new Map();
   let top = 0, heading3 = 2500, heading4 = 3200, now = 0, frameId = 0;
   let intersection;
   const requests = [], settingsHistory = [];
   function element() {
+    const classes = new Set();
     return {
-      style: { setProperty() {} }, dataset: {}, children: [], hidden: false, textContent: "",
-      classList: { add() {}, remove() {}, toggle() {} },
+      style: { setProperty(name, value) { this[name] = value; } }, dataset: {}, children: [], hidden: false, textContent: "",
+      classList: {
+        add(name) { classes.add(name); }, remove(name) { classes.delete(name); },
+        toggle(name, value) { if (value) classes.add(name); else classes.delete(name); },
+        contains(name) { return classes.has(name); },
+      },
       append(...children) { this.children.push(...children); }, remove() { this.removed = true; },
       setAttribute(name, value) { this[name] = value; },
       addEventListener(name, callback) { this[name] = callback; },
     };
   }
-  const host = Object.assign(element(), { clientWidth: 640, clientHeight: 640 });
+  const host = Object.assign(element(), { clientWidth: cell.mobile ? 350 : 640, clientHeight: cell.mobile ? 300 : 640 });
   const button = element(), note = element();
   const parts = new Map([[".molecule-renderer", host], [".motion-toggle", button], [".figure-note", note]]);
+  parts.set(".cell-illustration", Object.assign(element(), {complete: true, naturalWidth: cell.failed ? 0 : 1280}));
   const figure = Object.assign(element(), {
     dataset: { assets: "/assets/", version: "test" },
     querySelector(selector) { if (!parts.has(selector)) parts.set(selector, element()); return parts.get(selector); },
@@ -45,7 +52,7 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true) 
       return element();
     },
   });
-  const reduced = { matches: false, addEventListener(_, fn) { this.change = fn; } };
+  const reduced = { matches: !!cell.reduced, addEventListener(_, fn) { this.change = fn; } };
   const display = { state: { renderer, structure, palette: "vandy" }, structures,
     palettes: Object.fromEntries(Object.entries(colors).map(([k, v]) => [k, { molecule: v }])) };
   const mockAdapter = { render(state) { this.state = state; }, setSuspended(value) { this.suspended = value; }, async setPalette() {}, resize() {}, dispose() {} };
@@ -53,13 +60,14 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true) 
     hidden: false, documentElement: element(),
     getElementById(id) {
       return id === "molecule" ? figure : id === "molecular-story" ? story : id === "hero-config"
-        ? { textContent: JSON.stringify({ ...presentation, enable_domain_motion: motion }) } : element();
+        ? { textContent: JSON.stringify({ ...presentation, enable_domain_motion: motion }) }
+        : id === "cell-config" ? {textContent: JSON.stringify({...cellPresentation, enabled: cell.enabled !== false})} : element();
     },
     querySelector: () => element(), createElement: element,
     head: { append(script) { requests.push(script.src); queueMicrotask(() => script.onload()); } },
     addEventListener(name, callback) { listeners.set(name, callback); },
   };
-  const context = vm.createContext({ console, Math, Map, JSON, Promise, document, innerHeight: 1000, innerWidth: 1200,
+  const context = vm.createContext({ console, Math, Map, JSON, Promise, document, innerHeight: 1000, innerWidth: cell.mobile ? 390 : 1200,
     matchMedia: () => reduced,
     addEventListener(name, callback) { listeners.set(name, callback); },
     requestAnimationFrame(callback) { frames.set(++frameId, callback); return frameId; },
@@ -93,7 +101,7 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true) 
     listeners.get("scroll")(); await tick(2);
   }
   await tick(4);
-  return { figure, host, button, reduced, display, document, frames, mockAdapter, tick, scroll, requests, settingsHistory,
+  return { figure, host, button, reduced, display, document, frames, mockAdapter, tick, scroll, requests, settingsHistory, parts,
     event: name => listeners.get(name)(),
     visibility: visible => intersection([{ isIntersecting: visible }]) };
 }
@@ -165,4 +173,61 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true) 
   assert.equal(+disabled.figure.dataset.wiggleAmplitude, 0);
   assert.equal(disabled.frames.size, 0);
   console.log("Independent PDB camera switching, covalent ligand, static fallback, and motion off-switch passed");
+  for (const pdb of ["6onj", "6oni"]) {
+    for (const mobile of [false, true]) {
+      const f = await fixture("molstar", pdb, true, {mobile});
+      const mode = () => f.document.documentElement.classList.contains("cell-transition-enabled");
+      const timing = cellPresentation[mobile ? "mobile" : "desktop"];
+      assert.equal(mode(), true);
+      await f.scroll(1, 200, timing.start * 1000 + 100);
+      assert.equal(+f.figure.dataset.cellProgress, 0, "Keep the third section molecular");
+      await f.scroll(1.3, -200, (timing.start + timing.end) * 500);
+      assert.equal(+f.figure.dataset.cellProgress, 0.5, "Halfway through the pullback");
+      const layer = f.parts.get(".molecule-layer");
+      assert(layer.style.transform.includes("scale(0.187"), "Protein shrinks during the pullback");
+      f.button.click(); await f.tick(2);
+      const frozen = layer.style.transform;
+      await f.scroll(1.6, -500, timing.end * 1000 - 100);
+      assert.equal(layer.style.transform, frozen, "Pause freezes the zoom during scroll");
+      f.button.click(); await f.tick(2);
+      assert.equal(+f.figure.dataset.cellProgress, 1);
+      assert.equal(layer.style.opacity, "0");
+      assert.equal(f.mockAdapter.suspended, true, "Suspend hidden Mol* after the pullback");
+      assert.equal(f.parts.get(".pdb-link").hidden, true);
+      assert.equal(f.parts.get(".cell-scene")["aria-hidden"], "false");
+      assert.equal(f.parts.get(".figure-note").textContent, cellPresentation.note);
+      assert.equal(f.frames.size, 0, "The settled cell is still, with no continuing animation loop");
+      await f.scroll(2, -1000, -500);
+      assert.equal(+f.figure.dataset.cellProgress, 1, "Hold the cell through the final topic");
+      await f.scroll(1, 200, timing.start * 1000 + 100);
+      assert.equal(+f.figure.dataset.cellProgress, 0, "Reverse scroll restores the molecule");
+      assert.equal(f.mockAdapter.suspended, false);
+      assert.equal(f.parts.get(".pdb-link").hidden, false);
+      f.reduced.matches = true; f.reduced.change(); await f.tick(3);
+      assert.equal(mode(), false, "Reduced motion exposes the inline still figure");
+      assert.equal(+f.figure.dataset.cellProgress, 0);
+      f.reduced.matches = false; f.reduced.change(); await f.tick(2);
+      await f.scroll(1.6, -500, 100);
+      f.host.webglcontextlost({preventDefault(){}}); await f.tick(3);
+      assert.equal(mode(), false, "WebGL fallback exposes the inline still figure");
+      assert.equal(layer.style.opacity, "1", "Fallback poster remains visible");
+      console.log(pdb + (mobile ? " mobile" : " desktop") + ": cell zoom, hold, reverse, pause, GPU suspension, and still fallbacks passed");
+    }
+  }
+  for (const cell of [{enabled: false}, {failed: true}, {reduced: true}]) {
+    const f = await fixture("molstar", "6onj", true, cell);
+    await f.scroll(1.5, -500, 100);
+    assert.equal(+f.figure.dataset.cellProgress, 0);
+    assert.equal(f.document.documentElement.classList.contains("cell-transition-enabled"), false);
+    assert.equal(f.parts.get(".molecule-layer").style.opacity, "1");
+  }
+  const lateImage = await fixture("molstar", "6onj", true, {failed: true});
+  await lateImage.scroll(1.6, -500, 100);
+  lateImage.parts.get(".cell-illustration").naturalWidth = 1280;
+  lateImage.parts.get(".cell-illustration").load(); await lateImage.tick(2);
+  assert.equal(+lateImage.figure.dataset.cellProgress, 1, "A late-loading image joins the current scroll position");
+  lateImage.parts.get(".cell-illustration").error(); await lateImage.tick(2);
+  assert.equal(+lateImage.figure.dataset.cellProgress, 0);
+  assert.equal(lateImage.parts.get(".molecule-layer").style.opacity, "1");
+  console.log("Cell off-switch, image load/error, and initial reduced-motion checks passed");
 })().catch(error => { console.error(error); process.exitCode = 1; });

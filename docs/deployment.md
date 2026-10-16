@@ -44,9 +44,11 @@ Before replacing files:
 
 You now have a named copy of the old source and its history. This backup is not a second published website. All subsequent replacement edits belong on the default branch, not the backup branch.
 
+If v5.7 or v5.8 is already committed and pushed, follow [Importing release updates](release-updates.md) for the reusable rsync updater. The full replacement steps below are for the original redesign.
+
 ## 4. Replace the source files
 
-1. Unzip **Kojetin-Lab-Website-v5.7.zip**.
+1. Unzip **Kojetin-Lab-Website-v5.8.2.zip**.
 2. Open the extracted `kojetinlab-website` folder. That is the new source.
 3. In GitHub Desktop, choose **Repository → Show in Finder** to open your cloned `kojetinlab.github.io` folder. That is the destination.
 4. In Finder, press **Command-Shift-period** to show hidden files in both folders.

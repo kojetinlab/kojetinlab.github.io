@@ -57,6 +57,8 @@ Open the down arrow after **Contact** to try palettes, PDB structures, illustrat
 | Page and molecular colors | `_data/palettes.yml` |
 | Each PDB's camera, chain selections, and labels | `_data/structures.yml` |
 | Scroll movement, internal wiggle, and receptor rocking | `_data/hero_animation.yml` |
+| Zoom from the protein to an illustrated adipocyte | `_data/cell_scene.yml` |
+| Adipocyte illustration | `assets/images/science/adipocyte-cutaway.png` |
 | Lab text, contact details, footer links, and logo/photo paths | `_data/site.yml` |
 | Navigation | `_data/navigation.yml` |
 | People and alumni | `_members/` |
@@ -88,6 +90,15 @@ Edit → preview locally → review changes in GitHub Desktop → **Commit** →
 
 When you push to the default branch, GitHub Actions validates the content, runs the publication-import tests, builds Jekyll, checks internal links, and publishes the result. Watch **Actions → Build and publish GitHub Pages**. An unsuccessful build does not replace the last successful deployment. GitHub handles the build tools on its server; you do not need local Ruby just to publish through GitHub.
 
+For a new source download, use the reusable updater from inside your GitHub clone:
+
+```sh
+bash update-site.sh "/path/to/new-download/kojetinlab-website"
+bash update-site.sh "/path/to/new-download/kojetinlab-website" --apply
+```
+
+The first command previews; the second copies new/changed release files while preserving local-only edits and leaving other files in place. Conflicting edits stop the update before copying. Review, commit, and push afterward. For first installation from v5.7/v5.8, use the downloaded script's full path; see [Importing release updates](docs/release-updates.md).
+
 ## Optional developer checks
 
 Python 3.10 or later is needed for these checks, but not for an ordinary local Jekyll preview:
@@ -106,6 +117,7 @@ Node.js is optional for formatting. The required Mol* browser assets are include
 
 - [GitHub setup and deployment](docs/deployment.md)
 - [Local development on a Mac](docs/local-development.md)
+- [Importing release updates with rsync](docs/release-updates.md)
 - [Palettes, Mol* settings, and editable HTML](docs/display-settings.md)
 - [Molecular structures, cameras, and animation](docs/molecular-animation.md)
 - [Updating people, text, and images](docs/updating-website.md)

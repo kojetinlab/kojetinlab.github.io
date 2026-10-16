@@ -156,3 +156,29 @@ This pass does not constitute a full cross-browser or accessibility audit. Unsup
 - Updated `check_molecular_motion.cjs` to read the actual built Jekyll configuration rather than archived PyMOL settings. Controller checks passed for wiggle amplitude/timing, pause, reverse scrolling, reduced motion, disabled animation, offscreen/hidden suspension, camera switching, and fallback behavior.
 - Added `check_molstar_wiggle.cjs`: executes the real adapter and the bundled Mol* math/loci with a mocked canvas/plugin lifecycle. Both PDBs passed parameter, component-selection, frozen-clock, suspension, appearance-change, rest-pose, draw-error, and disposal checks. These tests do not execute WebGL shaders.
 - Production Jekyll build and 126-page link checks passed. The updated preview embeds 126 pages and 32 assets. No browser visual or live WebGL performance review was available; use the preview to assess the appearance and motion strength.
+
+
+## Version 5.8 — molecular-to-cellular pullback
+
+- Added an original transparent adipocyte cutaway (1254 × 1254 RGBA PNG) and a scroll-controlled transition during the move from the third topic to the fourth. The live molecular image shrinks toward the peripheral nucleus while the cell artwork pulls back; the completed cell remains through the fifth topic. HTML labels and caption distinguish cellular context from the PDB view.
+- Added `_data/cell_scene.yml` for the enable switch, image description/path, nucleus anchor, initial zoom, and separate desktop/mobile timing. Documented replacement art and the exact update files in OPEN FIRST. Included artwork provenance and anatomy-reference links in the molecular guide.
+- Extended the actual-controller checks for both PDBs and desktop/mobile viewport shapes: initial, halfway, completed and held states; reverse scroll; pause/resume; hidden-Mol* suspension; reduced motion; WebGL fallback; disabled transition; and late/failed image loading. Existing wiggle/controller and native-adapter lifecycle checks also passed. These execute with simulated DOM/WebGL interfaces, not a browser.
+- Confirmed byte-for-byte preservation of both camera presets, both scene-coordinate files, the Mol* adapter, and the molecular-motion settings relative to v5.7.
+- Root and repository-subpath builds passed all 126-page internal-reference checks. Both cell images use the correct baseurl, and the HTML contains the still fallback without requiring JavaScript. Content validation passed for 83 publications, 23 members, three research pages, and seven posts.
+- The standalone preview embeds 126 pages and 33 assets, including the new cell PNG. The generated artwork was inspected; no browser visual or live-WebGL performance review was available in this pass. Review the zoom appearance in the supplied interactive preview.
+- No files or settings were changed on GitHub, and no live deployment was performed.
+
+
+## Version 5.8.1 — reusable release updater
+
+- Added root `update-site.sh`, a Python 3.9+ helper, `docs/release-updates.md`, and the exact v5.7 hash baseline. Preview is the default; `--apply` copies only new/changed release files using rsync. The tracked `.site-release.json` records the incoming release for later comparisons.
+- File-level comparison preserves committed and uncommitted local-only edits and local-only deletions. Overlapping changes stop the entire update before copying. Explicit `--keep-local` supports manually resolved files. Files absent from the new release are retained; the updater never requests deletion, commits, pushes, or deploys.
+- Five tests using real Git repositories and the installed rsync passed: dry-run no-op, changed-file transfer, unchanged-file timestamp preservation, repeat imports, customization preservation, conflict blocking/resolution, new-file collision, omitted-file retention, source-manifest checks, and symlink refusal. The complete existing Python suite passed all nine tests.
+- A full integration run extracted the actual v5.7 ZIP into a disposable Git clone, made committed and uncommitted settings changes, then imported this release. Both customizations survived; the cell asset and updater were installed; a repeat using the installed script reported zero file copies. No user GitHub clone was edited.
+- Production Jekyll build passed all 126-page reference checks. Confirmed the root updater and release manifest are excluded from the deployed site. Documentation links resolve. The v5.8 website visuals and standalone preview are retained.
+
+
+## Version 5.8.2 — clearer updater instructions
+
+- Successful previews now print the requested Up Arrow / append `--apply` / Return instructions and explain that this workflow applies to every update. Successful copies print the separate GitHub Desktop commit and Push origin steps.
+- Exercised both output paths in a disposable Git repository using the existing transfer fixture. Preview and apply completed successfully. The file-selection and transfer logic is unchanged; no site visuals or deployment settings changed.
