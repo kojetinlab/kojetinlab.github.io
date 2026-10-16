@@ -3,6 +3,7 @@ name: Liudmyla Arifova
 last_name: Arifova
 role: Graduate Student
 category: Graduate Students
+photo: /assets/images/people/liudmyla-arifova.jpg
 status: current
 seniority: 40
 joined_year: 2023
