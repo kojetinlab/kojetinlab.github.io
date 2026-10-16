@@ -1,0 +1,49 @@
+<div class="publication-links" aria-label="Publication resources">
+  {% if include.pub.doi and include.pub.doi != '' -%}
+    <a href="https://doi.org/{{ include.pub.doi }}">DOI ↗</a>
+  {%- endif %}
+  {% if include.pub.pmid and include.pub.pmid != '' -%}
+    <a href="https://pubmed.ncbi.nlm.nih.gov/{{ include.pub.pmid }}/">PubMed ↗</a>
+  {%- endif %}
+  {% if include.pub.pmcid and include.pub.pmcid != '' -%}
+    <a href="https://pmc.ncbi.nlm.nih.gov/articles/{{ include.pub.pmcid }}/">PMC ↗</a>
+  {%- endif %}
+  {% if include.pub.pdf and include.pub.pdf != '' -%}
+    <a href="{{ include.pub.pdf | relative_url }}">PDF ↓</a>
+  {%- endif %}
+  {% if include.pub.preprint and include.pub.preprint != '' -%}
+    <a href="{{ include.pub.preprint }}">Preprint ↗</a>
+  {%- endif %}
+  {% if include.pub.journal_url and include.pub.journal_url != '' -%}
+    <a href="{{ include.pub.journal_url }}">Publisher ↗</a>
+  {%- endif %}
+  {% for id in include.pub.pdb -%}
+    {%- if id != '' -%}
+      <a href="https://www.rcsb.org/structure/{{ id }}">PDB {{ id }} ↗</a>
+    {%- endif -%}
+  {%- endfor %}
+  {% for id in include.pub.bmrb -%}
+    {%- if id != '' -%}
+      <a href="https://bmrb.io/data_library/summary/index.php?bmrbId={{ id }}">BMRB {{ id }} ↗</a>
+    {%- endif -%}
+  {%- endfor %}
+  {% for id in include.pub.emdb -%}
+    {%- if id != '' -%}
+      <a href="https://www.ebi.ac.uk/emdb/{{ id }}">EMDB {{ id }} ↗</a>
+    {%- endif -%}
+  {%- endfor %}
+  {% for id in include.pub.geo -%}
+    {%- if id != '' -%}
+      <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc={{ id }}">GEO {{ id }} ↗</a>
+    {%- endif -%}
+  {%- endfor %}
+  {% if include.pub.github and include.pub.github != '' -%}
+    <a href="{{ include.pub.github }}">Code ↗</a>
+  {%- endif %}
+  {% if include.pub.zenodo and include.pub.zenodo != '' -%}
+    <a href="{{ include.pub.zenodo }}">Zenodo ↗</a>
+  {%- endif %}
+  {% for link in include.pub.additional_links -%}
+    <a href="{{ link.url }}">{{ link.label }} ↗</a>
+  {%- endfor %}
+</div>

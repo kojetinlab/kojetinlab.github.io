@@ -1,0 +1,54 @@
+---
+layout: page
+title: Bring your curiosity.
+permalink: /join/
+eyebrow: Join the laboratory
+summary: Interested in molecular mechanisms, structural biology, or nuclear receptor pharmacology? We would like to hear from you.
+---
+<div class="join-layout">
+  <div class="prose">
+    <h2>Postdoctoral researchers</h2>
+    <p>
+      Contact {{ site.data.site.pi }} to discuss research interests and potential opportunities.
+      Include a CV, a brief description of your research experience, and the questions you would
+      like to pursue.
+    </p>
+    <h2>Graduate students</h2>
+    <p>
+      Prospective students can explore Vanderbilt’s graduate training programs and the Department of
+      Biochemistry. Current Vanderbilt graduate students interested in a rotation are welcome to
+      contact the laboratory to discuss research directions.
+    </p>
+    <p>
+      <a href="https://medschool.vanderbilt.edu/igp/">Interdisciplinary Graduate Program ↗</a>
+      <br>
+      <a href="https://medschool.vanderbilt.edu/qcb/">
+        Quantitative and Chemical Biology Program ↗
+      </a>
+    </p>
+    <h2>Undergraduate researchers</h2>
+    <p>
+      Tell us about your scientific interests, relevant coursework, and availability. Research
+      projects and mentoring arrangements depend on current laboratory capacity.
+    </p>
+    <h2>Other research opportunities</h2>
+    <p>
+      For research staff, visiting researcher, and collaborative opportunities, please contact the
+      laboratory directly.
+    </p>
+  </div>
+  <aside class="contact-aside">
+    <p class="eyebrow">Start a conversation</p>
+    <h2>Let’s talk science.</h2>
+    <p>{{ site.data.site.pi }}</p>
+    <a href="mailto:{{ site.data.site.email }}">{{ site.data.site.email }}</a>
+    <p class="small">Please contact us to confirm current availability.</p>
+    {% for opening in site.data.openings %}
+      <h3>{{ opening.title }}</h3>
+      <p>{{ opening.description }}</p>
+      {% if opening.url -%}
+        <a href="{{ opening.url }}">Position details ↗</a>
+      {%- endif -%}
+    {%- endfor %}
+  </aside>
+</div>

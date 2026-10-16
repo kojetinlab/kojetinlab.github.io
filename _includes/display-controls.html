@@ -1,0 +1,49 @@
+{% if site.data.display.show_palette_picker
+  or site.data.display.show_structure_picker
+  or site.data.display.show_molstar_controls
+%}
+  <details class="display-settings" hidden>
+    <summary aria-label="Display options" title="Display options">
+      <svg class="settings-chevron" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path d="m5 9 7 7 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </summary>
+    <div class="display-controls">
+      {% if site.data.display.show_palette_picker %}
+        <label for="palette-picker">
+          Color palette
+          <select id="palette-picker">
+            {% for palette in site.data.palettes %}
+              <option value="{{ palette[0] }}">{{ palette[1].label }}</option>
+            {% endfor %}
+          </select>
+        </label>
+      {% endif %}
+      {% if page.layout == 'home' and site.data.display.show_structure_picker %}
+        <label for="structure-picker">
+          PDB structure
+          <select id="structure-picker">
+            {% for structure in site.data.structures %}
+              <option value="{{ structure[0] }}">{{ structure[1].label }}</option>
+            {% endfor %}
+          </select>
+        </label>
+      {% endif %}
+      {% if page.layout == 'home' and site.data.display.show_molstar_controls %}
+        <fieldset class="molstar-controls">
+          <legend>Mol* appearance</legend>
+          <label class="display-check" for="molstar-illustrative">
+            <input id="molstar-illustrative" type="checkbox">
+            Illustrative cartoon
+          </label>
+          <label class="display-check" for="molstar-ssgi">
+            <input id="molstar-ssgi" type="checkbox">
+            SSGI lighting
+          </label>
+          <small class="ssgi-support-note" hidden>SSGI is unavailable on this device.</small>
+        </fieldset>
+      {% endif %}
+      <button class="display-reset" type="button">Site defaults</button>
+    </div>
+  </details>
+{% endif %}

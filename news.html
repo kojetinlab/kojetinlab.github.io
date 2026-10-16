@@ -1,0 +1,20 @@
+---
+layout: page
+title: From the lab
+permalink: /news/
+summary: Publications, people, and moments from our research community.
+---
+{% for post in site.posts %}
+  <article class="news-row">
+    <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%d %b %Y' }}</time>
+    <div>
+      <h2>
+        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      </h2>
+      <p>{{ post.summary }}</p>
+    </div>
+    <a href="{{ post.url | relative_url }}" aria-label="Read {{ post.title | escape }}">↗</a>
+  </article>
+{% else %}
+  <p>News from the laboratory will appear here.</p>
+{% endfor %}

@@ -1,0 +1,1687 @@
+/* Original Kojetin Laboratory design. No theme or UI framework. */
+:root {
+  --paper: #f7f7f2;
+  --ink: #253131;
+  --muted: #606c6b;
+  --line: #d7ddd7;
+  --teal: #277b77;
+  --gold: #9c7445;
+  --violet: #777e9c;
+  --max: 1320px;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 110px;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  color: var(--teal);
+}
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+button,
+a,
+input,
+select {
+  touch-action: manipulation;
+}
+button {
+  cursor: pointer;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 5px;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+h1,
+h2,
+h3,
+p,
+figure {
+  margin: 0;
+}
+h1,
+h2,
+h3 {
+  font-weight: 400;
+  line-height: 1.13;
+  letter-spacing: -0.04em;
+}
+p {
+  margin: 0 0 1em;
+}
+h2 {
+  font-size: clamp(32px, 3.5vw, 49px);
+}
+h3 {
+  font-size: 24px;
+}
+button {
+  border-radius: 0;
+}
+small,
+.small {
+  font-size: 14px;
+}
+::selection {
+  background: var(--selection);
+}
+.wrap {
+  width: min(calc(100% - 112px), var(--max));
+  margin-inline: auto;
+}
+[hidden] {
+  display: none !important;
+}
+.skip-link {
+  position: fixed;
+  left: 20px;
+  top: -90px;
+  padding: 12px 20px;
+  background: var(--surface);
+  z-index: 100;
+}
+.skip-link:focus {
+  top: 12px;
+}
+.eyebrow {
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.text-link {
+  display: inline-flex;
+  gap: 32px;
+  align-items: center;
+  font-size: 14px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 8px;
+}
+.text-link span {
+  font-size: 20px;
+}
+.large-copy {
+  font-size: clamp(20px, 2.2vw, 28px);
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+}
+.site-header {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1550px;
+  margin: auto;
+  padding: 30px 56px 24px;
+  border-bottom: 1px solid var(--line);
+  min-height: 102px;
+  background: var(--paper);
+}
+.wordmark {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 30px;
+  font-weight: 750;
+  flex-shrink: 0;
+  letter-spacing: -0.8px;
+  line-height: 1;
+}
+.wordmark span {
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: -0.5px;
+}
+.wordmark i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  align-self: flex-end;
+  margin: 0 0 3px 0;
+}
+.site-header nav {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  font-size: 13px;
+}
+.site-header nav a {
+  position: relative;
+  padding: 8px 0;
+}
+.site-header nav a[aria-current] {
+  color: var(--teal);
+}
+.site-header nav a[aria-current]:after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  background: var(--teal);
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.menu-toggle {
+  background: none;
+  border: 0;
+  padding: 9px 0;
+  font-size: 14px;
+}
+.site-footer {
+  padding: 56px 0 40px;
+  background: var(--paper);
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+}
+.footer-brand {
+  display: block;
+  width: min(100%, 560px);
+  margin-bottom: 44px;
+}
+.footer-brand img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1.4fr 1fr;
+  gap: 50px;
+}
+.footer-name {
+  font-size: 17px;
+  color: var(--ink);
+  letter-spacing: -0.5px;
+}
+.site-footer a:hover {
+  color: var(--teal);
+}
+.site-footer a:focus-visible {
+  outline-color: var(--teal);
+}
+.site-footer p {
+  margin-top: 12px;
+}
+.footer-grid > div:last-child {
+  text-align: right;
+}
+.site-footer .footer-source {
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.footer-source a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.molecular-story {
+  position: relative;
+}
+.story-stage {
+  position: relative;
+  min-height: calc(100svh - 102px);
+  display: grid;
+  grid-template-columns: 45% 55%;
+  align-items: center;
+}
+.hero-copy {
+  padding: 56px 0 82px;
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+.hero-copy a {
+  pointer-events: auto;
+}
+.hero-copy h1 {
+  font-size: clamp(70px, 8.6vw, 132px);
+  line-height: 0.97;
+  letter-spacing: -0.065em;
+}
+.hero-copy h1 span {
+  color: var(--teal);
+}
+.hero-intro {
+  font-size: 18px;
+  line-height: 1.55;
+  max-width: 335px;
+  color: var(--muted);
+  margin: 30px 0 32px;
+}
+.molecular-figure {
+  position: relative;
+  align-self: center;
+  width: 100%;
+  min-width: 0;
+}
+.molecule-view {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+}
+.molecule-view canvas,
+.molecule-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.molecule-view canvas {
+  opacity: 0;
+}
+.molecule-ready .molecule-view canvas {
+  opacity: 1;
+}
+.molecule-ready .molecule-poster {
+  opacity: 0;
+}
+.molecule-label {
+  position: absolute;
+  z-index: 3;
+  padding-left: 18px;
+  font-size: 12px;
+  line-height: 1.4;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--paper) 85%, transparent);
+  border-radius: 3px;
+  padding-right: 5px;
+}
+.molecule-label:before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--violet);
+}
+.molecule-label small {
+  display: block;
+  font-size: 9px;
+  color: var(--muted);
+}
+.label-peptide {
+  top: 18%;
+  right: 2%;
+}
+.label-peptide:before {
+  background: var(--teal);
+}
+.label-ligand {
+  bottom: 24%;
+  left: 1%;
+}
+.label-ligand:before {
+  background: var(--gold);
+}
+.label-receptor {
+  right: 8%;
+  bottom: 12%;
+}
+.molecular-figure figcaption {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 10px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  padding: 13px 0;
+}
+.figure-index {
+  font-size: 9px;
+  letter-spacing: 0.09em;
+}
+.figure-note {
+  flex-basis: 100%;
+  font-size: 10px;
+}
+.motion-toggle {
+  position: absolute;
+  right: 0;
+  bottom: -30px;
+  background: none;
+  border: 0;
+  font-size: 10px;
+  color: var(--muted);
+  padding: 3px 0;
+  border-bottom: 1px solid var(--line);
+}
+.story-steps {
+  position: relative;
+}
+.story-step {
+  max-width: 380px;
+  padding: 80px 0;
+}
+.story-step h2 {
+  font-size: clamp(38px, 4.2vw, 60px);
+  margin-bottom: 25px;
+}
+.story-step p {
+  font-size: 17px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.story-step .text-link {
+  margin-top: 20px;
+}
+.motion-enabled .molecular-story {
+  padding-bottom: 50px;
+}
+.motion-enabled .story-stage {
+  position: sticky;
+  top: 15px;
+  height: calc(100svh - 30px);
+  min-height: 650px;
+}
+.motion-enabled .story-steps {
+  pointer-events: none;
+  margin-top: 0;
+}
+.motion-enabled .story-step {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  pointer-events: auto;
+}
+.motion-enabled .hero-copy {
+  opacity: var(--intro-opacity, 1);
+}
+.motion-enabled .story-stage > .molecular-figure {
+  grid-column: 2;
+  grid-row: 1;
+}
+.motion-enabled .hero-copy {
+  grid-column: 1;
+  grid-row: 1;
+}
+.mission-section {
+  border-top: 1px solid var(--line);
+  padding: 105px 0;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 60px;
+}
+.mission-section h2 {
+  font-size: clamp(32px, 3.6vw, 50px);
+  margin-bottom: 30px;
+}
+.mission-section .large-copy {
+  color: var(--muted);
+  font-size: 23px;
+  max-width: 800px;
+}
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 30px;
+  margin-bottom: 36px;
+}
+.section-heading h2 {
+  font-size: 38px;
+}
+.research-preview {
+  padding-bottom: 110px;
+}
+.research-row {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 24px;
+  gap: 30px;
+  align-items: start;
+  border-top: 1px solid var(--line);
+  padding: 34px 0;
+}
+.research-row:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.research-row h2,
+.research-row h3 {
+  font-size: 27px;
+  letter-spacing: -0.035em;
+  line-height: 1.25;
+}
+.research-row p {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 420px;
+  margin: 0;
+}
+.selected-publications {
+  padding-bottom: 105px;
+}
+.publication-row {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 42px;
+  border-top: 1px solid var(--line);
+  padding: 34px 0;
+}
+.publication-row:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.publication-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  background: var(--surface);
+  padding: 12px;
+}
+.publication-image img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+}
+.publication-year-art {
+  background: var(--tint);
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 52px;
+  font-weight: 400;
+  letter-spacing: -2px;
+}
+.publication-year-art span {
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+.publication-row .eyebrow {
+  margin-bottom: 12px;
+  font-size: 10px;
+}
+.publication-row h3 {
+  font-size: 26px;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  margin-bottom: 14px;
+}
+.authors {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+.publication-summary {
+  font-size: 15px;
+  color: var(--muted);
+}
+.publication-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-size: 11px;
+  margin-top: 18px;
+}
+.publication-links a {
+  border-bottom: 1px solid var(--line);
+  padding: 2px 0;
+}
+.home-news {
+  padding-bottom: 100px;
+}
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+.news-grid article {
+  border-top: 1px solid var(--line);
+  padding-top: 25px;
+}
+.news-grid h3 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+.news-grid p:not(.eyebrow) {
+  color: var(--muted);
+  font-size: 14px;
+}
+.join-banner {
+  padding: 58px 0 90px;
+  border-top: 1px solid var(--line);
+}
+.join-banner h2 {
+  font-size: clamp(48px, 6.5vw, 90px);
+  margin-bottom: 28px;
+  color: var(--teal);
+}
+.page-shell {
+  padding-top: 80px;
+  padding-bottom: 105px;
+  min-height: 70vh;
+}
+.page-heading {
+  margin-bottom: 65px;
+}
+.page-heading h1 {
+  font-size: clamp(52px, 7vw, 96px);
+  letter-spacing: -0.055em;
+  margin-bottom: 25px;
+}
+.page-summary {
+  font-size: 23px;
+  line-height: 1.5;
+  max-width: 800px;
+  color: var(--muted);
+  margin-bottom: 35px;
+}
+.methods-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  padding: 70px 0 0;
+}
+.methods-section h2 {
+  font-size: 32px;
+}
+.methods-section p {
+  color: var(--muted);
+}
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 55px 28px;
+}
+.member-card img,
+.member-placeholder {
+  aspect-ratio: 4/5;
+  width: 100%;
+  object-fit: cover;
+  object-position: 50% 20%;
+  background: var(--placeholder);
+}
+.member-card h3 {
+  font-size: 23px;
+  margin-top: 20px;
+  margin-bottom: 7px;
+}
+.member-card p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.member-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80px;
+  letter-spacing: -5px;
+  font-weight: 400;
+  color: var(--placeholder-ink);
+  background: linear-gradient(145deg, var(--placeholder), var(--tint));
+}
+.member-role {
+  color: var(--teal) !important;
+}
+.alumni-section {
+  margin-top: 90px;
+  padding-top: 45px;
+  border-top: 1px solid var(--line);
+}
+.alumni-section > p {
+  color: var(--muted);
+  margin: 20px 0 40px;
+}
+.alumni-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 35px;
+}
+.alumni-grid h3 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+.alumni-grid p {
+  font-size: 13px;
+  color: var(--muted);
+}
+.article-shell {
+  padding: 60px 0 110px;
+  min-height: 70vh;
+}
+.back-link {
+  display: inline-block;
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 45px;
+}
+.article-title {
+  font-size: clamp(37px, 4.7vw, 66px);
+  max-width: 1050px;
+  line-height: 1.12;
+  margin-bottom: 30px;
+}
+.article-figure {
+  max-width: 850px;
+  margin: 48px 0;
+  padding: 24px;
+  background: var(--surface);
+}
+.article-figure img {
+  display: block;
+  margin: auto;
+  max-height: 600px;
+  object-fit: contain;
+}
+.article-figure figcaption {
+  font-size: 13px;
+  color: var(--muted);
+  padding-top: 20px;
+}
+.prose {
+  font-size: 18px;
+  line-height: 1.75;
+  max-width: 800px;
+  margin-top: 35px;
+}
+.prose h2 {
+  font-size: 32px;
+  margin: 40px 0 20px;
+}
+.prose h3 {
+  font-size: 24px;
+  margin: 25px 0 12px;
+}
+.prose a {
+  color: var(--teal);
+  border-bottom: 1px solid var(--line);
+}
+.prose img {
+  display: block;
+  margin: 30px auto;
+  max-height: 600px;
+  object-fit: contain;
+}
+.prose figure {
+  margin: 40px 0;
+}
+.prose figcaption {
+  font-size: 13px;
+  color: var(--muted);
+}
+.related-publications {
+  margin-top: 75px;
+}
+.related-publications > h2 {
+  margin-bottom: 30px;
+}
+.profile-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 70px;
+}
+.profile-grid h1 {
+  font-size: clamp(40px, 5vw, 68px);
+  margin-bottom: 18px;
+}
+.profile-photo {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  object-position: 50% 15%;
+}
+.profile-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--teal);
+}
+.publication-filters {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr auto auto;
+  align-items: end;
+  gap: 22px;
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.publication-filters label {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 7px;
+}
+.publication-filters input[type="search"],
+.publication-filters select {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--muted);
+  background: transparent;
+  padding: 8px 0;
+  font-size: 14px;
+  border-radius: 0;
+}
+.publication-filters .featured-filter {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 7px;
+  font-size: 12px;
+}
+.featured-filter input {
+  accent-color: var(--teal);
+  width: 16px;
+  height: 16px;
+}
+.reset-filters {
+  font-size: 12px;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 8px 0;
+  margin-bottom: 1px;
+}
+.result-count {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 22px 0;
+}
+.news-row {
+  display: grid;
+  grid-template-columns: 150px 1fr 25px;
+  gap: 30px;
+  border-top: 1px solid var(--line);
+  padding: 35px 0;
+}
+.news-row time {
+  font-size: 13px;
+  color: var(--muted);
+}
+.news-row h2 {
+  font-size: 28px;
+  margin-bottom: 18px;
+}
+.news-row p {
+  color: var(--muted);
+  font-size: 15px;
+}
+.news-image {
+  max-height: 550px;
+  object-fit: contain;
+}
+.join-layout {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 80px;
+}
+.join-layout .prose {
+  margin-top: 0;
+}
+.join-layout .prose h2:first-child {
+  margin-top: 0;
+}
+.contact-aside {
+  align-self: start;
+  background: var(--tint);
+  padding: 38px 32px;
+}
+.contact-aside h2 {
+  font-size: 35px;
+  margin-bottom: 28px;
+}
+.contact-aside a {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+  color: var(--teal);
+}
+.contact-aside .small {
+  margin-top: 30px;
+  color: var(--muted);
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: clamp(32px, 4vw, 64px);
+  align-items: start;
+}
+.contact-building img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.contact-building figcaption {
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: var(--text-caption);
+  line-height: 1.5;
+}
+.contact-details {
+  min-width: 0;
+}
+.contact-details section + section {
+  margin-top: 36px;
+}
+.contact-grid h2 {
+  font-size: 30px;
+  margin-bottom: 24px;
+}
+.contact-grid a {
+  color: var(--teal);
+}
+.contact-grid p {
+  margin: 20px 0;
+  line-height: 1.6;
+}
+.contact-email {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 900px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+@media (min-width: 1500px) {
+  .story-stage {
+    min-height: 740px;
+  }
+  .molecule-view {
+    max-height: 720px;
+  }
+}
+@media (max-width: 1050px) {
+  .wrap {
+    width: calc(100% - 64px);
+  }
+  .site-header {
+    padding-inline: 32px;
+  }
+  .site-header nav {
+    gap: 18px;
+  }
+
+  .hero-copy h1 {
+    font-size: 9.1vw;
+  }
+  .hero-intro {
+    max-width: 290px;
+    font-size: 16px;
+  }
+  .molecule-label {
+    font-size: 10px;
+  }
+  .label-receptor {
+    right: 0;
+  }
+  .story-step {
+    max-width: 33vw;
+  }
+  .publication-row {
+    grid-template-columns: 200px 1fr;
+    gap: 30px;
+  }
+  .members-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .publication-filters {
+    grid-template-columns: 2fr 1fr 1.5fr;
+    gap: 20px;
+  }
+  .featured-filter,
+  .reset-filters {
+    justify-self: start;
+  }
+  .mission-section {
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+  }
+  .join-layout {
+    gap: 40px;
+  }
+  .research-row {
+    grid-template-columns: 1fr 1fr 20px;
+    gap: 20px;
+  }
+}
+@media (max-width: 700px) {
+  body {
+    font-size: 16px;
+  }
+  .wrap {
+    width: calc(100% - 40px);
+  }
+  .site-header {
+    padding: 22px 20px;
+    min-height: 79px;
+    flex-wrap: wrap;
+  }
+  .wordmark {
+    font-size: clamp(19px, 5vw, 23px);
+    gap: 6px;
+  }
+  .wordmark span {
+    display: inline;
+    font-size: inherit;
+  }
+  .site-header nav {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    padding-top: 20px;
+  }
+  .js .menu-toggle {
+    display: block;
+  }
+  .js .site-header nav:not(.is-open) {
+    display: none;
+  }
+  .site-header nav a {
+    font-size: 14px;
+  }
+  .hero-copy {
+    padding: 34px 0 0;
+  }
+  .hero-copy .eyebrow {
+    font-size: 9px;
+    margin-bottom: 21px;
+  }
+  .hero-copy h1 {
+    font-size: clamp(62px, 15vw, 98px);
+    line-height: 0.97;
+  }
+  .hero-intro {
+    max-width: 290px;
+    font-size: 15px;
+    margin: 22px 0;
+  }
+  .scroll-cue {
+    font-size: 12px;
+  }
+  .story-stage {
+    display: block;
+    min-height: 0;
+  }
+  .molecular-figure {
+    margin: 18px 0 35px;
+  }
+  .molecule-view {
+    max-width: 500px;
+    max-height: 430px;
+    margin: auto;
+  }
+  .molecule-label {
+    font-size: 10px;
+  }
+  .figure-note {
+    font-size: 9px;
+  }
+  .molecular-figure figcaption {
+    font-size: 9px;
+  }
+  .motion-enabled .story-stage {
+    position: relative;
+    height: auto;
+    min-height: 0;
+  }
+  .motion-enabled .story-stage .molecular-figure {
+    position: sticky;
+    top: 10px;
+  }
+  .motion-enabled .story-steps {
+    margin-top: 0;
+  }
+  .motion-enabled .story-step {
+    min-height: 360px;
+    max-width: 100%;
+    padding: 40px 0;
+  }
+  .motion-enabled .molecular-story {
+    padding-bottom: 0;
+  }
+  .motion-enabled .hero-copy {
+    opacity: 1 !important;
+  }
+  .story-step {
+    max-width: 100%;
+    padding: 40px 0;
+  }
+  .story-step h2 {
+    font-size: 40px;
+  }
+  .story-step p {
+    max-width: 500px;
+  }
+  .mission-section {
+    padding: 55px 0;
+    display: block;
+  }
+  .mission-section h2 {
+    font-size: 33px;
+  }
+  .mission-section .large-copy {
+    font-size: 20px;
+  }
+  .section-heading h2 {
+    font-size: 30px;
+  }
+  .section-heading .text-link {
+    font-size: 12px;
+    gap: 10px;
+  }
+  .section-heading {
+    gap: 20px;
+    align-items: center;
+  }
+  .research-preview,
+  .selected-publications,
+  .home-news {
+    padding-bottom: 60px;
+  }
+  .research-row {
+    grid-template-columns: 1fr 20px;
+    gap: 15px;
+    padding: 27px 0;
+  }
+  .research-row h2,
+  .research-row h3 {
+    font-size: 25px;
+  }
+  .research-row p {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .research-row > span:last-child {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .publication-row {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 28px 0;
+  }
+  .publication-image {
+    max-height: 230px;
+    min-height: 0;
+    padding: 18px;
+  }
+  .publication-image img {
+    max-height: 180px;
+  }
+  .publication-year-art {
+    display: none;
+  }
+  .publication-row h3 {
+    font-size: 24px;
+  }
+  .news-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .news-grid h3 {
+    font-size: 25px;
+  }
+  .join-banner {
+    padding: 45px 0 60px;
+  }
+  .join-banner h2 {
+    font-size: 49px;
+  }
+  .site-footer {
+    padding: 35px 0;
+  }
+  .footer-brand {
+    margin-bottom: 32px;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .footer-grid > div:last-child {
+    text-align: left;
+  }
+  .site-footer p {
+    margin: 5px 0;
+  }
+  .page-shell {
+    padding: 48px 0 70px;
+  }
+  .page-heading {
+    margin-bottom: 40px;
+  }
+  .page-heading h1 {
+    font-size: 56px;
+  }
+  .page-summary {
+    font-size: 20px;
+  }
+  .methods-section {
+    display: block;
+    padding-top: 45px;
+  }
+  .methods-section h2 {
+    margin-bottom: 20px;
+  }
+  .members-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 36px 18px;
+  }
+  .member-card h3 {
+    font-size: 21px;
+  }
+  .member-placeholder {
+    font-size: 55px;
+  }
+  .alumni-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+  }
+  .alumni-section {
+    margin-top: 60px;
+  }
+  .article-shell {
+    padding: 35px 0 70px;
+  }
+  .article-title {
+    font-size: 37px;
+  }
+  .back-link {
+    margin-bottom: 30px;
+  }
+  .profile-grid {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+  .profile-photo,
+  .profile-placeholder {
+    max-width: 280px;
+  }
+  .profile-grid h1 {
+    font-size: 45px;
+  }
+  .prose {
+    font-size: 17px;
+  }
+  .publication-filters {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .search-field {
+    grid-column: 1/-1;
+  }
+  .publication-filters select {
+    font-size: 13px;
+  }
+  .publication-filters .featured-filter {
+    grid-column: 1;
+  }
+  .news-row {
+    grid-template-columns: 1fr 20px;
+    gap: 15px;
+  }
+  .news-row time {
+    grid-column: 1/-1;
+  }
+  .news-row h2 {
+    font-size: 26px;
+  }
+  .join-layout,
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .contact-aside {
+    padding: 30px;
+  }
+  .contact-grid h2 {
+    font-size: 27px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *:before,
+  *:after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+@media print {
+  .site-header,
+  .site-footer,
+  .publication-filters,
+  .motion-toggle {
+    display: none;
+  }
+  .wrap {
+    width: 100%;
+  }
+  .molecular-story {
+    display: none;
+  }
+  a {
+    color: inherit;
+  }
+  .publication-row {
+    break-inside: avoid;
+  }
+  .page-shell {
+    padding: 0;
+  }
+}
+/* On small screens the molecular figure stays above the scrolling story. */
+@media (max-width: 700px) {
+  .motion-enabled .story-stage {
+    display: contents;
+  }
+  .motion-enabled .hero-copy {
+    width: calc(100% - 40px);
+    margin-inline: auto;
+  }
+  .motion-enabled .story-stage > .molecular-figure {
+    position: sticky;
+    top: 0;
+    z-index: 6;
+    width: calc(100% - 40px);
+    margin: 20px auto 0;
+    padding: 8px 0 6px;
+    background: var(--paper);
+  }
+  .motion-enabled .molecule-view {
+    height: 39svh;
+    max-height: 350px;
+    width: 100%;
+    aspect-ratio: auto;
+  }
+  .motion-enabled .molecular-figure figcaption {
+    padding: 7px 0;
+    gap: 3px;
+  }
+  .motion-enabled .figure-note {
+    display: none;
+  }
+  .motion-enabled .motion-toggle {
+    bottom: 0;
+    right: 0;
+    transform: translateY(100%);
+    background: var(--paper);
+    padding: 3px 5px;
+  }
+  .motion-enabled .story-step {
+    min-height: 65svh;
+    padding: 60px 0 40px;
+  }
+  .motion-enabled .story-step h2 {
+    font-size: 36px;
+  }
+  .motion-enabled .story-step .eyebrow {
+    margin-bottom: 14px;
+  }
+}
+
+/* Reading scale: the mission paragraph is the reference for all regular text.
+   Keep these tokens together so future typography changes are straightforward. */
+:root {
+  --text-body: 23px;
+  --text-secondary: 20px;
+  --text-ui: 17px;
+  --text-caption: 16px;
+  --text-label: 14px;
+}
+body,
+.hero-intro,
+.story-step p,
+.mission-section .large-copy,
+.research-row p,
+.publication-summary,
+.news-grid p:not(.eyebrow),
+.page-summary,
+.methods-section p,
+.member-card p,
+.alumni-grid p,
+.prose,
+.news-row p {
+  font-size: var(--text-body);
+  line-height: 1.5;
+}
+.hero-intro {
+  max-width: 410px;
+}
+.prose {
+  line-height: 1.6;
+}
+.authors {
+  font-size: var(--text-secondary);
+}
+small,
+.small,
+.article-figure figcaption,
+.prose figcaption,
+.site-footer,
+.publication-links,
+.profile-links,
+.back-link,
+.result-count,
+.news-row time {
+  font-size: var(--text-caption);
+}
+.site-header nav,
+.site-header nav a,
+.menu-toggle,
+.text-link,
+.section-heading .text-link,
+.publication-filters input[type="search"],
+.publication-filters select,
+.publication-filters .featured-filter,
+.reset-filters {
+  font-size: var(--text-ui);
+}
+.publication-filters label {
+  font-size: var(--text-caption);
+}
+.eyebrow,
+.hero-copy .eyebrow,
+.publication-row .eyebrow,
+.publication-year-art span {
+  font-size: var(--text-label);
+}
+.molecule-label {
+  font-size: var(--text-caption);
+}
+.molecule-label small,
+.molecular-figure figcaption,
+.figure-index,
+.figure-note,
+.motion-toggle {
+  font-size: var(--text-label);
+}
+.contact-aside a,
+.footer-name {
+  font-size: var(--text-secondary);
+}
+.research-row h2,
+.research-row h3 {
+  font-size: 32px;
+}
+.member-card h3,
+.alumni-grid h3,
+.news-grid h3 {
+  font-size: 27px;
+}
+.publication-row h3 {
+  font-size: 29px;
+}
+.menu-toggle {
+  display: none;
+}
+/* Do not compress long titles or controls when copy wraps. */
+.research-row > *,
+.publication-row > *,
+.members-grid > *,
+.alumni-grid > *,
+.news-grid > *,
+.publication-filters > * {
+  min-width: 0;
+}
+.publication-links {
+  gap: 10px 20px;
+}
+@media (max-width: 1050px) {
+  .site-header nav {
+    gap: 16px;
+  }
+}
+@media (max-width: 700px) {
+  :root {
+    --text-body: 20px;
+    --text-secondary: 18px;
+  }
+  .hero-intro {
+    max-width: 100%;
+  }
+  .research-row h2,
+  .research-row h3 {
+    font-size: 28px;
+  }
+  .member-card h3,
+  .alumni-grid h3,
+  .news-grid h3 {
+    font-size: 25px;
+  }
+  .publication-row h3 {
+    font-size: 27px;
+  }
+  .section-heading {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .publication-filters .featured-filter {
+    white-space: normal;
+  }
+  .molecule-label {
+    font-size: 14px;
+  }
+  .molecule-label small {
+    font-size: 12px;
+  }
+}
+@media (max-width: 420px) {
+  .members-grid,
+  .alumni-grid {
+    grid-template-columns: 1fr;
+  }
+  .member-card img,
+  .member-placeholder {
+    max-width: 300px;
+  }
+}
+
+/* Visitor display preferences; defaults live in _data/display.yml. */
+.display-settings {
+  position: relative;
+  padding-block: 0;
+  font-size: var(--text-ui);
+}
+.display-settings summary {
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  list-style: none;
+  width: 44px;
+  height: 44px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.display-settings summary::-webkit-details-marker {
+  display: none;
+}
+.display-settings[open] .settings-chevron {
+  transform: rotate(180deg);
+}
+.display-settings summary:hover {
+  background: var(--tint);
+  border-radius: 5px;
+}
+.molstar-controls {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.molstar-controls legend {
+  margin-bottom: 10px;
+}
+.display-controls .display-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-block: 8px;
+}
+.display-check input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--teal);
+}
+.ssgi-support-note {
+  color: var(--muted);
+  font-size: 14px;
+}
+.display-settings summary:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 4px;
+}
+.display-controls {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 350px;
+  max-width: calc(100vw - 40px);
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: 0 12px 35px rgb(0 0 0 / 12%);
+}
+.display-reset {
+  justify-self: start;
+}
+@media (min-width: 701px) and (max-width: 1180px) {
+  .site-header {
+    flex-wrap: wrap;
+  }
+  .js .menu-toggle {
+    display: block;
+  }
+  .site-header nav {
+    width: 100%;
+    padding-top: 20px;
+    flex-wrap: wrap;
+  }
+  .js .site-header nav:not(.is-open) {
+    display: none;
+  }
+}
+@media (max-width: 1180px) {
+  .display-settings {
+    width: 100%;
+  }
+  .display-controls {
+    position: static;
+    margin-top: 12px;
+    box-shadow: none;
+    width: min(100%, 420px);
+  }
+}
+
+.display-controls label {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+.display-controls select {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--paper);
+  padding: 8px 30px 8px 10px;
+}
+.display-reset {
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 8px 0;
+}
+.molecule-renderer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.molecule-renderer canvas,
+.pymol-frame,
+.pymol-dynamics-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.molecule-renderer > div {
+  position: absolute;
+  inset: 0;
+}
+.pymol-frame {
+  opacity: 0;
+}
+.molecule-ready .pymol-frame {
+  opacity: 1;
+}
+.renderer-status {
+  font-size: var(--text-label);
+  color: var(--muted);
+  margin: 0;
+  min-height: 0;
+}
+.renderer-status:empty {
+  display: none;
+}
+.label-peptide:before {
+  background: var(--peptide_color);
+}
+.label-ligand:before {
+  background: var(--ligand_color);
+}
+.label-receptor:before {
+  background: var(--receptor_color);
+}
+@media (max-width: 700px) {
+  .display-controls {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .display-reset {
+    justify-self: start;
+  }
+}
+
+/* Reserve room for the caption and pause control on short desktop windows. */
+@media (min-width: 701px) {
+  .motion-enabled .molecule-view {
+    max-height: calc(100svh - 160px);
+  }
+}

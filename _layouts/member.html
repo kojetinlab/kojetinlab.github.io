@@ -1,51 +1,59 @@
 ---
 layout: default
 ---
-
-{% capture floatcontent %}
-
-{% include portrait.html lookup=page.slug %}
-
-<div>
-  {% for link in page.links %}
-    {% assign key = link[0] %}
-    {% assign value = link[1] %}
-    {% include button.html type=key link=value style="bare" %}<br>
-  {% endfor %}
-</div>
-
-{% endcapture %}
-
-{% include float.html content=floatcontent %}
-
-{{ content }}
-
-{% assign aliases = page.aliases
-  | default: page.name
-  | default: page.title
-  | join: ","
-  | split: ","
-  | array_filter
-%}
-
-{% capture search -%}
-  research/?search={% for alias in aliases %}"{{ alias }}" {% endfor %}
-{%- endcapture %}
-
-<p class="center">
-  <a href="{{ search | relative_url | uri_escape }}">
-    Search for {{ page.name | default: page.title }}'s papers on the Research page
-  </a>
-</p>
-
-{% capture search -%}
-  blog/?search={{ page.name }}
-{%- endcapture %}
-
-<!--
-<p class="center">
-  <a href="{{ search | relative_url | uri_escape }}">
-    See {{ page.name | default: page.title }}'s posts on the Blog page
-  </a>
-</p>
--->
+<article class="wrap article-shell">
+  <a class="back-link" href="{{ '/people/' | relative_url }}">← Our people</a>
+  <div class="profile-grid">
+    <div>
+      {% if page.photo and page.photo != '' -%}
+        <img
+          class="profile-photo"
+          src="{{ page.photo | relative_url }}"
+          alt="{{ page.name | escape }}"
+        >
+      {%- else %}
+        <div class="member-placeholder profile-placeholder" aria-hidden="true">
+          {{ page.name | split: ' ' | first | slice: 0 -}}
+          {{- page.name | split: ' ' | last | slice: 0 }}
+        </div>
+      {% endif %}
+    </div>
+    <div>
+      <p class="eyebrow">
+        {% if page.status == 'alumni' %}Alumni{% else %}Our people{% endif %}
+      </p>
+      <h1>{{ page.name }}</h1>
+      <p class="large-copy">{{ page.role }}</p>
+      {% if page.years %}
+        <p>{{ page.years }}</p>
+      {% endif -%}
+      {%- if page.current_position %}
+        <p>
+          Last reported: {{ page.current_position -}}
+          {%- if page.current_institution %}, {{ page.current_institution }}{% endif %}
+        </p>
+      {% endif %}
+      <div class="profile-links">
+        {% if page.email -%}
+          <a href="mailto:{{ page.email }}">Email ↗</a>
+        {%- endif -%}
+        {%- if page.website -%}
+          <a href="{{ page.website }}">Website ↗</a>
+        {%- endif -%}
+        {%- if page.orcid -%}
+          <a href="https://orcid.org/{{ page.orcid }}">ORCID ↗</a>
+        {%- endif -%}
+        {%- if page.google_scholar -%}
+          <a href="{{ page.google_scholar }}">Google Scholar ↗</a>
+        {%- endif -%}
+        {%- if page.linkedin -%}
+          <a href="{{ page.linkedin }}">LinkedIn ↗</a>
+        {%- endif -%}
+        {%- if page.github -%}
+          <a href="{{ page.github }}">GitHub ↗</a>
+        {%- endif %}
+      </div>
+      <div class="prose">{{ content }}</div>
+    </div>
+  </div>
+</article>

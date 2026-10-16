@@ -1,0 +1,65 @@
+title: Kojetin Laboratory
+description: Structural biology and molecular pharmacology of nuclear receptors at Vanderbilt University.
+url: "https://kojetinlab.github.io"
+baseurl: ""
+timezone: America/Chicago
+markdown: kramdown
+highlighter: rouge
+permalink: /news/:year/:month/:day/:title/
+collections:
+  members:
+    output: true
+    permalink: /people/:name/
+  publications:
+    output: true
+    permalink: /publications/:name/
+  research:
+    output: true
+    permalink: /research/:name/
+defaults:
+  - scope: {path: "", type: members}
+    values: {layout: member}
+  - scope: {path: "", type: publications}
+    values: {layout: publication}
+  - scope: {path: "", type: research}
+    values: {layout: research}
+  - scope: {path: "", type: posts}
+    values: {layout: post}
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - LICENSE
+  - THIRD-PARTY-NOTICES.md
+  - docs
+  - scripts
+  - tests
+  - molecular-source
+  - requirements.txt
+  - vendor
+  - .bundle
+  - preview
+  - node_modules
+  - package.json
+  - package-lock.json
+  - .prettierrc.json
+  # Earlier renderer implementations stay in source as reference, but are not
+  # deployed or embedded in the Mol*-only preview.
+  - assets/js/molecule.js
+  - assets/js/molecule.bundle.js
+  - assets/js/vendor/three.module.js
+  - assets/molecular/frame-motion.json
+  - assets/molecular/frame-palettes.json
+  - assets/molecular/frame-structures.json
+  - assets/molecular/6onj/frames
+  - assets/molecular/6oni/frames
+  - assets/molecular/6onj/frames.json
+  - assets/molecular/6oni/frames.json
+  - assets/molecular/6onj/data.json
+  - assets/molecular/6oni/data.json
+kramdown:
+  input: GFM
+  hard_wrap: false
+
+# Increment after changing CSS, JavaScript, palettes, or molecular assets.
+asset_version: 11

@@ -1,0 +1,45 @@
+---
+layout: page
+title: Let’s connect.
+permalink: /contact/
+eyebrow: Nashville, Tennessee
+summary: Questions about our research, collaborations, or joining the lab? Get in touch.
+---
+<!-- The complete photograph keeps its original proportions at every screen size. -->
+<div class="contact-grid">
+  <figure class="contact-building">
+    <img
+      src="{{ site.data.site.contact_photo | relative_url }}"
+      alt="{{ site.data.site.contact_photo_alt }}"
+      width="817"
+      height="529"
+      decoding="async"
+    >
+    <figcaption>{{ site.data.site.contact_photo_caption }}</figcaption>
+  </figure>
+  <div class="contact-details">
+    <section>
+      <h2>{{ site.data.site.name }}</h2>
+      <p>
+        <a href="{{ site.data.site.department_url }}">{{ site.data.site.department }}</a>
+        <br>
+        <a href="{{ site.data.site.school_url }}">{{ site.data.site.institution }}</a>
+      </p>
+      <p>
+        {% for line in site.data.site.address -%}
+          {{- line -}}
+          <br>
+        {% endfor %}
+      </p>
+    </section>
+    <section>
+      <h2>{{ site.data.site.pi }}</h2>
+      <a class="contact-email" href="mailto:{{ site.data.site.email }}">
+        {{ site.data.site.email }}
+      </a>
+      <p>
+        <a href="{{ site.data.site.institution_url }}">Vanderbilt University ↗</a>
+      </p>
+    </section>
+  </div>
+</div>

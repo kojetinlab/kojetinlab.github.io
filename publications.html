@@ -1,0 +1,59 @@
+---
+layout: page
+title: Publications
+permalink: /publications/
+summary: Our work on nuclear receptor structure, dynamics, and molecular pharmacology.
+---
+{% assign publications = site.publications | sort: 'date' | reverse %}
+<form class="publication-filters" id="publication-filters" hidden role="search">
+  <div class="search-field">
+    <label for="publication-search">Search publications</label>
+    <input
+      id="publication-search"
+      type="search"
+      placeholder="Title, author, or journal"
+      autocomplete="off"
+    >
+  </div>
+  <div>
+    <label for="publication-year">Year</label>
+    <select id="publication-year">
+      <option value="">All years</option>
+      {% assign years = publications | map: 'year' | uniq | sort | reverse -%}
+      {%- for year in years %}
+        <option value="{{ year }}">{{ year }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div>
+    <label for="publication-topic">Research topic</label>
+    <select id="publication-topic">
+      <option value="">All topics</option>
+      {% assign topics = '' | split: ',' -%}
+      {%- for pub in publications -%}
+        {%- assign topics = topics | concat: pub.topics -%}
+      {%- endfor -%}
+      {%- assign topics = topics | uniq | sort -%}
+      {%- for topic in topics %}
+        <option value="{{ topic }}">{{ topic | replace: '-', ' ' | capitalize }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <label class="featured-filter">
+    <input type="checkbox" id="publication-featured">
+    Featured only
+  </label>
+  <button type="reset" class="reset-filters">Reset</button>
+</form>
+<p class="result-count" id="publication-count" role="status" aria-live="polite">
+  {{ publications.size }} publications
+</p>
+<div id="publication-list">
+  {% for pub in publications -%}
+    {%- include publication-card.html pub=pub -%}
+  {%- endfor %}
+</div>
+<p id="no-results" hidden>
+  No publications match these filters. Try another search or reset the filters.
+</p>
+<script defer src="{{ '/assets/js/publications.js' | relative_url }}"></script>

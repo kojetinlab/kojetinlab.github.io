@@ -1,13 +1,13 @@
-_site
-.sass-cache
-.jekyll-cache
+_site/
+_site-test/
+.jekyll-cache/
 .jekyll-metadata
-vendor
-debug.log
-__pycache__
-.DS_STORE
-.env*
-package.json
-package-lock.json
-yarn.lock
-node_modules
+.bundle/
+# Local dependencies and generated work; keep assets/js/vendor/ tracked.
+/vendor/
+/node_modules/
+/preview/
+.DS_Store
+__pycache__/
+.venv/
+*.zip

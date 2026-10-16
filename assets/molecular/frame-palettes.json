@@ -1,0 +1,20 @@
+{
+  "default": {
+    "receptor_color": "#8b91ae",
+    "peptide_color": "#238d88",
+    "ligand_color": "#d48a30",
+    "helix12_color": "#60598e"
+  },
+  "vandy": {
+    "receptor_color": "#92979a",
+    "peptide_color": "#cfae70",
+    "ligand_color": "#0072b2",
+    "helix12_color": "#52575c"
+  },
+  "colorblind": {
+    "receptor_color": "#4689b4",
+    "peptide_color": "#e69f00",
+    "ligand_color": "#cc79a7",
+    "helix12_color": "#1b4965"
+  }
+}

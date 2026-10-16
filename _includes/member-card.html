@@ -1,0 +1,25 @@
+<article class="member-card">
+  <a href="{{ include.member.url | relative_url }}">
+    {%- if include.member.photo and include.member.photo != '' -%}
+      <img
+        src="{{ include.member.photo | relative_url }}"
+        alt="{{ include.member.name | escape }}"
+        loading="lazy"
+        width="600"
+        height="720"
+      >
+    {%- else %}
+      <div class="member-placeholder" aria-hidden="true">
+        <span>
+          {{- include.member.name | split: ' ' | first | slice: 0 -}}
+          {{- include.member.name | split: ' ' | last | slice: 0 -}}
+        </span>
+      </div>
+    {% endif %}
+    <h3>{{ include.member.name }}</h3>
+  </a>
+  <p class="member-role">{{ include.member.role }}</p>
+  {% if include.member.research_interests %}
+    <p>{{ include.member.research_interests }}</p>
+  {% endif %}
+</article>

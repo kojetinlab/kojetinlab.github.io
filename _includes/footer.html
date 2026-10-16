@@ -1,42 +1,34 @@
-{% assign image = page.footer | default: site.footer %}
-{% assign dark = page.footer-dark | is_nil: site.footer-dark | is_nil: true %}
-
-<footer
-  class="background"
-  style="--image: url('{{ image | relative_url | uri_escape }}')"
-  {% if dark == true or dark == false %}
-    data-dark="{{ dark }}"
-  {% endif %}
-  data-size="wide"
->
-  <!--
-    <div>
-      Extra details like contact info or address
-    </div>
-  -->
-
-  <div>
-    {% for link in site.links %}
-      {% assign key = link[0] %}
-      {% assign value = link[1] %}
-      {% include button.html type=key text="" link=value style="bare" %}
-    {% endfor %}
-  </div>
-
-  <div>
-    &copy; {{ site.time | date: "%Y" }}
-    {{ site.title }}
-    &nbsp; | &nbsp; Built with
-    <a href="https://github.com/greenelab/lab-website-template">
-      Lab Website Template
+<footer class="site-footer">
+  <div class="wrap">
+    <a class="footer-brand" href="{{ site.data.site.basic_sciences_url }}">
+      <img
+        src="{{ site.data.site.footer_logo | relative_url }}"
+        alt="{{ site.data.site.footer_logo_alt }}"
+        width="575"
+        height="90"
+        loading="lazy"
+        decoding="async"
+      >
     </a>
+    <div class="footer-grid">
+      <div>
+        <a class="footer-name" href="{{ '/' | relative_url }}">{{ site.data.site.name }}</a>
+        <p>{{ site.data.site.footer }}</p>
+      </div>
+      <div>
+        <a href="{{ site.data.site.department_url }}">{{ site.data.site.department }}</a>
+        <br>
+        <a href="{{ site.data.site.school_url }}">{{ site.data.site.institution }}</a>
+        <p>{{ site.data.site.city }}</p>
+      </div>
+      <div>
+        <a href="{{ '/contact/' | relative_url }}">Get in touch ↗</a>
+        <p>© {{ 'now' | date: '%Y' }} Kojetin Laboratory</p>
+      </div>
+    </div>
+    <p class="footer-source">
+      This website is open-source and available on
+      <a href="{{ site.data.site.github_url }}">GitHub</a>
+    </p>
   </div>
-
-  <input
-    type="checkbox"
-    class="dark-toggle"
-    data-tooltip="Dark mode"
-    aria-label="toggle dark mode"
-    oninput="onDarkToggleChange(event)"
-  >
 </footer>

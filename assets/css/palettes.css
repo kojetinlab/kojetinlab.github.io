@@ -1,0 +1,14 @@
+---
+---
+/* Generated from _data/palettes.yml. Edit the YAML to change palette colors. */
+{% for palette in site.data.palettes %}
+html[data-palette="{{ palette[0] }}"] {
+  {% for color in palette[1].css %}
+  --{{ color[0] }}: {{ color[1] }};
+  {% endfor %}
+  {% for color in palette[1].molecule %}
+  --{{ color[0] }}: {{ color[1] }};
+  {% endfor %}
+}
+{% endfor %}
+

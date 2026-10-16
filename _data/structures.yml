@@ -1,0 +1,75 @@
+# Molecular presets. Select the default in _data/display.yml.
+# rotation_xyz is in DEGREES, applied X, then Y, then Z after the copied camera
+# (if present) or automatic ligand-facing view. Positive rotations follow the right-hand rule.
+# camera_span is half the vertical field of view in angstroms; larger = smaller molecule.
+# Each PDB has its own view. Camera edits apply to Mol* on the next Jekyll build.
+6onj:
+  pdb_id: 6ONJ
+  label: 6ONJ · rosiglitazone / TRAP220
+  receptor: PPARγ
+  peptide: TRAP220
+  peptide_role: coactivator peptide
+  ligand: Rosiglitazone
+  interaction_text: Here, a TRAP220 coactivator peptide meets the receptor’s AF-2 surface.
+  note: Experimental structure. Separation is schematic.
+  receptor_chain: A
+  peptide_chain: C
+  ligand_chain: A
+  ligand_residue: 501
+  ligand_ccd: BRL
+  receptor_range: [203, 477]
+  peptide_range: [638, 656]
+  h12_range: [466, 477]
+  method: X-RAY DIFFRACTION
+  publication: {doi: 10.1038/s41467-020-14750-x, pmid: "32075969", year: 2020}
+  resolution: 2.3
+  allow_ligand_separation: true
+  view:
+    rotation_xyz: [0, 0, 0]
+    # null derives the framing from the copied Mol* camera. Set a number to override zoom.
+    camera_span: null
+    # Retreat early enough to keep the separated peptide inside this tighter framing.
+    scroll_zoom: {amount: 0.32, start: 0.05, end: 0.5}
+    camera:
+      # Mol* "Copy MVS JSON" uses the FoV-normalized position in original PDB coordinates.
+      position_type: fov_normalized
+      position: [-29.09, 204.96, -1.18]
+      target: [21.12, 181.98, 13.68]
+      up: [-0.47, -0.81, 0.34]
+      mode: perspective
+      fov_degrees: 45
+      radius: 36.32
+
+6oni:
+  pdb_id: 6ONI
+  label: 6ONI · T0070907 / N-CoR
+  receptor: PPARγ
+  peptide: N-CoR
+  peptide_role: corepressor peptide
+  ligand: T0070907
+  interaction_text: Here, an N-CoR corepressor peptide binds PPARγ in its repressive conformation.
+  note: Experimental structure. Peptide separation is schematic; the covalent ligand stays attached.
+  receptor_chain: B
+  peptide_chain: D
+  ligand_chain: B
+  ligand_residue: 501
+  ligand_ccd: EEY
+  receptor_range: [203, 477]
+  peptide_range: [2256, 2278]
+  h12_range: [466, 477]
+  method: X-RAY DIFFRACTION
+  publication: {doi: 10.1038/s41467-020-14750-x, pmid: "32075969", year: 2020}
+  resolution: 1.8
+  allow_ligand_separation: false
+  view:
+    rotation_xyz: [0, 0, 0]
+    camera_span: null
+    camera:
+      # Camera-panel Position (not FoV Norm. Pos.) from the supplied screenshot.
+      position_type: raw
+      position: [-81.94, 23.19, -12.08]
+      target: [2.61, 11.46, 11.65]
+      up: [0.26, 0.83, -0.5]
+      mode: perspective
+      fov_degrees: 45
+      radius: 40.17

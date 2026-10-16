@@ -1,0 +1,40 @@
+---
+layout: page
+title: Our people
+permalink: /people/
+summary: A shared curiosity about how molecules work.
+---
+{% assign current = site.members | where: 'status', 'current' | sort: 'order' %}
+<div class="members-grid">
+  {% for member in current -%}
+    {%- include member-card.html member=member -%}
+  {%- endfor %}
+</div>
+{% assign alumni = site.members | where: 'status', 'alumni' | sort: 'order' -%}
+{%- if alumni.size > 0 %}
+  <section class="alumni-section">
+    <h2>Alumni</h2>
+    <p>
+      People who have helped shape our science. Alumni positions reflect the last reported updates.
+    </p>
+    <div class="alumni-grid">
+      {% for member in alumni %}
+        <article>
+          <h3>
+            <a href="{{ member.url | relative_url }}">{{ member.name }} ↗</a>
+          </h3>
+          <p>
+            {{ member.role -}}
+            {%- if member.years %}· {{ member.years }}{% endif %}
+          </p>
+          {% if member.current_position %}
+            <p>
+              {{ member.current_position -}}
+              {%- if member.current_institution %}, {{ member.current_institution }}{% endif %}
+            </p>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}

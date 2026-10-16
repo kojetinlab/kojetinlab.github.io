@@ -1,0 +1,38 @@
+<article
+  class="publication-row {% unless include.pub.image and include.pub.image != '' %}without-image{% endunless %}"
+  data-year="{{ include.pub.year }}"
+  data-topics="{{ include.pub.topics | join: '|' | escape }}"
+  data-featured="{{ include.pub.featured | default: false }}"
+  data-search="{{ include.pub.title | escape }} {{ include.pub.authors | join: ' ' | escape }} {{ include.pub.journal | escape }}"
+>
+  {% if include.pub.image and include.pub.image != '' -%}
+    <a class="publication-image" href="{{ include.pub.url | relative_url }}">
+      <img
+        src="{{ include.pub.image | relative_url }}"
+        alt="{{ include.pub.image_alt | default: include.pub.title | escape }}"
+        loading="lazy"
+        width="400"
+        height="280"
+      >
+    </a>
+  {%- else %}
+    <div class="publication-year-art" aria-hidden="true">
+      {{ include.pub.year -}}
+      <span>RESEARCH</span>
+    </div>
+  {% endif %}
+  <div class="publication-text">
+    <p class="eyebrow">
+      {{ include.pub.journal }} · {{ include.pub.year -}}
+      {%- if include.pub.publication_type == 'preprint' %}· Preprint{% endif %}
+    </p>
+    <h3>
+      <a href="{{ include.pub.url | relative_url }}">{{ include.pub.title }}</a>
+    </h3>
+    <p class="authors">{{ include.pub.authors | join: ', ' }}</p>
+    {% if include.pub.summary %}
+      <p class="publication-summary">{{ include.pub.summary }}</p>
+    {% endif -%}
+    {%- include publication-links.html pub=include.pub %}
+  </div>
+</article>

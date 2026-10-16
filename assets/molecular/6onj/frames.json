@@ -1,0 +1,317 @@
+{
+  "renderer": "PyMOL ray tracing",
+  "pdbId": "6ONJ",
+  "palettes": {
+    "default": {
+      "count": 81,
+      "size": 640,
+      "colors": {
+        "receptor_color": "#8b91ae",
+        "peptide_color": "#238d88",
+        "ligand_color": "#d48a30",
+        "helix12_color": "#60598e"
+      },
+      "view": {
+        "rotation_xyz": [
+          0,
+          0,
+          0
+        ],
+        "camera_span": null,
+        "scroll_zoom": {
+          "amount": 0.32,
+          "start": 0.05,
+          "end": 0.5
+        },
+        "camera": {
+          "position_type": "fov_normalized",
+          "position": [
+            -29.09,
+            204.96,
+            -1.18
+          ],
+          "target": [
+            21.12,
+            181.98,
+            13.68
+          ],
+          "up": [
+            -0.47,
+            -0.81,
+            0.34
+          ],
+          "mode": "perspective",
+          "fov_degrees": 45,
+          "radius": 36.32
+        }
+      },
+      "motion": {
+        "enable_rotation": true,
+        "enable_peptide_separation": true,
+        "enable_ligand_separation": true,
+        "enable_labels": true,
+        "max_pixel_ratio": 1.7
+      },
+      "resolved_view": {
+        "orientation": [
+          [
+            0.9890780551563437,
+            -0.14051880572485512,
+            0.044486695154902556
+          ],
+          [
+            0.09106645907612954,
+            0.345278157829739,
+            -0.9340716748499751
+          ],
+          [
+            0.11589435206031584,
+            0.9279210413409981,
+            0.35430359890517243
+          ]
+        ],
+        "offset": [
+          -0.7439584607115475,
+          -0.27940986126196016,
+          -1.5705785361341453
+        ],
+        "span": 30.94744662793779,
+        "mode": "perspective",
+        "fov": 0.7853981633974483,
+        "radius": 36.32,
+        "zoom": {
+          "amount": 0.32,
+          "start": 0.05,
+          "end": 0.5
+        }
+      },
+      "path": "frames/default/",
+      "extension": "webp",
+      "dynamics": {
+        "receptor": "frames/default/dynamics-receptor.webp",
+        "partners": "frames/default/dynamics-partners.webp"
+      }
+    },
+    "vandy": {
+      "count": 81,
+      "size": 640,
+      "colors": {
+        "receptor_color": "#92979a",
+        "peptide_color": "#cfae70",
+        "ligand_color": "#0072b2",
+        "helix12_color": "#52575c"
+      },
+      "view": {
+        "rotation_xyz": [
+          0,
+          0,
+          0
+        ],
+        "camera_span": null,
+        "scroll_zoom": {
+          "amount": 0.32,
+          "start": 0.05,
+          "end": 0.5
+        },
+        "camera": {
+          "position_type": "fov_normalized",
+          "position": [
+            -29.09,
+            204.96,
+            -1.18
+          ],
+          "target": [
+            21.12,
+            181.98,
+            13.68
+          ],
+          "up": [
+            -0.47,
+            -0.81,
+            0.34
+          ],
+          "mode": "perspective",
+          "fov_degrees": 45,
+          "radius": 36.32
+        }
+      },
+      "motion": {
+        "enable_rotation": true,
+        "enable_peptide_separation": true,
+        "enable_ligand_separation": true,
+        "enable_labels": true,
+        "max_pixel_ratio": 1.7
+      },
+      "resolved_view": {
+        "orientation": [
+          [
+            0.9890780551563437,
+            -0.14051880572485512,
+            0.044486695154902556
+          ],
+          [
+            0.09106645907612954,
+            0.345278157829739,
+            -0.9340716748499751
+          ],
+          [
+            0.11589435206031584,
+            0.9279210413409981,
+            0.35430359890517243
+          ]
+        ],
+        "offset": [
+          -0.7439584607115475,
+          -0.27940986126196016,
+          -1.5705785361341453
+        ],
+        "span": 30.94744662793779,
+        "mode": "perspective",
+        "fov": 0.7853981633974483,
+        "radius": 36.32,
+        "zoom": {
+          "amount": 0.32,
+          "start": 0.05,
+          "end": 0.5
+        }
+      },
+      "path": "frames/vandy/",
+      "extension": "webp",
+      "dynamics": {
+        "receptor": "frames/vandy/dynamics-receptor.webp",
+        "partners": "frames/vandy/dynamics-partners.webp"
+      }
+    },
+    "colorblind": {
+      "count": 81,
+      "size": 640,
+      "colors": {
+        "receptor_color": "#4689b4",
+        "peptide_color": "#e69f00",
+        "ligand_color": "#cc79a7",
+        "helix12_color": "#1b4965"
+      },
+      "view": {
+        "rotation_xyz": [
+          0,
+          0,
+          0
+        ],
+        "camera_span": null,
+        "scroll_zoom": {
+          "amount": 0.32,
+          "start": 0.05,
+          "end": 0.5
+        },
+        "camera": {
+          "position_type": "fov_normalized",
+          "position": [
+            -29.09,
+            204.96,
+            -1.18
+          ],
+          "target": [
+            21.12,
+            181.98,
+            13.68
+          ],
+          "up": [
+            -0.47,
+            -0.81,
+            0.34
+          ],
+          "mode": "perspective",
+          "fov_degrees": 45,
+          "radius": 36.32
+        }
+      },
+      "motion": {
+        "enable_rotation": true,
+        "enable_peptide_separation": true,
+        "enable_ligand_separation": true,
+        "enable_labels": true,
+        "max_pixel_ratio": 1.7
+      },
+      "resolved_view": {
+        "orientation": [
+          [
+            0.9890780551563437,
+            -0.14051880572485512,
+            0.044486695154902556
+          ],
+          [
+            0.09106645907612954,
+            0.345278157829739,
+            -0.9340716748499751
+          ],
+          [
+            0.11589435206031584,
+            0.9279210413409981,
+            0.35430359890517243
+          ]
+        ],
+        "offset": [
+          -0.7439584607115475,
+          -0.27940986126196016,
+          -1.5705785361341453
+        ],
+        "span": 30.94744662793779,
+        "mode": "perspective",
+        "fov": 0.7853981633974483,
+        "radius": 36.32,
+        "zoom": {
+          "amount": 0.32,
+          "start": 0.05,
+          "end": 0.5
+        }
+      },
+      "path": "frames/colorblind/",
+      "extension": "webp",
+      "dynamics": {
+        "receptor": "frames/colorblind/dynamics-receptor.webp",
+        "partners": "frames/colorblind/dynamics-partners.webp"
+      }
+    }
+  },
+  "view": {
+    "rotation_xyz": [
+      0,
+      0,
+      0
+    ],
+    "camera_span": null,
+    "scroll_zoom": {
+      "amount": 0.32,
+      "start": 0.05,
+      "end": 0.5
+    },
+    "camera": {
+      "position_type": "fov_normalized",
+      "position": [
+        -29.09,
+        204.96,
+        -1.18
+      ],
+      "target": [
+        21.12,
+        181.98,
+        13.68
+      ],
+      "up": [
+        -0.47,
+        -0.81,
+        0.34
+      ],
+      "mode": "perspective",
+      "fov_degrees": 45,
+      "radius": 36.32
+    }
+  },
+  "motion": {
+    "enable_rotation": true,
+    "enable_peptide_separation": true,
+    "enable_ligand_separation": true,
+    "enable_labels": true,
+    "max_pixel_ratio": 1.7
+  }
+}

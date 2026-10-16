@@ -1,0 +1,64 @@
+# One source for website CSS, live molecular colors, and PyMOL exports.
+# Colorblind uses blue/orange/purple separation plus persistent text labels.
+# It is intended to be color-vision-friendly, not a guarantee for every viewer.
+default:
+  label: Teal & slate
+  css:
+    paper: '#f7f7f2'
+    ink: '#253131'
+    muted: '#606c6b'
+    line: '#d7ddd7'
+    teal: '#277b77'
+    gold: '#9c7445'
+    violet: '#777e9c'
+    surface: '#ffffff'
+    tint: '#e8eee7'
+    placeholder: '#e4e8df'
+    placeholder-ink: '#52675b'
+    selection: '#c9dbd5'
+  molecule:
+    receptor_color: '#8b91ae'
+    peptide_color: '#238d88'
+    ligand_color: '#d48a30'
+    helix12_color: '#60598e'
+vandy:
+  label: Vanderbilt · black and gold
+  css:
+    paper: '#ffffff'
+    ink: '#1c1c1c'
+    muted: '#5c5851'
+    line: '#e0d5c0'
+    teal: '#946e24'
+    gold: '#cfae70'
+    violet: '#777777'
+    surface: '#ffffff'
+    tint: '#f5f3ef'
+    placeholder: '#e0d5c0'
+    placeholder-ink: '#5c5851'
+    selection: '#eee1c4'
+  molecule:
+    receptor_color: '#92979a'
+    peptide_color: '#cfae70'
+    ligand_color: '#0072b2'
+    helix12_color: '#52575c'
+colorblind:
+  label: Color-vision-friendly
+  css:
+    paper: '#fcfcfa'
+    ink: '#202a35'
+    muted: '#525f6d'
+    line: '#ccd4dd'
+    teal: '#00669e'
+    gold: '#b04b00'
+    violet: '#785b87'
+    surface: '#ffffff'
+    tint: '#e9f1f7'
+    placeholder: '#dce8ef'
+    placeholder-ink: '#42576c'
+    selection: '#cce6f5'
+  molecule:
+    receptor_color: '#4689b4'
+    peptide_color: '#e69f00'
+    ligand_color: '#cc79a7'
+    helix12_color: '#1b4965'
+

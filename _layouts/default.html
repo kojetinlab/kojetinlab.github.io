@@ -1,11 +1,76 @@
-<!DOCTYPE html>
-<html lang="en" data-dark="false">
-  {% include head.html %}
-  <body>
+<!doctype html>
+<html lang="en" data-palette="{{ site.data.display.site_palette }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      {% assign page_title = page.title %}
+      {% if page.layout == 'member' %}{% assign page_title = page.name %}{% endif %}
+      {% if page_title %}{{ page_title | escape }} ·{% endif %}
+      {{ site.title | escape }}
+    </title>
+    {% assign description = page.description | default: page.summary | default: site.description %}
+    <meta name="description" content="{{ description | strip_html | escape }}">
+    <meta
+      name="theme-color"
+      content="{{ site.data.palettes[site.data.display.site_palette].css.paper }}"
+    >
+    <link rel="canonical" href="{{ page.redirect_to | default: page.url | absolute_url }}">
+    {% if page.redirect_to -%}
+      <meta name="robots" content="noindex,follow">
+      <meta http-equiv="refresh" content="0; url={{ page.redirect_to | relative_url }}">
+    {%- endif %}
+    <meta property="og:title" content="{{ page_title | default: site.title | escape }}">
+    <meta property="og:description" content="{{ description | strip_html | escape }}">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    <meta
+      property="og:type"
+      content="{% if page.layout == 'publication' or page.layout == 'post' %}article{% else %}website{% endif %}"
+    >
+    <meta property="og:image" content="{{ '/assets/molecular/6onj-poster.svg' | absolute_url }}">
+    <link
+      rel="icon"
+      href="{{ '/assets/images/general/favicon.svg' | relative_url }}"
+      type="image/svg+xml"
+    >
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/css/site.css' | relative_url }}?v={{ site.asset_version }}"
+    >
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/css/palettes.css' | relative_url }}?v={{ site.asset_version }}"
+    >
+    <script type="application/json" id="display-config">
+      {"defaults": {{ site.data.display | jsonify }}, "palettes": {{ site.data.palettes | jsonify }}, "structures": {{ site.data.structures | jsonify }}}
+    </script>
+    <script src="{{ '/assets/js/display.js' | relative_url }}?v={{ site.asset_version }}"></script>
+    <script
+      defer
+      src="{{ '/assets/js/site.js' | relative_url }}?v={{ site.asset_version }}"
+    ></script>
+    {% if page.layout == 'publication' %}
+      <meta name="citation_title" content="{{ page.title | escape }}">
+      {% for author in page.authors -%}
+        <meta name="citation_author" content="{{ author | escape }}">
+      {%- endfor %}
+      <meta
+        name="citation_publication_date"
+        content="{% if page.date_precision == 'year' %}{{ page.year }}{% elsif page.date_precision == 'month' %}{{ page.date | date: '%Y/%m' }}{% else %}{{ page.date | date: '%Y/%m/%d' }}{% endif %}"
+      >
+      <meta name="citation_journal_title" content="{{ page.journal | escape }}">
+      {% if page.doi and page.doi != '' %}
+        <meta name="citation_doi" content="{{ page.doi | escape }}">
+      {% endif %}
+    {% endif %}
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"ResearchOrganization","name":{{ site.data.site.name | jsonify }},"url":{{ '/' | absolute_url | jsonify }},"parentOrganization":{"@type":"CollegeOrUniversity","name":"Vanderbilt University"}}
+    </script>
+  </head>
+  <body class="layout-{{ page.layout }}">
+    <a class="skip-link" href="#main">Skip to content</a>
     {% include header.html %}
-    <main>
-      {% include content.html content=content %}
-    </main>
+    <main id="main">{{ content }}</main>
     {% include footer.html %}
   </body>
 </html>

@@ -1,0 +1,206 @@
+---
+layout: default
+---
+{% assign molecule = site.data.structures[site.data.display.molecular_structure] %}
+<!-- Homepage hero and scroll-controlled experimental structure. -->
+<section class="molecular-story" aria-labelledby="hero-title" id="molecular-story">
+  <div class="story-stage wrap">
+    <div class="hero-copy">
+      <p class="eyebrow">Vanderbilt University · Biochemistry</p>
+      <h1 id="hero-title">{{ site.data.site.headline }}</h1>
+      <p class="hero-intro">{{ site.data.site.intro }}</p>
+      <a class="text-link scroll-cue" href="#molecular-detail">
+        Explore the molecular story
+        <span>↓</span>
+      </a>
+    </div>
+    <figure
+      class="molecular-figure"
+      id="molecule"
+      data-version="{{ site.asset_version }}"
+      data-assets="{{ '/assets/' | relative_url }}"
+    >
+      <div class="molecule-view">
+        <img
+          class="molecule-poster"
+          src="{{ '/assets/molecular/' | append: site.data.display.molecular_structure | append: '/posters/' | append: site.data.display.site_palette | append: '.webp' | relative_url }}"
+          alt="{{ molecule.receptor }} with {{ molecule.ligand }} and {{ molecule.peptide }} {{ molecule.peptide_role }}, PDB {{ molecule.pdb_id }}."
+          width="640"
+          height="640"
+          fetchpriority="high"
+        >
+        <div class="molecule-renderer" aria-hidden="true"></div>
+        <span class="molecule-label label-peptide">
+          <span class="component-name">{{ molecule.peptide }}</span>
+          <small>{{ molecule.peptide_role }}</small>
+        </span>
+        <span class="molecule-label label-ligand">
+          <span class="component-name">{{ molecule.ligand }}</span>
+          <small>ligand</small>
+        </span>
+        <span class="molecule-label label-receptor">
+          <span class="component-name">{{ molecule.receptor }}</span>
+          <small>ligand-binding domain</small>
+        </span>
+      </div>
+      <figcaption>
+        <span class="figure-index">MOLECULAR INTERACTIONS</span>
+        <a class="pdb-link" href="https://www.rcsb.org/structure/{{ molecule.pdb_id }}">
+          PDB {{ molecule.pdb_id }} ↗
+        </a>
+        <span class="figure-note">{{ molecule.note }}</span>
+      </figcaption>
+      <button class="motion-toggle" aria-pressed="false" hidden>Pause motion</button>
+      <p class="renderer-status" role="status" aria-live="polite"></p>
+    </figure>
+  </div>
+  <div class="story-steps wrap" id="molecular-detail">
+    <article class="story-step" data-step="1">
+      <span class="eyebrow">Protein interactions</span>
+      <h2>
+        A meeting of
+        <br>
+        molecules.
+      </h2>
+      <p>
+        Coregulators bind nuclear receptors to help control transcription.
+        <span class="interaction-text">{{ molecule.interaction_text }}</span>
+      </p>
+    </article>
+    <article class="story-step" data-step="2">
+      <span class="eyebrow">Ligand recognition</span>
+      <h2>
+        Small molecules.
+        <br>
+        Specific effects.
+      </h2>
+      <p>
+        Ligands bind within a receptor’s pocket. We investigate how their interactions influence
+        receptor activity and pharmacology.
+      </p>
+    </article>
+    <article class="story-step" data-step="3">
+      <span class="eyebrow">Conformational regulation</span>
+      <h2>
+        Beyond a
+        <br>
+        single structure.
+      </h2>
+      <p>
+        Proteins sample conformational ensembles. We combine NMR spectroscopy and complementary
+        methods to connect these dynamics to function.
+      </p>
+    </article>
+    <article class="story-step" data-step="4">
+      <span class="eyebrow">Functional regulation</span>
+      <h2>
+        From structure
+        <br>
+        to cellular function.
+      </h2>
+      <p>
+        We test structure–function findings in cells to determine how molecular interactions control
+        receptor activity, transcription, and gene expression.
+      </p>
+    </article>
+    <article class="story-step" data-step="5">
+      <span class="eyebrow">Mechanistically informed chemical biology</span>
+      <h2>
+        Mechanisms that
+        <br>
+        guide discovery.
+      </h2>
+      <p>
+        We seek to translate basic discoveries into next-generation chemical tools and therapeutics,
+        using molecular mechanisms to guide their design and development.
+      </p>
+      <a class="text-link" href="{{ '/research/' | relative_url }}">
+        Explore our research
+        <span>↗</span>
+      </a>
+    </article>
+  </div>
+</section>
+<!-- Mission statement; its reading size is the body-text reference. -->
+<section class="mission-section wrap">
+  <p class="eyebrow">The questions that drive us</p>
+  <div>
+    <h2>
+      How do molecular interactions
+      <br>
+      become biological responses?
+    </h2>
+    <p class="large-copy">{{ site.data.site.mission }}</p>
+  </div>
+</section>
+<!-- Research areas come from the _research collection. -->
+<section class="research-preview wrap">
+  <div class="section-heading">
+    <h2>Our research</h2>
+    <a class="text-link" href="{{ '/research/' | relative_url }}">
+      All research
+      <span>↗</span>
+    </a>
+  </div>
+  {% assign areas = site.research | sort: 'order' -%}
+  {%- for area in areas limit: 3 -%}
+    <a class="research-row" href="{{ area.url | relative_url }}">
+      <h3>{{ area.title }}</h3>
+      <p>{{ area.summary }}</p>
+      <span aria-hidden="true">↗</span>
+    </a>
+  {%- endfor %}
+</section>
+<!-- Featured publications come from _publications/*.md. -->
+<section class="selected-publications wrap">
+  <div class="section-heading">
+    <h2>Selected publications</h2>
+    <a class="text-link" href="{{ '/publications/' | relative_url }}">
+      All publications
+      <span>↗</span>
+    </a>
+  </div>
+  {% assign featured = site.publications | where: 'featured', true | sort: 'date' | reverse -%}
+  {%- for pub in featured limit: 3 -%}
+    {%- include publication-card.html pub=pub -%}
+  {%- endfor %}
+</section>
+{% if site.posts.size > 0 %}
+  <section class="home-news wrap">
+    <div class="section-heading">
+      <h2>From the lab</h2>
+      <a href="{{ '/news/' | relative_url }}">All news ↗</a>
+    </div>
+    <div class="news-grid">
+      {% for post in site.posts limit: 3 %}
+        <article>
+          <p class="eyebrow">{{ post.date | date: '%d %b %Y' }}</p>
+          <h3>
+            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          </h3>
+          <p>{{ post.summary }}</p>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
+<!-- Invitation to prospective lab members. -->
+<section class="join-banner wrap">
+  <p class="eyebrow">Science is a shared pursuit</p>
+  <h2>Bring your curiosity.</h2>
+  <a class="text-link" href="{{ '/join/' | relative_url }}">
+    Get to know our lab
+    <span>↗</span>
+  </a>
+</section>
+<script type="application/json" id="hero-config">
+  {{ site.data.hero_animation.presentation | jsonify }}
+</script>
+<script
+  defer
+  src="{{ '/assets/js/molecular-view.js' | relative_url }}?v={{ site.asset_version }}"
+></script>
+<script
+  defer
+  src="{{ '/assets/js/molecular-viewer.js' | relative_url }}?v={{ site.asset_version }}"
+></script>

@@ -1,0 +1,36 @@
+---
+layout: default
+---
+<article class="wrap article-shell">
+  <a class="back-link" href="{{ '/publications/' | relative_url }}">← Publications</a>
+  <p class="eyebrow">{{ page.journal }} · {{ page.year }}</p>
+  <h1 class="article-title">{{ page.title }}</h1>
+  <p class="authors">{{ page.authors | join: ', ' }}</p>
+  <p>
+    {{ page.journal -}}
+    {%- if page.volume %}, {{ page.volume }}{% endif -%}
+    {%- if page.issue and page.issue != '' %}({{ page.issue }}){% endif -%}
+    {%- if page.pages and page.pages != '' %}, {{ page.pages }}{% endif %}
+    ({{ page.year }})
+  </p>
+  {% include publication-links.html pub=page -%}
+  {%- if page.image and page.image != '' %}
+    <figure class="article-figure">
+      <a href="{{ page.image | relative_url }}">
+        <img
+          src="{{ page.image | relative_url }}"
+          alt="{{ page.image_alt | default: page.title | escape }}"
+        >
+      </a>
+      {%- if page.image_caption %}
+        <figcaption>{{ page.image_caption }}</figcaption>
+      {% endif %}
+    </figure>
+  {% endif %}
+  <div class="prose">
+    {% if page.summary %}
+      <p class="large-copy">{{ page.summary }}</p>
+    {% endif -%}
+    {{- content }}
+  </div>
+</article>

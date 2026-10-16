@@ -1,0 +1,18 @@
+# The defaults visitors see before making their own choice.
+# Palette options: default, vandy, colorblind
+site_palette: vandy
+
+# Mol* is the site's molecular renderer.
+# Hide either dropdown if you prefer a fixed palette or PDB structure.
+show_palette_picker: true
+show_structure_picker: true
+
+# Presets and their orientations are defined in _data/structures.yml.
+molecular_structure: 6onj
+remember_choices: true
+
+# Mol* appearance; independent switches are available in the arrow menu.
+molstar_illustrative: true
+molstar_ssgi: true
+show_molstar_controls: true
+

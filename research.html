@@ -1,0 +1,22 @@
+---
+layout: page
+title: Our research
+permalink: /research/
+eyebrow: Molecular mechanisms. Biological questions.
+summary: We investigate how nuclear receptors recognize ligands, recruit protein partners, and regulate transcription.
+---
+{% assign areas = site.research | sort: 'order' -%}
+{%- for area in areas -%}
+  <a class="research-row" href="{{ area.url | relative_url }}">
+    <h2>{{ area.title }}</h2>
+    <p>{{ area.summary }}</p>
+    <span aria-hidden="true">↗</span>
+  </a>
+{%- endfor %}
+<div class="methods-section">
+  <h2>Connecting structure to function</h2>
+  <p>
+    Protein NMR spectroscopy · X-ray crystallography · HDX-MS · Biochemical and biophysical assays ·
+    Cell-based transcriptional assays · Integrative structural biology
+  </p>
+</div>
