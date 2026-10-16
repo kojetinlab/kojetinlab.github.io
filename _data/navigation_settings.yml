@@ -1,0 +1,4 @@
+# Keep a compact Menu button in the upper-right corner after the header
+# scrolls out of view. Applies to every page, on desktop and mobile.
+# Set false to restore the original header that scrolls away.
+persistent_menu: true

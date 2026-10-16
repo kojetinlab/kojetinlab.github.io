@@ -14,3 +14,7 @@
 ## Generated artwork
 
 - `assets/images/science/adipocyte-cutaway.png` was created for this website using OpenAI image generation on 16 October 2026. It is a conceptual white-adipocyte cutaway, not a microscope image or experimental observation. Anatomy references and editing instructions are in `docs/molecular-animation.md`.
+
+- `assets/images/science/discovery-compounds.png` was created for this website using OpenAI image generation on 16 October 2026. It contains six generic black-marker-style chemical sketches on transparency. These are illustrative motifs rather than verified structures or claims about named laboratory compounds. Their arrival around the cell is a conceptual chemical-biology illustration. Replacement instructions are in `docs/molecular-animation.md`.
+
+- `assets/images/science/molecular-loading.webp` was created for this website using OpenAI image generation on 16 October 2026 and optimized as a transparent WebP. It is a conceptual ink-and-pencil illustration of a protein ribbon, peptide, and ligand, not a rendering of a particular PDB entry or a verified chemical structure. It appears only while the interactive molecular view prepares.

@@ -11,6 +11,7 @@ note: "Nucleus, lipid droplet, and surrounding cytoplasm. Conceptual illustratio
 nucleus_anchor: [0.19, 0.51]
 start_zoom: 4.5
 
+# _data/scroll_story.yml stretches this base window, then shifts both ends earlier.
 # Fourth headline's distance from the viewport top, as a fraction of height.
 # Start must be greater than end. At end, the complete cell is visible.
 desktop: { start: 0.85, end: 0.4 }

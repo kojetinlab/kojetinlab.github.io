@@ -29,9 +29,9 @@
     {% if include.member.years %}· {{ include.member.years }}{% endif %}
   </p>
   {% if include.member.current_position and include.member.current_position != '' %}
-    <p>
-      {{ include.member.current_position }}
-      {% if include.member.current_institution and include.member.current_institution != '' %}
+    <p class="alumni-destination">
+      Subsequently: {{ include.member.current_position -}}
+      {%- if include.member.current_institution and include.member.current_institution != '' -%}
         , {{ include.member.current_institution -}}
       {% endif %}
     </p>

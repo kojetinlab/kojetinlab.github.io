@@ -76,7 +76,7 @@ awards:
   - Fellowship name (2026)
 ```
 
-To move someone to alumni, change `status: alumni`, update their final lab role and its `seniority`, and set `years` to the completed interval. Optionally add `current_position` and `current_institution`. Keep their filename to preserve their profile URL and keep `joined_year` as their original joining year. Confirm current positions before adding them.
+To move someone to alumni, change `status: alumni`, update their final lab role and its `seniority`, and set `years` to the completed interval. Optionally add `current_position` and `current_institution`. Keep their filename to preserve their profile URL and keep `joined_year` as their original joining year. Confirm current positions before adding them. On the alumni listing, a defined `current_position` appears on a separate line prefixed with “Subsequently:”, in muted italic text at 90% of the regular body size. No destination line appears when that field is blank. The last-reported-updates note remains in place. Adjust this styling in `assets/css/people.css` under `.alumni-destination`.
 
 ### Photo dimensions and cropping
 
@@ -145,6 +145,16 @@ The complete announcement with links and optional images.
 
 Future-dated posts remain unpublished until their date and a subsequent rebuild. Do not add a story based on private or unannounced research without permission.
 
+## Footer logo size
+
+Edit `_data/site.yml` and rebuild Jekyll:
+
+```yaml
+footer_logo_scale_percent: 50
+```
+
+`50` gives half of the original displayed width and height; `100` restores full size. Values from 10 to 200 are supported, with the width capped to its container on small screens. The SVG stays sharp. The rule lives in `_includes/footer-brand-style.html`, separate from footer wording and shared CSS.
+
 ## Global text and contact information
 
 Edit `_data/site.yml` for the name, email, address, institution, homepage headline, introductory text, and mission. The headline permits `<br>` line breaks and a `<span>` accent. Alternative headings considered for the first design were “Molecular interactions. Biological decisions.” and “Understanding nuclear receptor function.” The chosen “Structure. Dynamics. Function.” connects directly to the laboratory's methods and questions.
@@ -165,3 +175,16 @@ Review the affected pages on desktop and mobile. Check scientific accuracy, cont
 ## Reading sizes
 
 The typography section at the end of `assets/css/site.css` defines shared size tokens. `--text-body` is 23 px on desktop and 20 px at widths up to 700 px, matching the homepage mission paragraph. Secondary metadata and controls use the adjacent tokens. Research links are unnumbered; their display order still comes from each research file's `order` value.
+
+
+## Link hover and keyboard focus
+
+Text links keep the selected palette's hover color and gain a 1 px underline.
+Keyboard focus uses the same underline/color cue plus the existing focus outline.
+People cards and research rows underline their name or title, leaving supporting
+text clear. The header wordmark and portrait/image links retain their existing styling.
+
+Edit `assets/css/links.css` to change the underline thickness or offset, or remove
+the underline rule. The file is loaded by `_layouts/default.html` after the other
+stylesheets, so shared `site.css` customizations can stay in place. The footer's
+GitHub source link keeps its existing permanent underline.

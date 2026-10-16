@@ -1,0 +1,64 @@
+# Final scroll transition: the cell pulls back and chemical sketches arrive.
+# Save and rebuild Jekyll. Requires cell_scene.enabled: true.
+enabled: true
+image: /assets/images/science/discovery-compounds.png
+caption: "Chemical tools · cellular discovery"
+note: "Mechanistic insights guide next-generation chemical tools and therapeutics."
+alt: "Illustrative black-marker chemical sketches surrounding an adipocyte."
+
+# Cell size relative to the preceding cellular-function view (1 = unchanged).
+cell_scale: 0.67
+# Final adipocyte opacity as compounds arrive (0 = invisible, 1 = opaque).
+cell_opacity: 0.50
+# Width of each sketch's square frame relative to the shorter viewport side.
+compound_size: 0.32
+# Initial distance from center, as a multiple of the final distance.
+entry_distance: 2.8
+# Contact rings accompany the arrivals and gently twinkle afterward.
+show_contact_rings: true
+twinkle_contact_rings: true
+contact_twinkle_period_seconds: 2.8
+
+# _data/scroll_story.yml stretches this base window, then shifts both ends earlier.
+# Fifth headline's distance from viewport top, as a fraction of height.
+# Begin the pullback first, then bring the six structures in with staggered timing.
+desktop: { start: 0.90, end: 0.35 }
+mobile: { start: 0.95, end: 0.58 }
+
+# The supplied PNG has three columns and two rows (indices start at zero).
+# target: [x, y] in fractions of the shorter viewport side, centered at [0, 0].
+# rotation is in degrees; delay is a fraction of this transition's progress.
+# To use a specific compound, add image: /assets/images/science/your-structure.svg
+# to its entry. An individual image bypasses the sprite crop for that entry.
+# These are generic artistic motifs, not identified drugs or binding claims.
+compounds:
+  - id: upper-left
+    sprite: [0, 0]
+    target: [-0.30, -0.30]
+    rotation: -14
+    delay: 0.08
+  - id: upper-right
+    sprite: [1, 0]
+    target: [0.29, -0.32]
+    rotation: 10
+    delay: 0.16
+  - id: right
+    sprite: [2, 0]
+    target: [0.375, 0.02]
+    rotation: -8
+    delay: 0.04
+  - id: lower-right
+    sprite: [0, 1]
+    target: [0.25, 0.33]
+    rotation: 15
+    delay: 0.22
+  - id: lower-left
+    sprite: [1, 1]
+    target: [-0.27, 0.32]
+    rotation: -10
+    delay: 0.12
+  - id: left
+    sprite: [2, 1]
+    target: [-0.375, 0.01]
+    rotation: 9
+    delay: 0.27

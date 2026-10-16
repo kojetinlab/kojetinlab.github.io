@@ -53,6 +53,27 @@ def main():
         errors.append('people.yml: sort_by must be last_name, seniority, or joined')
     if type(people.get('show_alumni_photos')) is not bool:
         errors.append('people.yml: show_alumni_photos must be true or false (without quotes)')
+    discovery=yaml.safe_load((ROOT/'_data/discovery_scene.yml').read_text())
+    for key in ('enabled','show_contact_rings','twinkle_contact_rings'):
+        if type(discovery.get(key)) is not bool: errors.append(f'discovery_scene.yml: {key} must be true or false')
+    for key,lo,hi in [('cell_scale',0.4,1),('cell_opacity',0,1),('compound_size',0.1,0.5),('entry_distance',1.2,5),('contact_twinkle_period_seconds',1.5,20)]:
+        value=discovery.get(key)
+        if type(value) not in (int,float) or not math.isfinite(value) or not lo <= value <= hi:
+            errors.append(f'discovery_scene.yml: {key} must be between {lo} and {hi}')
+    for viewport in ('desktop','mobile'):
+        timing=discovery.get(viewport,{})
+        try:
+            if not 0 <= timing['end'] < timing['start'] <= 1: raise ValueError()
+        except (KeyError,TypeError,ValueError): errors.append(f'discovery_scene.yml: {viewport} requires 0 <= end < start <= 1')
+    for index,compound in enumerate(discovery.get('compounds',[])):
+        target=compound.get('target',[])
+        if len(target)!=2 or not all(type(v) in (int,float) and math.isfinite(v) and -0.5 <= v <= 0.5 for v in target):
+            errors.append(f'discovery_scene.yml compound {index}: target requires two numbers between -0.5 and 0.5')
+        if not compound.get('image') and compound.get('sprite') not in [[x,y] for x in range(3) for y in range(2)]:
+            errors.append(f'discovery_scene.yml compound {index}: sprite must identify a cell in the 3 by 2 sheet')
+        image=compound.get('image') or discovery.get('image','')
+        if not image or not (ROOT/str(image).lstrip('/')).is_file():
+            errors.append(f'discovery_scene.yml compound {index}: missing image {image}')
     structures=yaml.safe_load((ROOT/'_data/structures.yml').read_text())
     display=yaml.safe_load((ROOT/'_data/display.yml').read_text())
     if display['molecular_structure'] not in structures:

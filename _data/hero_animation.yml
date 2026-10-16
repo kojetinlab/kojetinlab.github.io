@@ -10,7 +10,8 @@ presentation:
   enable_domain_motion: true
   domain_motion_degrees: 3.5
   domain_motion_period_seconds: 3.2
-  # Set amplitude to 0 for rocking alone. Larger values give more internal flex.
+  # Applies to receptor, peptide, and ligand together. Set to 0 for rocking alone.
+  # Larger amplitudes give more internal flex.
   domain_wiggle_amplitude_angstroms: 2.0
   domain_wiggle_speed: 3.5
   # Lower spatial frequency makes neighboring regions move more coherently.

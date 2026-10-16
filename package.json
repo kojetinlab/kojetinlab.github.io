@@ -1,7 +1,7 @@
 {
   "name": "kojetin-laboratory-website",
   "private": true,
-  "version": "5.9.0",
+  "version": "5.13.1",
   "scripts": {
     "build:three": "esbuild assets/js/molecule.js --bundle --format=iife --minify --outfile=assets/js/molecule.bundle.js",
     "format": "prettier --write '_layouts/*.html' '_includes/*.html' '*.html' 'assets/css/site.css' 'assets/js/*.js' '!assets/js/*.bundle.js'"

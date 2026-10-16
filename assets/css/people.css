@@ -1,4 +1,11 @@
 /* People-specific additions; shared typography and portrait crops stay in site.css. */
+.alumni-grid .alumni-destination {
+  margin-top: 8px;
+  font-size: calc(var(--text-body) * 0.9);
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--muted);
+}
 .alumni-portrait {
   display: block;
   margin-bottom: 20px;

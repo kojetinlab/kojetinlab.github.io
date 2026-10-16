@@ -8,7 +8,23 @@
   const button = figure.querySelector(".motion-toggle");
   const status = figure.querySelector(".renderer-status");
   const options = JSON.parse(document.getElementById("hero-config").textContent);
+  const scrollOptions = JSON.parse(
+    document.getElementById("scroll-story-config")?.textContent || "{}",
+  );
   const cellOptions = JSON.parse(document.getElementById("cell-config")?.textContent || "{}");
+  const discoveryOptions = JSON.parse(
+    document.getElementById("discovery-config")?.textContent || "{}",
+  );
+  const discoveryScene = figure.querySelector(".discovery-scene");
+  const discoveryArtboard = figure.querySelector(".discovery-artboard");
+  const compounds = Array.from(figure.querySelectorAll(".compound-flight")).map(
+    (element, index) => ({
+      element,
+      image: element.querySelector("img"),
+      contact: figure.querySelector(`[data-contact="${index}"]`),
+      settings: discoveryOptions.compounds?.[index] || {},
+    }),
+  );
   const cellScene = figure.querySelector(".cell-scene");
   const cellImage = figure.querySelector(".cell-illustration");
   const cellArtboard = figure.querySelector(".cell-artboard");
@@ -29,13 +45,19 @@
     paletteGeneration = 0;
   let visible = true;
   let cellReady = false,
-    cellProgress = 0;
+    cellProgress = 0,
+    discoveryProgress = 0;
   let domainStrength = 0,
     motionTime = 0,
     lastMotionTime = 0,
     lastDrawTime = 0;
+  let twinkleTime = 0,
+    lastTwinkleTime = 0;
+  const firstHeading = story.querySelector('[data-step="1"] h2');
+  const secondHeading = story.querySelector('[data-step="2"] h2');
   const thirdHeading = story.querySelector('[data-step="3"] h2');
   const fourthHeading = story.querySelector('[data-step="4"] h2');
+  const fifthHeading = story.querySelector('[data-step="5"] h2');
 
   const clamp = (n, lo = 0, hi = 1) => Math.max(lo, Math.min(hi, n));
   const smooth = (a, b, t) => {
@@ -51,8 +73,102 @@
     return !!(cellOptions.enabled && cellReady && adapter && !reduced.matches);
   }
 
+  function discoveryEnabled() {
+    return !!(
+      cellEnabled() &&
+      discoveryOptions.enabled &&
+      discoveryScene &&
+      compounds.some(({ image }) => image?.naturalWidth > 0)
+    );
+  }
+
   function updateCellMode() {
     document.documentElement.classList.toggle("cell-transition-enabled", cellEnabled());
+    document.documentElement.classList.toggle("discovery-transition-enabled", discoveryEnabled());
+  }
+
+  // A shared scroll clock drives both transitions: no timers or CSS animations.
+  function headlineProgress(heading, config, mobile, stretch = true) {
+    if (!heading) return 0;
+    const timing = config[mobile ? "mobile" : "desktop"] || {};
+    const start = clamp(
+      Number.isFinite(Number(timing.start)) ? Number(timing.start) : 0.9,
+      0.01,
+      2,
+    );
+    const end = clamp(
+      Number.isFinite(Number(timing.end)) ? Number(timing.end) : 0.4,
+      0,
+      start - 0.01,
+    );
+    const configuredMultiplier = Number(
+      scrollOptions[mobile ? "mobile" : "desktop"]?.transition_scroll_multiplier ?? 2,
+    );
+    const multiplier = stretch
+      ? clamp(Number.isFinite(configuredMultiplier) ? configuredMultiplier : 2, 1, 3)
+      : 1;
+    const configuredLead = Number(
+      scrollOptions[mobile ? "mobile" : "desktop"]?.action_lead_vh ?? 20,
+    );
+    const lead = clamp(Number.isFinite(configuredLead) ? configuredLead : 20, 0, 60) / 100;
+    // Stretch the window, then shift the whole window earlier. The separate
+    // lead preserves its length while establishing the action as text arrives.
+    const earlierStart = end + (start - end) * multiplier + lead;
+    return 1 - smooth(end + lead, earlierStart, heading.getBoundingClientRect().top / innerHeight);
+  }
+
+  function drawDiscovery(size, cellT) {
+    const d = discoveryEnabled() ? discoveryProgress * smooth(0.9, 1, cellT) : 0;
+    const finalScale = clamp(Number(discoveryOptions.cell_scale) || 0.67, 0.4, 1);
+    const cellScale = 1 - (1 - finalScale) * smooth(0, 0.55, d);
+    const finalOpacity = clamp(Number(discoveryOptions.cell_opacity ?? 0.5));
+    const cellOpacity = 1 - (1 - finalOpacity) * smooth(0.05, 0.65, d);
+    if (cellImage) cellImage.style.opacity = String(cellOpacity);
+    if (cellArtboard) cellArtboard.style.transform = `translate(-50%, -50%) scale(${cellScale})`;
+    if (discoveryScene) {
+      discoveryScene.style.opacity = String(d > 0 ? 1 : 0);
+      discoveryArtboard.style.width = discoveryArtboard.style.height = `${size}px`;
+      const distance = clamp(Number(discoveryOptions.entry_distance) || 2.8, 1.2, 5);
+      for (const [index, compound] of compounds.entries()) {
+        const settings = compound.settings;
+        const delay = clamp(Number(settings.delay) || 0, 0, 0.5);
+        const arrival = clamp((d - delay) / (0.84 + delay * 0.3 - delay));
+        // A small overshoot gives the approach a quick marker-on-glass flourish.
+        const u = arrival - 1;
+        const ease = 1 + 1.65 * u * u * u + 0.65 * u * u;
+        const radius = distance + (1 - distance) * ease;
+        const target = settings.target || [0, 0];
+        const x = clamp(Number(target[0]) || 0, -0.5, 0.5) * size;
+        const y = clamp(Number(target[1]) || 0, -0.5, 0.5) * size;
+        const rotation = (Number(settings.rotation) || 0) + (index % 2 ? 16 : -16) * (1 - ease);
+        compound.element.style.left = compound.element.style.top = "50%";
+        compound.element.style.transform = `translate(-50%, -50%) translate(${x * radius}px, ${y * radius}px) rotate(${rotation}deg) scale(${0.82 + 0.18 * ease})`;
+        compound.element.style.opacity = String(smooth(0, 0.18, arrival));
+        compound.element.style.visibility = compound.image?.naturalWidth > 0 ? "visible" : "hidden";
+        compound.element.dataset.arrival = arrival.toFixed(4);
+        if (compound.contact) {
+          const pulse = clamp((arrival - 0.66) / 0.34);
+          const period = clamp(
+            Number(discoveryOptions.contact_twinkle_period_seconds) || 2.8,
+            1.5,
+            20,
+          );
+          const glow = (1 + Math.sin((twinkleTime * Math.PI * 2) / period + index * 1.7)) / 2;
+          const blend = discoveryOptions.twinkle_contact_rings ? smooth(0.82, 1, arrival) : 0;
+          const opacity =
+            (1 - blend) * 0.32 * Math.sin(Math.PI * pulse) + blend * (0.12 + 0.23 * glow);
+          const scale = (1 - blend) * (0.5 + 1.5 * pulse) + blend * (1.2 + 0.22 * glow);
+          compound.contact.style.opacity = String(
+            discoveryOptions.show_contact_rings && compound.image?.naturalWidth > 0 ? opacity : 0,
+          );
+          compound.contact.style.transform = `translate(-50%, -50%) translate(${x * 0.75}px, ${y * 0.75}px) scale(${scale})`;
+        }
+      }
+    }
+    figure.dataset.discoveryProgress = d.toFixed(4);
+    figure.dataset.discoveryCellScale = cellScale.toFixed(4);
+    figure.dataset.discoveryCellOpacity = cellOpacity.toFixed(4);
+    return d;
   }
 
   function drawCellTransition() {
@@ -62,13 +178,17 @@
     const x = (clamp(Number(anchor[0])) - 0.5) * size;
     const y = (clamp(Number(anchor[1])) - 0.5) * size;
     const zoom = clamp(Number(cellOptions.start_zoom) || 4.5, 1, 8);
+    const discoveryT = drawDiscovery(size, t);
     if (cellScene) {
       cellArtboard.style.width = cellArtboard.style.height = `${size}px`;
       cellArt.style.transformOrigin = `${clamp(Number(anchor[0])) * 100}% ${clamp(Number(anchor[1])) * 100}%`;
       // Keep the nucleus and molecular center registered throughout the pullback.
       cellArt.style.transform = `translate(${-x * (1 - t)}px, ${-y * (1 - t)}px) scale(${Math.pow(zoom, 1 - t)})`;
       cellScene.style.opacity = String(smooth(0, 0.3, t));
-      cellScene.style.setProperty("--cell-label-opacity", String(smooth(0.7, 1, t)));
+      cellScene.style.setProperty(
+        "--cell-label-opacity",
+        String(smooth(0.7, 1, t) * (1 - smooth(0.02, 0.35, discoveryT))),
+      );
       cellScene.setAttribute("aria-hidden", String(t < 0.6));
     }
     moleculeLayer.style.transform = `translate(${x * t}px, ${y * t}px) scale(${Math.pow(0.035, t)})`;
@@ -79,7 +199,11 @@
       .querySelectorAll(".molecule-label")
       .forEach((element) => element.setAttribute("aria-hidden", String(t > 0.1)));
     figure.querySelector(".figure-index").textContent =
-      t >= 0.6 ? cellOptions.caption : "MOLECULAR INTERACTIONS";
+      discoveryT > 0.2
+        ? discoveryOptions.caption
+        : t >= 0.6
+          ? cellOptions.caption
+          : "MOLECULAR INTERACTIONS";
     figure.querySelector(".pdb-link").hidden = t >= 0.6;
     figure.dataset.cellProgress = t.toFixed(4);
     return t;
@@ -199,6 +323,7 @@
     if (!adapter || !visible || document.hidden) {
       adapter?.setSuspended(true);
       lastMotionTime = 0;
+      lastTwinkleTime = 0;
       return;
     }
     // Limit continuous motion to 30 fps, including on high-refresh displays.
@@ -208,46 +333,47 @@
     }
     lastDrawTime = now;
     if (!paused && !reduced.matches) {
-      const storyTop = story.getBoundingClientRect().top;
-      // Complete the molecular separation during the first three concepts.
-      // The cellular section has its own later, headline-driven transition.
-      const third = story.querySelector('[data-step="3"]');
-      const motionLength = third.getBoundingClientRect().bottom - storyTop - innerHeight;
-      progress = clamp(-storyTop / Math.max(1, motionLength));
       const mobile = innerWidth <= 700;
-      const timing = cellOptions[mobile ? "mobile" : "desktop"] || {};
-      const start = clamp(
-        Number.isFinite(Number(timing.start)) ? Number(timing.start) : mobile ? 0.95 : 0.85,
-        0.01,
-        1,
-      );
-      const end = clamp(
-        Number.isFinite(Number(timing.end)) ? Number(timing.end) : mobile ? 0.6 : 0.4,
-        0,
-        start - 0.01,
-      );
-      cellProgress = cellEnabled()
-        ? 1 - smooth(end, start, fourthHeading.getBoundingClientRect().top / innerHeight)
+      const separationEntry = { start: 1.1, end: 0.4 };
+      const separationTiming = { desktop: separationEntry, mobile: separationEntry };
+      // Anchor the two molecular stages to their own headings. Keep the same
+      // pose/camera path, with ligand separation starting only in stage two.
+      progress =
+        0.44 * headlineProgress(firstHeading, separationTiming, mobile, false) +
+        0.56 * headlineProgress(secondHeading, separationTiming, mobile, false);
+      cellProgress = cellEnabled() ? headlineProgress(fourthHeading, cellOptions, mobile) : 0;
+      discoveryProgress = discoveryEnabled()
+        ? headlineProgress(fifthHeading, discoveryOptions, mobile)
         : 0;
-      // The first two transitions retain their original scroll timing. Rock only
-      // after separation finishes, and ease back to rest before the fourth topic.
-      domainStrength =
-        options.enable_domain_motion && progress >= 1
-          ? (1 -
-              smooth(
-                mobile ? 0.5 : 0.15,
-                mobile ? 0.85 : 0.5,
-                thirdHeading.getBoundingClientRect().top / innerHeight,
-              )) *
-            smooth(
-              mobile ? 0.55 : 0.4,
-              mobile ? 0.9 : 0.75,
-              fourthHeading.getBoundingClientRect().top / innerHeight,
-            )
-          : 0;
-      domainStrength *= 1 - cellProgress;
+      // Hold the full wiggle throughout the longer third concept, then fade it
+      // with the cell pullback instead of ending it through a second short gate.
+      const motionFade = headlineProgress(fourthHeading, cellOptions, mobile);
+      const motionEntry = { start: 1.05, end: 0.8 };
+      domainStrength = options.enable_domain_motion
+        ? headlineProgress(
+            thirdHeading,
+            { desktop: motionEntry, mobile: motionEntry },
+            mobile,
+            false,
+          ) *
+          (1 - motionFade)
+        : 0;
     }
     const moving = !paused && !reduced.matches && domainStrength > 0;
+    const twinkling =
+      !paused &&
+      discoveryEnabled() &&
+      discoveryOptions.show_contact_rings &&
+      discoveryOptions.twinkle_contact_rings &&
+      cellProgress > 0.9 &&
+      discoveryProgress > 0.5 &&
+      compounds.some(({ contact, image }) => contact && image?.naturalWidth > 0);
+    if (twinkling) {
+      if (lastTwinkleTime) twinkleTime += Math.min((now - lastTwinkleTime) / 1000, 0.05);
+      lastTwinkleTime = now;
+    } else {
+      lastTwinkleTime = 0;
+    }
     if (moving) {
       if (lastMotionTime) motionTime += Math.min((now - lastMotionTime) / 1000, 0.05);
       lastMotionTime = now;
@@ -258,9 +384,11 @@
     const state = stateAt(reduced.matches ? 0 : progress);
     const cellT = drawCellTransition();
     try {
-      // The finished cell is a still image; stop spending GPU time on hidden Mol*.
-      adapter.setSuspended(cellT >= 0.92);
-      if (cellT < 0.92) adapter.render(state);
+      // Draw the configured first frame even if the page opens at a later topic.
+      // After that, stop spending GPU time on Mol* while the cell covers it.
+      const needsFirstFrame = !figure.classList.contains("molecule-ready");
+      adapter.setSuspended(cellT >= 0.92 && !needsFirstFrame);
+      if (cellT < 0.92 || needsFirstFrame) adapter.render(state);
     } catch (error) {
       console.warn("Molecular rendering stopped.", error);
       showStaticStructure();
@@ -275,19 +403,21 @@
     figure.dataset.domainAngle = state.domainAngle.toFixed(6);
     figure.dataset.wiggleAmplitude = state.wiggleAmplitude.toFixed(4);
     const note =
-      cellT >= 0.6
-        ? cellOptions.note
-        : preset().note +
-          (domainStrength > 0 && !reduced.matches
-            ? " Motion illustrates conformational flexibility; it is not an MD simulation."
-            : "");
+      discoveryEnabled() && discoveryProgress > 0.2 && cellT >= 0.9
+        ? discoveryOptions.note
+        : cellT >= 0.6
+          ? cellOptions.note
+          : preset().note +
+            (domainStrength > 0 && !reduced.matches
+              ? " Motion illustrates conformational flexibility; it is not an MD simulation."
+              : "");
     const noteElement = figure.querySelector(".figure-note");
     if (noteElement.textContent !== note) noteElement.textContent = note;
     document.documentElement.style.setProperty(
       "--intro-opacity",
       String(1 - smooth(0.015, 0.2, state.progress)),
     );
-    if (moving) requestRender();
+    if (moving || twinkling) requestRender();
   }
   function requestRender() {
     if (!frame) frame = requestAnimationFrame(render);
@@ -300,6 +430,15 @@
       host,
       scene: selectedScene,
       loadScript,
+      onFirstFrame() {
+        if (token !== generation || !adapter) return;
+        figure.dataset.renderer = "molstar";
+        figure.classList.add("molecule-ready");
+        figure.setAttribute("aria-busy", "false");
+        button.hidden = reduced.matches;
+        status.textContent = "";
+        requestRender();
+      },
       onError(error) {
         if (token !== generation) return;
         console.warn("Molecular rendering stopped.", error);
@@ -325,6 +464,10 @@
     showIdentity(config, key);
     adapter?.dispose();
     adapter = null;
+    figure.dataset.renderer = "loading";
+    figure.setAttribute("aria-busy", "true");
+    // Reserve the live layout now, avoiding a late layout jump when Mol* arrives.
+    document.documentElement.classList.toggle("motion-enabled", !reduced.matches);
     figure.classList.remove("molecule-ready");
     button.hidden = true;
     status.textContent = "Loading molecular view…";
@@ -350,11 +493,7 @@
       }
       adapter = next;
       updateCellMode();
-      figure.dataset.renderer = "molstar";
-      figure.classList.add("molecule-ready");
       document.documentElement.classList.toggle("motion-enabled", !reduced.matches);
-      button.hidden = reduced.matches;
-      status.textContent = "";
       adapter.resize();
       requestRender();
     } catch (error) {
@@ -373,9 +512,11 @@
     lastMotionTime = 0;
     figure.classList.remove("molecule-ready");
     figure.dataset.renderer = "static";
+    figure.setAttribute("aria-busy", "false");
     figure.querySelector(".figure-note").textContent = preset().note;
     document.documentElement.classList.remove("motion-enabled");
     cellProgress = 0;
+    discoveryProgress = 0;
     updateCellMode();
     drawCellTransition();
     button.hidden = true;
@@ -433,8 +574,9 @@
   reduced.addEventListener("change", () => {
     document.documentElement.classList.toggle("motion-enabled", !!adapter && !reduced.matches);
     cellProgress = 0;
+    discoveryProgress = 0;
     updateCellMode();
-    button.hidden = reduced.matches || !adapter;
+    button.hidden = reduced.matches || !figure.classList.contains("molecule-ready");
     requestRender();
   });
   if (!options.enable_labels)
@@ -453,6 +595,15 @@
       requestRender();
     });
     if (cellImage.complete) imageReady();
+  }
+  for (const { image } of compounds) {
+    if (!image) continue;
+    const imageChanged = () => {
+      updateCellMode();
+      requestRender();
+    };
+    image.addEventListener("load", imageChanged);
+    image.addEventListener("error", imageChanged);
   }
   // Reduced motion uses the same Mol* view, held at its initial pose.
   loadStructure();

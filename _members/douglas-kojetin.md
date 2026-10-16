@@ -1,6 +1,6 @@
 ---
 name: Douglas Kojetin
-role: Professor; Director of Graduate Studies, Biochemistry
+role: Ingram Professor of Cancer Research<br>Professor, Department of Biochemistry<br>Director of Graduate Studies, Biochemistry
 category: Principal Investigator
 photo: /assets/images/people/douglas-kojetin.jpg
 status: current

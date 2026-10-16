@@ -1,7 +1,14 @@
 /* Mol* 5.13.1, including its native spatially correlated procedural wiggle.
    A shared clock keeps shader motion, scroll choreography, and Pause in sync. */
 window.KojetinRenderers = window.KojetinRenderers || {};
-window.KojetinRenderers.molstar = async function ({ host, scene, settings, loadScript, onError }) {
+window.KojetinRenderers.molstar = async function ({
+  host,
+  scene,
+  settings,
+  loadScript,
+  onError,
+  onFirstFrame,
+}) {
   await loadScript("js/vendor/molstar/molstar.js");
   const { plugin: api, structure: structureApi, math } = window.molstar.lib;
   const { Mat4 } = math.LinearAlgebra;
@@ -34,6 +41,8 @@ window.KojetinRenderers.molstar = async function ({ host, scene, settings, loadS
     drawFrame = 0,
     drawBudget = 0,
     lastDrawTime = -Infinity,
+    hasRenderState = false,
+    firstFrameDrawn = false,
     ready = false,
     suspended = false,
     disposed = false;
@@ -48,6 +57,10 @@ window.KojetinRenderers.molstar = async function ({ host, scene, settings, loadS
       lastDrawTime = now;
       try {
         plugin.canvas3d.tick(motionTime * 1000, { isSynchronous: true });
+        if (hasRenderState && !firstFrameDrawn) {
+          firstFrameDrawn = true;
+          onFirstFrame?.();
+        }
       } catch (error) {
         setSuspended(true);
         onError?.(error);
@@ -215,6 +228,7 @@ window.KojetinRenderers.molstar = async function ({ host, scene, settings, loadS
         0,
       );
     lastCamera = cameraKey;
+    hasRenderState = true;
     requestDraw();
   }
 
@@ -274,11 +288,9 @@ window.KojetinRenderers.molstar = async function ({ host, scene, settings, loadS
           colorParams: { value: color(settings[`${name}_color`]) },
         },
       );
-      if (name === "receptor" || (name === "ligand" && settings.ligand_moves_with_domain)) {
-        // Position-mode noise gives nearby points a shared displacement field.
-        // The 6ONI covalent ligand uses that same field and the same clock.
-        wiggleLoci.set(name, structureApi.StructureElement.Loci.all(structure.obj.data));
-      }
+      // All three components share the same spatial field and shader clock.
+      // Nearby atoms move coherently, including the 6ONI covalent attachment.
+      wiggleLoci.set(name, structureApi.StructureElement.Loci.all(structure.obj.data));
       if (name === "receptor") {
         const query = structureApi.Queries.generators.atoms({
           residueTest: (ctx) => {

@@ -1,0 +1,25 @@
+---
+---
+/* Keep pacing separate from the site's typography and other local CSS edits.
+   Ordinary reading layout is retained without motion or a working renderer. */
+.motion-enabled .story-step {
+  min-height: {{ site.data.scroll_story.desktop.section_height_vh | default: 100 | plus: 0 | at_least: 70 | at_most: 250 }}vh;
+}
+
+.motion-enabled .story-step[data-step="3"] {
+  min-height: {{ site.data.scroll_story.desktop.motion_section_height_vh | default: 160 | plus: 0 | at_least: 100 | at_most: 300 }}vh;
+  /* Put the text near the beginning; leave the extra distance for viewing motion. */
+  justify-content: flex-start;
+  padding-top: 18vh;
+}
+
+@media (max-width: 700px) {
+  .motion-enabled .story-step {
+    min-height: {{ site.data.scroll_story.mobile.section_height_vh | default: 95 | plus: 0 | at_least: 70 | at_most: 250 }}svh;
+  }
+
+  .motion-enabled .story-step[data-step="3"] {
+    min-height: {{ site.data.scroll_story.mobile.motion_section_height_vh | default: 150 | plus: 0 | at_least: 100 | at_most: 300 }}svh;
+    padding-top: 60px;
+  }
+}

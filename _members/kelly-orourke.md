@@ -8,7 +8,6 @@ status: current
 seniority: 40
 joined_year: 2024
 years: 2024–present
-photo: ''
 lab_history:
 - role: Graduate Student, Biochemistry
   years: 2024–present

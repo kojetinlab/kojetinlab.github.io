@@ -56,10 +56,12 @@ Open the down arrow after **Contact** to try palettes, PDB structures, illustrat
 | Default palette, PDB, illustrative cartoon, SSGI, and visible controls | `_data/display.yml` |
 | Page and molecular colors | `_data/palettes.yml` |
 | Each PDB's camera, chain selections, and labels | `_data/structures.yml` |
-| Scroll movement, internal wiggle, and receptor rocking | `_data/hero_animation.yml` |
+| Homepage section spacing, longer motion viewing, and transition pace | `_data/scroll_story.yml` |
+| Scroll movement, receptor/peptide/ligand wiggle, and receptor rocking | `_data/hero_animation.yml` |
 | Zoom from the protein to an illustrated adipocyte | `_data/cell_scene.yml` |
+| Final cell pullback and incoming chemical sketches | `_data/discovery_scene.yml` |
 | Adipocyte illustration | `assets/images/science/adipocyte-cutaway.png` |
-| Lab text, contact details, footer links, and logo/photo paths | `_data/site.yml` |
+| Lab text, footer logo size (`footer_logo_scale_percent`), links, and image paths | `_data/site.yml` |
 | Navigation | `_data/navigation.yml` |
 | People and alumni | `_members/` |
 | People sorting and alumni headshots | `_data/people.yml` |
@@ -68,6 +70,7 @@ Open the down arrow after **Contact** to try palettes, PDB structures, illustrat
 | News | `_posts/` |
 | Open positions | `_data/openings.yml` |
 | Homepage layout and five scroll-story concepts | `_layouts/home.html` |
+| Link hover/focus underlines | `assets/css/links.css` |
 | Shared header, footer, and menu markup | `_includes/` |
 | Typography, spacing, and layout | `assets/css/site.css` |
 

@@ -1,0 +1,25 @@
+# Homepage scroll pacing. Save and let Jekyll rebuild to see changes.
+# These settings change scroll distance, not the speed of the wiggle itself.
+# 100 vh = one screen-height of scrolling (mobile uses the stable viewport).
+# The third concept gets its own longer section so the molecule can keep moving.
+desktop:
+  section_height_vh: 100
+  motion_section_height_vh: 160
+  transition_scroll_multiplier: 2.0
+  action_lead_vh: 20
+mobile:
+  section_height_vh: 95
+  motion_section_height_vh: 150
+  transition_scroll_multiplier: 2.0
+  action_lead_vh: 20
+
+# transition_scroll_multiplier stretches BOTH cell/discovery transitions backward
+# from their base end positions in cell_scene.yml and discovery_scene.yml.
+# 2 = twice the original scroll distance; 1 = the original window lengths.
+# Try 2.5 for slower changes. The supported range is 1–3.
+# action_lead_vh then shifts ALL five actions earlier without shortening them.
+# 20 = one-fifth of a screen earlier; try 40 for more lead. Supported: 0–60.
+# The wiggle reaches full strength as its heading enters the screen.
+# Section heights are minimums: text can make a section taller when needed.
+# Supported heights: 70–250 for regular sections; 100–300 for the third section.
+# For more time watching the wiggle, try motion_section_height_vh: 200.

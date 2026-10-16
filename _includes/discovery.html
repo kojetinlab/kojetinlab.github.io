@@ -1,0 +1,43 @@
+<!-- Each sketch moves independently; a single transparent sprite sheet is shared. -->
+<div
+  class="discovery-artboard"
+  style="--compound-size: {{ site.data.discovery_scene.compound_size | times: 100 }}%;"
+>
+  {% for compound in site.data.discovery_scene.compounds %}
+    <div
+      class="compound-flight"
+      data-compound="{{ forloop.index0 }}"
+      style="--target-x: {{ compound.target[0] | times: 100 }}%; --target-y: {{ compound.target[1] | times: 100 }}%; --rotation: {{ compound.rotation }}deg;"
+    >
+      <div
+        class="compound-sketch"
+        style="--sprite-column: {{ compound.sprite[0] }}; --sprite-row: {{ compound.sprite[1] }};"
+      >
+        {% if compound.image %}
+          <img
+            class="compound-image"
+            src="{{ compound.image | relative_url }}"
+            alt=""
+            decoding="async"
+          >
+        {% else %}
+          <img
+            class="compound-sprite"
+            src="{{ site.data.discovery_scene.image | relative_url }}"
+            alt=""
+            width="1536"
+            height="1024"
+            decoding="async"
+          >
+        {% endif %}
+      </div>
+    </div>
+    {% if site.data.discovery_scene.show_contact_rings %}
+      <span
+        class="compound-contact"
+        data-contact="{{ forloop.index0 }}"
+        style="--target-x: {{ compound.target[0] | times: 100 }}%; --target-y: {{ compound.target[1] | times: 100 }}%;"
+      ></span>
+    {% endif %}
+  {% endfor %}
+</div>

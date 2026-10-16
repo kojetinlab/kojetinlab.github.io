@@ -2,23 +2,23 @@
 
 The `update-site.sh` script copies new and changed release files into your existing GitHub clone. It uses content hashes and rsync, leaves unrelated files in place, and never deletes files. Preview is the default on every run; `--apply` performs the copy. After a successful preview, the script prints the Up Arrow instructions for applying it. After copying, it prints the separate GitHub Desktop commit/push steps. You still review, commit, and push in GitHub Desktop.
 
-Version 5.9 adds the updated people roster, sorting options, and optional alumni portraits. It retains the molecular-to-cell transition and reusable updater and can update an existing v5.7 or later working copy. Keep the extracted download and your GitHub clone in separate folders.
+Version 5.13.1 aligns each molecular action to its own heading. The wiggle is at full strength as the third heading enters view, and all five actions can be shifted earlier with `action_lead_vh` in `_data/scroll_story.yml` (default 20). The longer sections and doubled cell/discovery transition distances from 5.13.0 are retained. Asset cache version increases to 21: after applying, stop the running Jekyll server with Control-C, restart it, and refresh the browser. Keep the extracted download and your GitHub clone in separate folders.
 
 ## Import this release
 
-1. Download and unzip **Kojetin-Lab-Website-v5.9.zip**. Open the extracted `kojetinlab-website` source folder; find `update-site.sh` at its top level.
+1. Download and unzip **Kojetin-Lab-Website-v5.13.1.zip**. Open the extracted `kojetinlab-website` source folder; find `update-site.sh` at its top level.
 2. In GitHub Desktop, select `kojetinlab.github.io`, choose the branch you normally publish, and use **Repository → Show in Finder**. If you have remote changes, fetch/pull them first.
 3. Open Terminal. Type `cd `, including the trailing space, drag your **GitHub repository folder** into Terminal, and press Return.
 4. Type `bash `, drag **update-site.sh from the extracted download** into Terminal, and press Return. This previews the update without changing repository files.
 5. To apply that preview, press the Up Arrow to recall the command, add ` --apply` at the end, and press Return.
-6. Review the changed files in GitHub Desktop, including `.site-release.json`. Commit with a summary such as `Update people and alumni settings`, then **Push origin**.
+6. Review the changed files in GitHub Desktop, including `.site-release.json`. Commit with a summary such as `Align molecular actions with approaching headings`, then **Push origin**.
 
 The commands will resemble these; substitute your actual paths:
 
 ```sh
 cd "/Users/your-name/Documents/GitHub/kojetinlab.github.io"
-bash "/Users/your-name/Downloads/Kojetin-Lab-Website-v5.9/kojetinlab-website/update-site.sh"
-bash "/Users/your-name/Downloads/Kojetin-Lab-Website-v5.9/kojetinlab-website/update-site.sh" --apply
+bash "/Users/your-name/Downloads/Kojetin-Lab-Website-v5.13.1/kojetinlab-website/update-site.sh"
+bash "/Users/your-name/Downloads/Kojetin-Lab-Website-v5.13.1/kojetinlab-website/update-site.sh" --apply
 ```
 
 The script copies itself and its supporting files into your repository during this first update. Nothing is committed or pushed by the script. The normal GitHub Pages workflow builds the site after you push.

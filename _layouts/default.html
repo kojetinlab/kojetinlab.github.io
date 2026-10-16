@@ -1,5 +1,9 @@
 <!doctype html>
-<html lang="en" data-palette="{{ site.data.display.site_palette }}">
+<html
+  lang="en"
+  data-palette="{{ site.data.display.site_palette }}"
+  data-persistent-navigation="{{ site.data.navigation_settings.persistent_menu }}"
+>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -47,6 +51,43 @@
         href="{{ '/assets/css/people.css' | relative_url }}?v={{ site.asset_version }}"
       >
     {% endif %}
+    {% if page.layout == 'home' %}
+      <link
+        rel="stylesheet"
+        href="{{ '/assets/css/scroll-story.css' | relative_url }}?v={{ site.asset_version }}"
+      >
+      <link
+        rel="stylesheet"
+        href="{{ '/assets/css/molecular-loading.css' | relative_url }}?v={{ site.asset_version }}"
+      >
+      <noscript>
+        <style>
+          #molecule[data-renderer='loading'] .molecule-layer,
+          #molecule[data-renderer='loading'] .molecule-label,
+          #molecule[data-renderer='loading'] .pdb-link,
+          #molecule[data-renderer='loading'] .figure-note {
+            visibility: visible;
+          }
+          #molecule[data-renderer='loading'] .renderer-status,
+          .molecular-loading-art {
+            display: none;
+          }
+        </style>
+      </noscript>
+      <link
+        rel="stylesheet"
+        href="{{ '/assets/css/discovery.css' | relative_url }}?v={{ site.asset_version }}"
+      >
+    {% endif %}
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/css/links.css' | relative_url }}?v={{ site.asset_version }}"
+    >
+    {% include footer-brand-style.html %}
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/css/navigation.css' | relative_url }}?v={{ site.asset_version }}"
+    >
     <script type="application/json" id="display-config">
       {"defaults": {{ site.data.display | jsonify }}, "palettes": {{ site.data.palettes | jsonify }}, "structures": {{ site.data.structures | jsonify }}}
     </script>

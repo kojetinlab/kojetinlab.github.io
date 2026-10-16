@@ -1,0 +1,12 @@
+<!-- Branding size is configured in _data/site.yml; no footer markup edits needed. -->
+{% assign logo_scale = site.data.site.footer_logo_scale_percent
+  | default: 50
+  | at_least: 10
+  | at_most: 200
+%}
+<style>
+  .footer-brand {
+    width: min({{ logo_scale }}%, {{ 560 | times: logo_scale | divided_by: 100.0 }}px);
+    max-width: 100%;
+  }
+</style>

@@ -20,7 +20,7 @@ const native = vendor.molstar.lib;
 
 async function fixture(key) {
   const reps = new Map(), frames = new Map(), ticks = [];
-  let frameId = 0, now = 0, stopped = 0, disposed = false, failDraw = false, drawError;
+  let frameId = 0, now = 0, stopped = 0, disposed = false, failDraw = false, drawError, firstFrames = 0;
   const canvas = {
     props: { postprocessing: { occlusion: { params: {} }, antialiasing: {} } },
     setProps() {}, update() {}, requestDraw() {}, commit() {}, resetTime(t) { assert.equal(t, 0); },
@@ -77,7 +77,7 @@ async function fixture(key) {
     ...display.palettes.vandy.molecule, illustrative: true, ssgi: true, h12_range: preset.h12_range,
     ligand_moves_with_domain: !preset.allow_ligand_separation };
   const host = { append() {}, closest: () => element() };
-  const adapter = await context.window.KojetinRenderers.molstar({ host, scene, settings, loadScript: async () => {}, onError(error) { drawError = error; } });
+  const adapter = await context.window.KojetinRenderers.molstar({ host, scene, settings, loadScript: async () => {}, onError(error) { drawError = error; }, onFirstFrame() { firstFrames++; } });
   const state = { progress: 1, angle: 0.28, domainAngle: 0.03, peptideT: 1,
     ligandT: preset.allow_ligand_separation ? 1 : 0, span: settings.span, motionTime: 1.25, wiggleAmplitude: 2 };
   function tick(count = 1) {
@@ -85,14 +85,18 @@ async function fixture(key) {
       now += 40; const pending = [...frames.values()]; frames.clear(); pending.forEach(fn => fn(now));
     }
   }
-  return { adapter, reps, frames, ticks, state, tick, settings, failDraw() { failDraw = true; }, get drawError() { return drawError; }, get stopped() { return stopped; }, get disposed() { return disposed; } };
+  return { adapter, reps, frames, ticks, state, tick, settings, failDraw() { failDraw = true; }, get firstFrames() { return firstFrames; }, get drawError() { return drawError; }, get stopped() { return stopped; }, get disposed() { return disposed; } };
 }
 
 (async () => {
   for (const key of ["6onj", "6oni"]) {
     const f = await fixture(key);
     assert.equal(f.stopped, 1, "Native free-running clock is stopped");
+    await f.adapter.setPalette(f.settings); f.tick(2);
+    assert.equal(f.firstFrames, 0, "Initial setup draws do not reveal the unconfigured camera");
+    f.ticks.length = 0;
     f.adapter.render(f.state); f.tick(16);
+    assert.equal(f.firstFrames, 1, "Reveal exactly once, after the configured frame is drawn");
     assert(f.ticks.length > 0);
     assert(f.ticks.every(t => t === 1250), "Shader time stays fixed while the site clock is paused");
     assert.equal(f.frames.size, 0, "Refinement ends without an idle rendering loop");
@@ -103,9 +107,8 @@ async function fixture(key) {
       assert.equal(animation.wiggleFrequency, presentation.domain_wiggle_frequency);
       assert.equal(animation.tumbleAmplitude, 0);
       assert(Object.values(animation).every(value => value !== undefined));
-      const participates = name === "receptor" || (name === "ligand" && key === "6oni");
-      assert.equal(cell.obj.data.repr.state.wiggle.layers.length, participates ? 1 : 0);
-      assert.equal(cell.obj.data.repr.state.themeStrength.wiggle, participates ? 2 : 0);
+      assert.equal(cell.obj.data.repr.state.wiggle.layers.length, 1, name + " participates in wiggle");
+      assert.equal(cell.obj.data.repr.state.themeStrength.wiggle, 2);
     }
     f.adapter.setSuspended(true);
     f.adapter.render({ ...f.state, motionTime: 1.5 });
@@ -127,4 +130,9 @@ async function fixture(key) {
     f.adapter.dispose(); assert.equal(f.frames.size, 0); assert.equal(f.disposed, true);
     console.log(key + ": native wiggle parameters, component selection, frozen clock, suspension, appearance, reset, and disposal passed");
   }
+  const failed = await fixture("6onj");
+  failed.adapter.render(failed.state); failed.failDraw(); failed.tick(2);
+  assert.equal(failed.firstFrames, 0, "A failed initial frame must never reveal the canvas");
+  assert.equal(failed.drawError.message, "Rendering failed");
+  failed.adapter.dispose();
 })().catch(error => { console.error(error); process.exitCode = 1; });

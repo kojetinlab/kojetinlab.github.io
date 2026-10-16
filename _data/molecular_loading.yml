@@ -1,0 +1,7 @@
+# A conceptual scientific sketch shown while Mol* prepares its first frame.
+# Replace this path with your own transparent PNG, WebP, or SVG if desired.
+image: /assets/images/science/molecular-loading.webp
+
+# One gentle 4.5-second drift; then the sketch rests if loading takes longer.
+# The visitor's reduced-motion preference always disables this animation.
+animate: true

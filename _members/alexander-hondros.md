@@ -8,7 +8,6 @@ status: current
 seniority: 30
 joined_year: 2025
 years: 2025–present
-photo: ''
 lab_history:
 - role: Postdoctoral Fellow
   years: 2025–present

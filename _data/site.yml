@@ -25,4 +25,6 @@ contact_photo_caption: Our home at Vanderbilt · Nashville, Tennessee
 # SVG stays sharp at every display size. A matching .png is also included.
 footer_logo: /assets/images/brand/vanderbilt-basic-sciences.svg
 footer_logo_alt: Vanderbilt University School of Medicine Basic Sciences
+# Percentage of the original footer logo size: 50 = half size, 100 = full size.
+footer_logo_scale_percent: 75
 basic_sciences_url: https://medschool.vanderbilt.edu/basic-sciences/

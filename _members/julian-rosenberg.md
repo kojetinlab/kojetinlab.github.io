@@ -8,7 +8,6 @@ photo: /assets/images/people/julian-rosenberg.png
 seniority: 60
 joined_year: 2025
 years: 2025–present
-photo: ''
 lab_history:
 - role: Undergraduate Researcher
   years: 2025–present

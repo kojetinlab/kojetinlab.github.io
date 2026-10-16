@@ -1,0 +1,30 @@
+/* A second link cue, alongside the palette's existing hover color.
+   Keyboard users get the same cue plus the existing focus outline. */
+a[href] {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-skip-ink: auto;
+}
+
+a[href]:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+}
+
+a[href]:focus-visible {
+  color: var(--teal);
+}
+
+/* Whole-card links underline their title, keeping descriptions and images clear. */
+a.research-row:is(:hover, :focus-visible),
+.member-card > a:is(:hover, :focus-visible),
+a.wordmark:is(:hover, :focus-visible),
+a.alumni-portrait:is(:hover, :focus-visible) {
+  text-decoration-line: none;
+}
+
+a.research-row:is(:hover, :focus-visible) :is(h2, h3),
+.member-card > a:is(:hover, :focus-visible) h3 {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}

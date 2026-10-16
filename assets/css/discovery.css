@@ -1,0 +1,100 @@
+/* Final chapter: marker sketches arrive around the cell as the view pulls back. */
+.discovery-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+}
+.discovery-artboard {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+}
+.compound-flight {
+  position: absolute;
+  left: calc(50% + var(--target-x));
+  top: calc(50% + var(--target-y));
+  width: var(--compound-size, 32%);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%) rotate(var(--rotation));
+}
+.compound-sketch {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.compound-sprite {
+  position: absolute;
+  width: 300%;
+  height: 200%;
+  max-width: none;
+  left: calc(var(--sprite-column) * -100%);
+  top: calc(var(--sprite-row) * -100%);
+}
+.compound-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.compound-contact {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 13%;
+  aspect-ratio: 1;
+  border: 1.5px solid var(--teal);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+.discovery-static {
+  margin: 28px 0 0;
+  max-width: 520px;
+}
+.discovery-static-view {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+.discovery-static .cell-artboard {
+  transform: scale(var(--discovery-cell-scale, 0.67));
+}
+.discovery-static .cell-labels {
+  display: none;
+}
+.discovery-static .cell-illustration {
+  opacity: var(--discovery-cell-opacity, 0.5);
+}
+.discovery-static .compound-contact {
+  left: calc(50% + var(--target-x) * 0.75);
+  top: calc(50% + var(--target-y) * 0.75);
+  transform: translate(-50%, -50%) scale(1.3);
+  opacity: 0.22;
+}
+.discovery-static figcaption {
+  margin-top: 12px;
+  font-size: var(--text-caption);
+  line-height: 1.5;
+  color: var(--muted);
+}
+.discovery-transition-enabled .discovery-static {
+  display: none;
+}
+
+/* Keep the pause control inside the opaque sticky panel on narrow screens. */
+@media (max-width: 700px) {
+  .motion-enabled .story-stage > .molecular-figure {
+    padding-bottom: 30px;
+  }
+  .motion-enabled .molecular-figure .motion-toggle {
+    bottom: 5px;
+    transform: none;
+  }
+}

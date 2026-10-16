@@ -1,0 +1,140 @@
+/* Optional persistent navigation. Enable in _data/navigation_settings.yml.
+   The original header and shared typography remain independently editable. */
+.persistent-navigation {
+  --navigation-edge: max(16px, env(safe-area-inset-right));
+  --navigation-top: max(16px, env(safe-area-inset-top));
+}
+
+.persistent-navigation .menu-toggle {
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 44px;
+  color: var(--ink);
+}
+
+/* The existing decorative plus becomes three lines, then a close icon. */
+.persistent-navigation .menu-toggle span {
+  position: relative;
+  display: inline-block;
+  width: 18px;
+  height: 2px;
+  font-size: 0;
+  background: currentColor;
+}
+.persistent-navigation .menu-toggle span::before,
+.persistent-navigation .menu-toggle span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+}
+.persistent-navigation .menu-toggle span::before {
+  top: -6px;
+}
+.persistent-navigation .menu-toggle span::after {
+  top: 6px;
+}
+.persistent-navigation .menu-toggle[aria-expanded="true"] span {
+  background: transparent;
+}
+.persistent-navigation .menu-toggle[aria-expanded="true"] span::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+.persistent-navigation .menu-toggle[aria-expanded="true"] span::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+.persistent-navigation .site-header.is-scrolled .menu-toggle {
+  display: flex;
+  position: fixed;
+  top: var(--navigation-top);
+  right: var(--navigation-edge);
+  z-index: 2;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper);
+  box-shadow: 0 4px 18px rgb(0 0 0 / 10%);
+}
+.persistent-navigation .menu-toggle:hover {
+  color: var(--teal);
+}
+
+/* At narrow widths this is also the menu beneath the unscrolled header.
+   Absolute positioning prevents opening it from shifting the page content. */
+.persistent-navigation .site-header nav.is-menu-panel {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: var(--navigation-edge);
+  width: 360px;
+  max-width: calc(100vw - var(--navigation-edge) * 2);
+  max-height: calc(100svh - 125px);
+  max-height: calc(100dvh - 125px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 0;
+  padding: 14px 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: 0 12px 35px rgb(0 0 0 / 12%);
+}
+.persistent-navigation .site-header nav.is-menu-panel.is-open {
+  display: flex;
+}
+.persistent-navigation .site-header.is-scrolled nav.is-menu-panel {
+  position: fixed;
+  top: calc(var(--navigation-top) + 58px);
+  max-height: calc(100svh - var(--navigation-top) - 74px);
+  max-height: calc(100dvh - var(--navigation-top) - 74px);
+}
+.persistent-navigation .site-header nav.is-menu-panel > a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 0;
+  font-size: 20px;
+}
+.persistent-navigation .site-header nav:not(.is-menu-panel) > .menu-home-link {
+  display: none;
+}
+.persistent-navigation .is-menu-panel .display-settings {
+  width: 100%;
+  margin-top: 8px;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+.persistent-navigation .is-menu-panel .display-settings summary {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 4px;
+}
+.persistent-navigation .is-menu-panel .display-settings summary::before {
+  content: "Display options";
+}
+.persistent-navigation .is-menu-panel .display-controls {
+  position: static;
+  width: 100%;
+  max-width: 100%;
+  margin-top: 8px;
+  padding: 12px 0 4px;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+@media (max-width: 1180px) {
+  .persistent-navigation .site-header .menu-toggle {
+    display: inline-flex;
+  }
+}

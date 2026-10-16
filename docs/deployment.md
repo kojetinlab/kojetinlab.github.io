@@ -48,7 +48,7 @@ If v5.7 or v5.8 is already committed and pushed, follow [Importing release updat
 
 ## 4. Replace the source files
 
-1. Unzip **Kojetin-Lab-Website-v5.9.zip**.
+1. Unzip **Kojetin-Lab-Website-v5.13.1.zip**.
 2. Open the extracted `kojetinlab-website` folder. That is the new source.
 3. In GitHub Desktop, choose **Repository → Show in Finder** to open your cloned `kojetinlab.github.io` folder. That is the destination.
 4. In Finder, press **Command-Shift-period** to show hidden files in both folders.

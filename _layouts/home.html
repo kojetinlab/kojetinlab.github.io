@@ -17,13 +17,32 @@ layout: default
     <figure
       class="molecular-figure"
       id="molecule"
+      data-renderer="loading"
       data-version="{{ site.asset_version }}"
       data-assets="{{ '/assets/' | relative_url }}"
     >
       <div class="molecule-view">
+        <!-- Conceptual artwork shown only while the selected Mol* view prepares. -->
+        <div
+          class="molecular-loading-art{% if site.data.molecular_loading.animate %} molecular-loading-animate{% endif %}"
+          aria-hidden="true"
+        >
+          <img
+            src="{{ site.data.molecular_loading.image | relative_url }}"
+            alt=""
+            width="720"
+            height="720"
+            fetchpriority="high"
+          >
+        </div>
         {% if site.data.cell_scene.enabled %}
           <div class="cell-scene" aria-hidden="true">
             {% include adipocyte.html %}
+          </div>
+        {% endif %}
+        {% if site.data.cell_scene.enabled and site.data.discovery_scene.enabled %}
+          <div class="discovery-scene" aria-hidden="true">
+            {% include discovery.html %}
           </div>
         {% endif %}
         <div class="molecule-layer">
@@ -33,7 +52,7 @@ layout: default
             alt="{{ molecule.receptor }} with {{ molecule.ligand }} and {{ molecule.peptide }} {{ molecule.peptide_role }}, PDB {{ molecule.pdb_id }}."
             width="640"
             height="640"
-            fetchpriority="high"
+            fetchpriority="low"
           >
           <div class="molecule-renderer" aria-hidden="true"></div>
         </div>
@@ -58,7 +77,7 @@ layout: default
         <span class="figure-note">{{ molecule.note }}</span>
       </figcaption>
       <button class="motion-toggle" aria-pressed="false" hidden>Pause motion</button>
-      <p class="renderer-status" role="status" aria-live="polite"></p>
+      <p class="renderer-status" role="status" aria-live="polite">Loading molecular view…</p>
     </figure>
   </div>
   <div class="story-steps wrap" id="molecular-detail">
@@ -129,6 +148,26 @@ layout: default
         We seek to translate basic discoveries into next-generation chemical tools and therapeutics,
         using molecular mechanisms to guide their design and development.
       </p>
+      {% if site.data.cell_scene.enabled and site.data.discovery_scene.enabled %}
+        <figure
+          class="discovery-static"
+          style="--discovery-cell-scale: {{ site.data.discovery_scene.cell_scale }}; --discovery-cell-opacity: {{ site.data.discovery_scene.cell_opacity | default: 0.5 }};"
+        >
+          <div
+            class="discovery-static-view"
+            role="img"
+            aria-label="{{ site.data.discovery_scene.alt | escape }}"
+          >
+            <div aria-hidden="true">
+              {% include adipocyte.html %}
+              {% include discovery.html %}
+            </div>
+          </div>
+          <figcaption>
+            {{ site.data.discovery_scene.caption }}. {{ site.data.discovery_scene.note }}
+          </figcaption>
+        </figure>
+      {% endif %}
       <a class="text-link" href="{{ '/research/' | relative_url }}">
         Explore our research
         <span>↗</span>
@@ -208,11 +247,17 @@ layout: default
     <span>↗</span>
   </a>
 </section>
+<script type="application/json" id="discovery-config">
+  {{ site.data.discovery_scene | jsonify }}
+</script>
 <script type="application/json" id="cell-config">
   {{ site.data.cell_scene | jsonify }}
 </script>
 <script type="application/json" id="hero-config">
   {{ site.data.hero_animation.presentation | jsonify }}
+</script>
+<script type="application/json" id="scroll-story-config">
+  {{ site.data.scroll_story | jsonify }}
 </script>
 <script
   defer
