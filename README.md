@@ -62,6 +62,7 @@ Open the down arrow after **Contact** to try palettes, PDB structures, illustrat
 | Lab text, contact details, footer links, and logo/photo paths | `_data/site.yml` |
 | Navigation | `_data/navigation.yml` |
 | People and alumni | `_members/` |
+| People sorting and alumni headshots | `_data/people.yml` |
 | Publications | `_publications/` |
 | Research areas | `_research/` |
 | News | `_posts/` |
@@ -83,6 +84,10 @@ remember_choices: true
 Palette keys are `vandy`, `default`, and `colorblind`; prepared PDB keys are `6onj` and `6oni`. Each structure has an independent camera. Adding another PDB requires preparing its molecular assets as described in the molecular guide.
 
 Saved visitor choices override defaults. Click **Site defaults** in the arrow menu after changing defaults, or temporarily set `remember_choices: false` while experimenting. Changing a dropdown affects that browser; changing a YAML file and publishing it changes the site's defaults.
+
+### People display settings
+
+In `_data/people.yml`, choose `sort_by: last_name` (default), `seniority`, or `joined`. Douglas appears first in every mode. Set `show_alumni_photos: true` to enable alumni portraits on the list and profiles; the default is `false`. Member files hold `last_name`, `seniority`, and `joined_year`. See [the people guide](docs/updating-website.md#people-and-alumni-settings) for ranks, examples, and roster notes.
 
 ## Publish an update
 

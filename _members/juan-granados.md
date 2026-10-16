@@ -1,16 +1,22 @@
 ---
-name: "Juan Granados"
-role: "High School Researcher"
-category: "Alumni"
-photo: ""
-status: "alumni"
-order: 115
-years: "Summer 2013–Summer 2014"
-current_position: "Consulting analyst"
-current_institution: "Accenture"
-source_url: "https://www.kojetinlab.org/people"
-position_note: "Last reported on the prior lab website; not independently updated."
-verified: "2026-10-15"
+name: Juan Granados
+last_name: Granados
+role: High School Summer Intern
+category: High School Summer Interns
+status: alumni
+seniority: 70
+joined_year: 2013
+years: 2013–2014
+photo: ''
+current_position: Consulting analyst
+current_institution: Accenture
+position_note: Retained from the prior lab website; the October 2026 roster did not provide a new position.
+lab_history:
+- role: High School Summer Intern
+  years: 2013–2014
+  institution: Scripps Research / UF Scripps
+source_document: people(2).docx
+updated: '2026-10-16'
 ---
 
 

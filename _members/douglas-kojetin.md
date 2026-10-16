@@ -1,16 +1,19 @@
 ---
-name: "Douglas Kojetin"
-role: "Professor; Director of Graduate Studies, Biochemistry"
-category: "Principal Investigator"
-photo: "/assets/images/people/douglas-kojetin.jpg"
-status: "current"
-order: 1
-source_url: "https://www.kojetinlab.org/people"
-verified: "2026-10-15"
-email: "douglas.kojetin@vanderbilt.edu"
-website: "https://medschool.vanderbilt.edu/biochemistry/person/doug-kojetin/"
-research_interests: "Structural biology and molecular pharmacology of nuclear receptors"
+name: Douglas Kojetin
+role: Professor; Director of Graduate Studies, Biochemistry
+category: Principal Investigator
+photo: /assets/images/people/douglas-kojetin.jpg
+status: current
+source_url: https://www.kojetinlab.org/people
+verified: '2026-10-15'
+email: douglas.kojetin@vanderbilt.edu
+website: https://medschool.vanderbilt.edu/biochemistry/person/doug-kojetin/
+research_interests: Structural biology and molecular pharmacology of nuclear receptors
+last_name: Kojetin
+principal_investigator: true
+seniority: 0
 ---
+
 
 
 Douglas Kojetin is Professor of Biochemistry and Ingram Professor of Cancer Research at Vanderbilt University. He serves as Director of Graduate Studies in Biochemistry and Co-Leader of the Vanderbilt-Ingram Cancer Center Genome Maintenance Research Program.

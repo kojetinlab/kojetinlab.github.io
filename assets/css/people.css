@@ -1,0 +1,20 @@
+/* People-specific additions; shared typography and portrait crops stay in site.css. */
+.alumni-portrait {
+  display: block;
+  margin-bottom: 20px;
+}
+.alumni-portrait img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 20%;
+  background: var(--placeholder);
+}
+.profile-grid.profile-without-photo {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 900px;
+}
+.profile-grid > div {
+  min-width: 0;
+}

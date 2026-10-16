@@ -1,16 +1,22 @@
 ---
-name: "Hermes Reyes-Caballero"
-role: "Postdoctoral Fellow"
-category: "Alumni"
-photo: ""
-status: "alumni"
-order: 104
-years: "2012–2013"
-current_position: "Research Associate"
-current_institution: "Johns Hopkins University"
-source_url: "https://www.kojetinlab.org/people"
-position_note: "Last reported on the prior lab website; not independently updated."
-verified: "2026-10-15"
+name: Hermes Reyes-Caballero
+last_name: Reyes-Caballero
+role: Postdoctoral Fellow
+category: Postdoctoral Fellows
+status: alumni
+seniority: 30
+joined_year: 2012
+years: 2012–2013
+photo: ''
+current_position: Biologist
+current_institution: US Food and Drug Administration
+position_note: Reported in the October 2026 roster supplied by the laboratory.
+lab_history:
+- role: Postdoctoral Fellow
+  years: 2012–2013
+  institution: Scripps Research / UF Scripps
+source_document: people(2).docx
+updated: '2026-10-16'
 ---
 
 

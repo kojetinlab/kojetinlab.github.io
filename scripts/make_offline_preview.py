@@ -65,14 +65,14 @@ document.addEventListener('click', function (event) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kojetin Laboratory · v5.8 molecule to cell</title>
+  <title>Kojetin Laboratory · v5.9 molecule to cell</title>
   <style>
     html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #f7f7f2; }
     iframe { border: 0; width: 100%; height: 100%; display: block; }
   </style>
 </head>
 <body>
-  <iframe title="Kojetin Laboratory website preview v5.8" id="site"></iframe>
+  <iframe title="Kojetin Laboratory website preview v5.9" id="site"></iframe>
   <script type="application/json" id="preview-data">''' + payload + r'''</script>
   <script>
     const data = JSON.parse(document.getElementById('preview-data').textContent);

@@ -1,16 +1,28 @@
 ---
-name: "Sarah Mosure"
-role: "Graduate Student"
-category: "Alumni"
-photo: ""
-status: "alumni"
-order: 110
-years: "Graduated 2023"
-current_position: "Scientist"
-current_institution: "Aethon Therapeutics"
-source_url: "https://www.kojetinlab.org/people"
-position_note: "Last reported on the prior lab website; not independently updated."
-verified: "2026-10-15"
+name: Sarah Mosure
+last_name: Mosure
+role: Graduate Student
+category: Graduate Students
+status: alumni
+seniority: 40
+joined_year: 2016
+years: 2016–2023
+photo: ''
+current_position: Scientist
+current_institution: Aethon Therapeutics
+position_note: Retained from the prior lab website; the October 2026 roster did not provide a new position.
+lab_history:
+- role: Undergraduate Researcher
+  years: 2016–2017
+  institution: Scripps Research
+- role: Graduate Student
+  years: 2017–2023
+  institution: Scripps Research
+awards:
+- DeVos fellowship at Scripps Research
+- NIH F31DK127643
+source_document: people(2).docx
+updated: '2026-10-16'
 ---
 
-Sarah also joined the lab as an undergraduate researcher in Summer 2016 and Spring 2017, while a student at the University of Connecticut.
+Sarah was a joint graduate student with Prof. Laura Solt.

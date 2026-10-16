@@ -1,0 +1,9 @@
+# Applies to both Our People and Alumni. Save and rebuild Jekyll to apply.
+# last_name: alphabetical by surname (default)
+# seniority: lower member.seniority numbers first; surname breaks ties
+# joined: earliest member.joined_year first; surname breaks ties; unknowns last
+sort_by: last_name
+
+# Members marked principal_investigator: true always appear first in Our People.
+# This setting controls alumni photos on BOTH the listing and profile pages.
+show_alumni_photos: false

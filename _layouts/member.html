@@ -1,23 +1,29 @@
 ---
 layout: default
 ---
+{% assign show_photo = true %}
+{% if page.status == 'alumni' and site.data.people.show_alumni_photos != true %}
+  {% assign show_photo = false %}
+{% endif %}
 <article class="wrap article-shell">
   <a class="back-link" href="{{ '/people/' | relative_url }}">← Our people</a>
-  <div class="profile-grid">
-    <div>
-      {% if page.photo and page.photo != '' -%}
-        <img
-          class="profile-photo"
-          src="{{ page.photo | relative_url }}"
-          alt="{{ page.name | escape }}"
-        >
-      {%- else %}
-        <div class="member-placeholder profile-placeholder" aria-hidden="true">
-          {{ page.name | split: ' ' | first | slice: 0 -}}
-          {{- page.name | split: ' ' | last | slice: 0 }}
-        </div>
-      {% endif %}
-    </div>
+  <div class="profile-grid{% unless show_photo %} profile-without-photo{% endunless %}">
+    {% if show_photo %}
+      <div>
+        {% if page.photo and page.photo != '' -%}
+          <img
+            class="profile-photo"
+            src="{{ page.photo | relative_url }}"
+            alt="{{ page.name | escape }}"
+          >
+        {%- else %}
+          <div class="member-placeholder profile-placeholder" aria-hidden="true">
+            {{ page.name | split: ' ' | first | slice: 0 -}}
+            {{- page.name | split: ' ' | last | slice: 0 }}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
     <div>
       <p class="eyebrow">
         {% if page.status == 'alumni' %}Alumni{% else %}Our people{% endif %}
@@ -27,7 +33,7 @@ layout: default
       {% if page.years %}
         <p>{{ page.years }}</p>
       {% endif -%}
-      {%- if page.current_position %}
+      {%- if page.current_position and page.current_position != '' %}
         <p>
           Last reported: {{ page.current_position -}}
           {%- if page.current_institution %}, {{ page.current_institution }}{% endif %}
@@ -53,7 +59,28 @@ layout: default
           <a href="{{ page.github }}">GitHub ↗</a>
         {%- endif %}
       </div>
-      <div class="prose">{{ content }}</div>
+      <div class="prose">
+        {{ content }}
+        {% if page.lab_history %}
+          <h2>In the lab</h2>
+          <ul>
+            {% for appointment in page.lab_history %}
+              <li>
+                <strong>{{ appointment.years }}</strong>
+                — {{ appointment.role }}, {{ appointment.institution }}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        {% if page.awards %}
+          <h2>Awards and fellowships</h2>
+          <ul>
+            {% for award in page.awards %}
+              <li>{{ award }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
     </div>
   </div>
 </article>

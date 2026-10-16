@@ -33,7 +33,12 @@ def main():
                             if val in seen: errors.append(f'{label}: duplicate {key} also in {seen[val]}')
                             seen[val]=label
                     if data.get('doi') and not re.fullmatch(r'10\.\d{4,9}/\S+',str(data['doi'])): errors.append(f'{label}: DOI should be an identifier, not a URL')
-                if folder=='_members' and data.get('status') not in ['current','alumni']: errors.append(f'{label}: status must be current or alumni')
+                if folder=='_members':
+                    if data.get('status') not in ['current','alumni']: errors.append(f'{label}: status must be current or alumni')
+                    if not isinstance(data.get('last_name'),str) or not data['last_name'].strip(): errors.append(f'{label}: last_name is required for alphabetical sorting')
+                    if type(data.get('seniority')) is not int or data['seniority'] < 0: errors.append(f'{label}: seniority must be a nonnegative integer')
+                    if data.get('joined_year') is not None and (type(data['joined_year']) is not int or not 1900 <= data['joined_year'] <= 2100): errors.append(f'{label}: joined_year must be a four-digit year or omitted')
+                    if 'principal_investigator' in data and type(data['principal_investigator']) is not bool: errors.append(f'{label}: principal_investigator must be true or false')
                 if 'date' in data: dt.date.fromisoformat(str(data['date'])[:10])
                 for key in ['image','photo','pdf']:
                     value=data.get(key)
@@ -43,6 +48,11 @@ def main():
         data=yaml.safe_load(path.read_text().split('---',2)[1])
         for pub_id in data.get('publication_ids',[]):
             if pub_id.lower() not in ids: errors.append(f'{path.name}: unknown publication ID {pub_id}')
+    people=yaml.safe_load((ROOT/'_data/people.yml').read_text())
+    if people.get('sort_by') not in ('last_name','seniority','joined'):
+        errors.append('people.yml: sort_by must be last_name, seniority, or joined')
+    if type(people.get('show_alumni_photos')) is not bool:
+        errors.append('people.yml: show_alumni_photos must be true or false (without quotes)')
     structures=yaml.safe_load((ROOT/'_data/structures.yml').read_text())
     display=yaml.safe_load((ROOT/'_data/display.yml').read_text())
     if display['molecular_structure'] not in structures:

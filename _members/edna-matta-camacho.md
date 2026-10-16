@@ -1,16 +1,22 @@
 ---
-name: "Edna Matta-Camacho"
-role: "Postdoctoral Fellow"
-category: "Alumni"
-photo: ""
-status: "alumni"
-order: 102
-years: "2011–2012"
-current_position: "Research Associate"
-current_institution: "Carleton University"
-source_url: "https://www.kojetinlab.org/people"
-position_note: "Last reported on the prior lab website; not independently updated."
-verified: "2026-10-15"
+name: Edna Matta Camacho
+last_name: Matta Camacho
+role: Postdoctoral Fellow
+category: Postdoctoral Fellows
+status: alumni
+seniority: 30
+joined_year: 2011
+years: 2011–2012
+photo: ''
+current_position: Assessment Officer
+current_institution: Health Canada
+position_note: Reported in the October 2026 roster supplied by the laboratory.
+lab_history:
+- role: Postdoctoral Fellow
+  years: 2011–2012
+  institution: Scripps Research / UF Scripps
+source_document: people(2).docx
+updated: '2026-10-16'
 ---
 
 

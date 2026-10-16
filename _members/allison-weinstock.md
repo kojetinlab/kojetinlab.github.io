@@ -1,16 +1,19 @@
 ---
-name: "Allison Weinstock"
-role: "Undergraduate Researcher"
-category: "Alumni"
-photo: ""
-status: "alumni"
-order: 113
-years: "Summer–Fall 2019"
-current_position: ""
-current_institution: ""
-source_url: "https://www.kojetinlab.org/people"
-position_note: "Last reported on the prior lab website; not independently updated."
-verified: "2026-10-15"
+name: Allison Weinstock
+last_name: Weinstock
+role: Undergraduate Researcher
+category: Undergraduate Students
+status: alumni
+seniority: 60
+joined_year: 2019
+years: 2019–2020
+photo: ''
+lab_history:
+- role: Undergraduate Researcher
+  years: 2019–2020
+  institution: Scripps Research / UF Scripps
+source_document: people(2).docx
+updated: '2026-10-16'
 ---
 
 

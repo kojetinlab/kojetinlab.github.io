@@ -41,6 +41,12 @@
       rel="stylesheet"
       href="{{ '/assets/css/palettes.css' | relative_url }}?v={{ site.asset_version }}"
     >
+    {% if page.url == '/people/' or page.layout == 'member' %}
+      <link
+        rel="stylesheet"
+        href="{{ '/assets/css/people.css' | relative_url }}?v={{ site.asset_version }}"
+      >
+    {% endif %}
     <script type="application/json" id="display-config">
       {"defaults": {{ site.data.display | jsonify }}, "palettes": {{ site.data.palettes | jsonify }}, "structures": {{ site.data.structures | jsonify }}}
     </script>

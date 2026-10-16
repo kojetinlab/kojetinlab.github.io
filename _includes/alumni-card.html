@@ -1,0 +1,39 @@
+<article class="alumni-card">
+  {% if site.data.people.show_alumni_photos == true %}
+    <a
+      class="alumni-portrait"
+      href="{{ include.member.url | relative_url }}"
+      aria-label="{{ include.member.name | escape }} profile"
+    >
+      {% if include.member.photo and include.member.photo != '' %}
+        <img
+          src="{{ include.member.photo | relative_url }}"
+          alt="{{ include.member.name | escape }}"
+          loading="lazy"
+          width="600"
+          height="750"
+        >
+      {% else %}
+        <div class="member-placeholder" aria-hidden="true">
+          {{ include.member.name | split: ' ' | first | slice: 0 -}}
+          {{- include.member.last_name | slice: 0 }}
+        </div>
+      {% endif %}
+    </a>
+  {% endif %}
+  <h3>
+    <a href="{{ include.member.url | relative_url }}">{{ include.member.name }} ↗</a>
+  </h3>
+  <p>
+    {{ include.member.role }}
+    {% if include.member.years %}· {{ include.member.years }}{% endif %}
+  </p>
+  {% if include.member.current_position and include.member.current_position != '' %}
+    <p>
+      {{ include.member.current_position }}
+      {% if include.member.current_institution and include.member.current_institution != '' %}
+        , {{ include.member.current_institution -}}
+      {% endif %}
+    </p>
+  {% endif %}
+</article>

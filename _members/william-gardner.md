@@ -1,16 +1,22 @@
 ---
-name: "William Gardner"
-role: "High School Researcher"
-category: "Alumni"
-photo: ""
-status: "alumni"
-order: 116
-years: "Summer 2014–Summer 2015"
-current_position: "Law student"
-current_institution: "University of Miami"
-source_url: "https://www.kojetinlab.org/people"
-position_note: "Last reported on the prior lab website; not independently updated."
-verified: "2026-10-15"
+name: William Gardner
+last_name: Gardner
+role: High School Summer Intern
+category: High School Summer Interns
+status: alumni
+seniority: 70
+joined_year: 2014
+years: 2014–2015
+photo: ''
+current_position: Law student
+current_institution: University of Miami
+position_note: Retained from the prior lab website; the October 2026 roster did not provide a new position.
+lab_history:
+- role: High School Summer Intern
+  years: 2014–2015
+  institution: Scripps Research / UF Scripps
+source_document: people(2).docx
+updated: '2026-10-16'
 ---
 
 

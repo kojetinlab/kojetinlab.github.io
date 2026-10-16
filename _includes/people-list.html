@@ -1,0 +1,28 @@
+{% comment %}
+  Render one status group. Sorting groups by their numeric field first keeps
+  seniority and years numeric; sorting each group by surname gives stable ties.
+  Unknown joining years are explicitly appended. Unknown modes use surnames.
+{% endcomment %}
+{% assign people_groups = include.members | group_by: 'status' %}
+{% case site.data.people.sort_by %}
+  {% when 'seniority' %}
+    {% assign people_groups = include.members | sort: 'seniority' | group_by: 'seniority' %}
+  {% when 'joined' %}
+    {% assign dated_members = include.members | where_exp: 'person', 'person.joined_year != nil' %}
+    {% assign undated_members = include.members
+      | where_exp: 'person', 'person.joined_year == nil'
+    %}
+    {% assign dated_groups = dated_members | sort: 'joined_year' | group_by: 'joined_year' %}
+    {% assign undated_groups = undated_members | group_by: 'joined_year' %}
+    {% assign people_groups = dated_groups | concat: undated_groups %}
+{% endcase %}
+{% for group in people_groups %}
+  {% assign sorted_people = group.items | sort_natural: 'last_name' %}
+  {% for member in sorted_people %}
+    {% if include.alumni %}
+      {% include alumni-card.html member=member %}
+    {% else %}
+      {% include member-card.html member=member %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}

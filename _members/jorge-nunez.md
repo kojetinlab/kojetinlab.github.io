@@ -1,16 +1,19 @@
 ---
-name: "Jorge Nunez"
-role: "Undergraduate Researcher"
-category: "Alumni"
-photo: ""
-status: "alumni"
-order: 112
-years: "Summer 2018"
-current_position: ""
-current_institution: ""
-source_url: "https://www.kojetinlab.org/people"
-position_note: "Last reported on the prior lab website; not independently updated."
-verified: "2026-10-15"
+name: Jorge Nunez
+last_name: Nunez
+role: Undergraduate Researcher
+category: Undergraduate Students
+status: alumni
+seniority: 60
+joined_year: 2018
+years: '2018'
+photo: ''
+lab_history:
+- role: Undergraduate Researcher
+  years: '2018'
+  institution: Scripps Research / UF Scripps
+source_document: people(2).docx
+updated: '2026-10-16'
 ---
 
 
