@@ -151,7 +151,7 @@ small,
   display: flex;
   align-items: baseline;
   gap: 8px;
-  font-size: 48px;
+  font-size: 30px;
   font-weight: 750;
   flex-shrink: 0;
   letter-spacing: -0.8px;
@@ -159,7 +159,7 @@ small,
 }
 .wordmark span {
   font-size: inherit;
-  font-weight: inherit;
+  font-weight: 400;
   letter-spacing: -0.5px;
 }
 .wordmark i {
