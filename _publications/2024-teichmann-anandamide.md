@@ -35,7 +35,8 @@ date: '2025-03-01'
 doi: 10.1111/bph.17366
 pmid: '39563075'
 topics:
-- NR4A
+- NR4A/Nurr1/Nur77
+- Cellular mechanisms
 featured: false
 image: ''
 image_alt: ''

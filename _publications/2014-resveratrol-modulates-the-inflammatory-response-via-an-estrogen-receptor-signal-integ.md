@@ -26,6 +26,7 @@ doi: 10.7554/elife.02057
 pmid: '24771768'
 topics:
 - Structural biology
+- Cellular mechanisms
 featured: false
 image: ''
 image_alt: ''

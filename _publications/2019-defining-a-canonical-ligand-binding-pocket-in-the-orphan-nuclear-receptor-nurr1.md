@@ -21,7 +21,9 @@ date_precision: day
 doi: 10.1016/j.str.2018.10.002
 pmid: '30416039'
 topics:
-- NR4A
+- NR4A/Nurr1/Nur77
+- NMR
+- Structural biology
 featured: false
 image: ''
 image_alt: ''

@@ -12,8 +12,10 @@ date: '2026-04-30'
 doi: 10.7554/elife.106861
 pmid: '42059885'
 topics:
-- NR4A
+- NR4A/Nurr1/Nur77
 - RXR
+- NMR
+- Structural biology
 featured: true
 image: /assets/images/publications/yu-2026-figure1.jpg
 image_alt: RXRγ domain constructs and their effects on Nur77-dependent reporter activity.

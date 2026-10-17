@@ -19,6 +19,8 @@ doi: 10.1021/acs.jmedchem.8b01573
 pmid: '30676741'
 topics:
 - PPARγ
+- NMR
+- Structural biology
 featured: false
 image: ''
 image_alt: ''

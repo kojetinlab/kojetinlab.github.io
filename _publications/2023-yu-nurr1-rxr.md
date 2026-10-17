@@ -11,8 +11,10 @@ date: '2023-04-27'
 doi: 10.7554/elife.85039
 pmid: '37102494'
 topics:
-- NR4A
+- NR4A/Nurr1/Nur77
 - RXR
+- NMR
+- Structural biology
 featured: true
 image: ''
 image_alt: ''

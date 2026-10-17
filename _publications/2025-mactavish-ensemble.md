@@ -19,6 +19,8 @@ pmid: '40021712'
 topics:
 - PPARγ
 - Conformational dynamics
+- NMR
+- Structural biology
 featured: true
 image: ''
 image_alt: ''

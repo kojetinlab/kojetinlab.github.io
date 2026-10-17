@@ -19,6 +19,7 @@ doi: 10.1016/s0006-291x(03)00499-6
 pmid: '12684061'
 topics:
 - NMR
+- Structural biology
 featured: false
 image: ''
 image_alt: ''

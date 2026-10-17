@@ -21,6 +21,8 @@ pmid: '41563829'
 topics:
 - PPARγ
 - Conformational dynamics
+- NMR
+- Structural biology
 featured: true
 image: /assets/images/publications/arifova-2026-figure8.jpg
 image_alt: Model linking PPARγ helix 12 occupancy in the orthosteric pocket to covalent inhibitor efficacy.

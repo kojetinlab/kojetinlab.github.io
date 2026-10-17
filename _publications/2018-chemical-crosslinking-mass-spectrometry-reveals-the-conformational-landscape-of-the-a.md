@@ -22,6 +22,7 @@ doi: 10.1016/j.str.2018.07.007
 pmid: '30146169'
 topics:
 - PPARγ
+- Structural biology
 featured: false
 image: ''
 image_alt: ''

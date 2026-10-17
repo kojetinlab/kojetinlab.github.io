@@ -25,6 +25,7 @@ doi: 10.1038/ncomms8443
 pmid: '26068133'
 topics:
 - PPARγ
+- Cellular mechanisms
 featured: false
 image: ''
 image_alt: ''

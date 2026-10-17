@@ -17,6 +17,7 @@ doi: 10.1074/jbc.m113.545111
 pmid: '24872411'
 topics:
 - REV-ERB
+- Structural biology
 featured: false
 image: ''
 image_alt: ''

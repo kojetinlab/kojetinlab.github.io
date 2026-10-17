@@ -13,7 +13,7 @@ date_precision: month
 doi: 10.1677/erc-07-0281
 pmid: '18755852'
 topics:
-- Structural biology
+- Reviews and commentaries
 featured: false
 image: ''
 image_alt: ''

@@ -10,7 +10,7 @@ date: '2023-12-07'
 doi: 10.1016/j.str.2023.11.001
 pmid: '38065074'
 topics:
-- Structural biology
+- Reviews and commentaries
 featured: false
 image: ''
 image_alt: ''

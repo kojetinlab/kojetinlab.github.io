@@ -18,7 +18,7 @@ date_precision: month
 doi: 10.1124/pr.112.006833
 pmid: '23457206'
 topics:
-- Structural biology
+- Reviews and commentaries
 featured: false
 image: ''
 image_alt: ''

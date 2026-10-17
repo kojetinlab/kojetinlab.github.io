@@ -385,3 +385,9 @@ This pass does not constitute a full cross-browser or accessibility audit. Unsup
 - Expanded 15 PPARγ-preprint names from its latest bioRxiv manuscript XML and 27 ileitis-preprint names from its Crossref DOI deposit (manuscript XML was rate-limited). Source names and ordering are retained, including supplied middle initials. Names are not inferred from other papers.
 - Updated bioRxiv imports to prefer manuscript XML, with a DOI-deposit fallback. Author count, order, surnames, first initials and DOI are checked. Matching existing or PubMed full names are retained if the additional source is unavailable; changed author membership is not replaced with an older list.
 - All 18 publication/author regression tests passed. Jekyll build and content validation passed; all 149 generated pages passed internal-reference checks. All 42 full preprint author names were verified in the publication list and the two individual pages.
+
+
+## Version 5.16.3 — exact research topic labels
+
+- Removed automatic capitalization and hyphen replacement from the Research topic menu. Both option text and filter value use the original topic with HTML escaping.
+- Production Jekyll build passed; all 149 generated pages passed internal-reference and structural checks. All 10 rendered topic options exactly match their source values, including NMR, PPARγ, REV-ERB and RXR. Filtering continues to use the same exact values.

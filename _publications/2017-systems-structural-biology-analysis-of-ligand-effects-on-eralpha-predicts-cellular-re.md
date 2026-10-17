@@ -25,6 +25,7 @@ doi: 10.1016/j.chembiol.2016.11.014
 pmid: '28042045'
 topics:
 - Structural biology
+- Cellular mechanisms
 featured: false
 image: ''
 image_alt: ''

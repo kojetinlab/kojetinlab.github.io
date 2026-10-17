@@ -11,7 +11,8 @@ doi: 10.7554/elife.99782
 pmid: '39556436'
 topics:
 - PPARγ
-- Ligand binding
+- NMR
+- Structural biology
 featured: false
 image: ''
 image_alt: ''

@@ -20,7 +20,7 @@ date: '2022-09-20'
 doi: 10.1073/pnas.2202490119
 pmid: '36095199'
 topics:
-- Structural biology
+- Cellular mechanisms
 featured: false
 image: ''
 image_alt: ''

@@ -23,7 +23,7 @@ date_precision: day
 doi: 10.1021/acschembio.6b00037
 pmid: '27128111'
 topics:
-- NR4A
+- NR4A/Nurr1/Nur77
 featured: false
 image: ''
 image_alt: ''

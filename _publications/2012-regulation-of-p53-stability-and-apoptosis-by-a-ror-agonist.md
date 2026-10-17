@@ -13,7 +13,7 @@ date_precision: day
 doi: 10.1371/journal.pone.0034921
 pmid: '22509368'
 topics:
-- Structural biology
+- Cellular mechanisms
 featured: false
 image: ''
 image_alt: ''

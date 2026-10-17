@@ -15,7 +15,7 @@ date_precision: day
 doi: 10.1021/acs.jmedchem.0c00894
 pmid: '33289551'
 topics:
-- NR4A
+- NR4A/Nurr1/Nur77
 featured: false
 image: ''
 image_alt: ''

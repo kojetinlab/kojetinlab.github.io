@@ -21,6 +21,8 @@ doi: 10.1016/j.str.2011.10.018
 pmid: '22244763'
 topics:
 - PPARγ
+- NMR
+- Structural biology
 featured: false
 image: ''
 image_alt: ''

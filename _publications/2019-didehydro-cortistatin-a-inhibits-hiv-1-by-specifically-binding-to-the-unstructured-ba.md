@@ -29,7 +29,7 @@ date_precision: day
 doi: 10.1128/mbio.02662-18
 pmid: '30723126'
 topics:
-- Structural biology
+- Cellular mechanisms
 featured: false
 image: ''
 image_alt: ''

@@ -20,6 +20,8 @@ preprint: https://doi.org/10.1101/617100
 topics:
 - PPARγ
 - Conformational dynamics
+- NMR
+- Structural biology
 featured: false
 image: ''
 image_alt: ''

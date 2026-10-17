@@ -12,6 +12,7 @@ doi: 10.2174/138161211795164211
 pmid: '21375499'
 topics:
 - REV-ERB
+- Reviews and commentaries
 featured: false
 image: ''
 image_alt: ''

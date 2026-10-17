@@ -24,6 +24,7 @@ doi: 10.1038/nsmb.2046
 pmid: '21478866'
 topics:
 - RXR
+- Structural biology
 featured: false
 image: ''
 image_alt: ''

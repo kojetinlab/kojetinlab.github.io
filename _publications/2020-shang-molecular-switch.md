@@ -22,7 +22,8 @@ pages: '956'
 topics:
 - PPARγ
 - Conformational dynamics
-- Inverse agonism
+- NMR
+- Structural biology
 featured: false
 pdb:
 - 6ONI

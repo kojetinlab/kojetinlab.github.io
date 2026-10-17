@@ -21,6 +21,8 @@ doi: 10.7554/elife.43320
 pmid: '30575522'
 topics:
 - PPARγ
+- NMR
+- Structural biology
 featured: false
 image: ''
 image_alt: ''

@@ -107,3 +107,5 @@ python3 scripts/refresh_publications.py --snapshot scripts/publication-metadata.
 ```
 
 This preserves your topics, figures and Markdown text. To fetch current data instead, omit `--snapshot scripts/publication-metadata.json`. `add_publication.py` skips existing papers, so rerunning that importer does not fill missing abstracts in existing files. Review, commit and push to rebuild the public site.
+
+The Research topic filter displays each `topics` value exactly as written in publication YAML, preserving capitalization, Greek letters and hyphens (for example, `NMR`, `PPARγ`, `NR4A/Nurr1/Nur77` and `REV-ERB`). Use the same spelling on every paper that belongs to the same topic.

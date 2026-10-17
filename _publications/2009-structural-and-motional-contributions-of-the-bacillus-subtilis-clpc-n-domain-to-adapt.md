@@ -17,6 +17,7 @@ date_precision: day
 doi: 10.1016/j.jmb.2009.01.046
 pmid: '19361434'
 topics:
+- NMR
 - Structural biology
 featured: false
 image: ''

@@ -15,6 +15,7 @@ date_precision: month
 doi: 10.1038/nsmb1112
 pmid: '16799559'
 topics:
+- NMR
 - Structural biology
 featured: false
 image: ''

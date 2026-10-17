@@ -19,6 +19,7 @@ doi: 10.1038/nchembio.1214
 pmid: '23524984'
 topics:
 - Structural biology
+- Cellular mechanisms
 featured: false
 image: ''
 image_alt: ''

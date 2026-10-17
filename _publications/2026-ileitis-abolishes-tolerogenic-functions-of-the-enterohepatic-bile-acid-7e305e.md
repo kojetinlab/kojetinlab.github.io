@@ -1,6 +1,7 @@
 ---
 id: 2026-ileitis-abolishes-tolerogenic-functions-of-the-enterohepatic-bile-acid-7e305e
-topics: []
+topics:
+- Cellular mechanisms
 featured: false
 image: ''
 image_alt: ''

@@ -19,7 +19,8 @@ doi: 10.1021/acs.jmedchem.5c01252
 pmid: '40797371'
 topics:
 - PPARγ
-- Inverse agonism
+- NMR
+- Structural biology
 featured: true
 image: ''
 image_alt: ''

@@ -29,7 +29,7 @@ date_precision: month
 doi: 10.1038/s41586-019-1774-2
 pmid: '31748741'
 topics:
-- Structural biology
+- Cellular mechanisms
 featured: false
 image: ''
 image_alt: ''

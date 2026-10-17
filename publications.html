@@ -35,7 +35,7 @@ summary: Our work on nuclear receptor structure, dynamics, and molecular pharmac
       {%- endfor -%}
       {%- assign topics = topics | uniq | sort -%}
       {%- for topic in topics %}
-        <option value="{{ topic }}">{{ topic | replace: '-', ' ' | capitalize }}</option>
+        <option value="{{ topic | escape }}">{{ topic | escape }}</option>
       {% endfor %}
     </select>
   </div>
