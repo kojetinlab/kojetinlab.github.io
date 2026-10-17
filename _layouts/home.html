@@ -74,7 +74,31 @@ layout: default
         <a class="pdb-link" href="https://www.rcsb.org/structure/{{ molecule.pdb_id }}">
           PDB {{ molecule.pdb_id }} ↗
         </a>
-        <span class="figure-note">{{ molecule.note }}</span>
+        <span class="figure-note">
+          <span class="figure-note-text">{{ molecule.note }}</span>
+          {% comment %}
+            Invisible copies reserve the tallest configured note at the current
+            width. Changing the caption must not resize the molecular canvas.
+          {% endcomment %}
+          {% for structure_entry in site.data.structures %}
+            <span class="figure-note-reserve" aria-hidden="true">
+              {{ structure_entry[1].note | escape }}
+              {% if site.data.hero_animation.presentation.enable_domain_motion %}
+                Motion illustrates conformational flexibility; it is not an MD simulation.
+              {% endif %}
+            </span>
+          {% endfor %}
+          {% if site.data.cell_scene.enabled %}
+            <span class="figure-note-reserve" aria-hidden="true">
+              {{ site.data.cell_scene.note | escape }}
+            </span>
+          {% endif %}
+          {% if site.data.discovery_scene.enabled %}
+            <span class="figure-note-reserve" aria-hidden="true">
+              {{ site.data.discovery_scene.note | escape }}
+            </span>
+          {% endif %}
+        </span>
       </figcaption>
       <button class="motion-toggle" aria-pressed="false" hidden>Pause motion</button>
       <p class="renderer-status" role="status" aria-live="polite">Loading molecular view…</p>

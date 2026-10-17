@@ -84,7 +84,7 @@ The generated website is written to `_site/`. You do not need to upload that dir
 Python is optional for content checks and making a new standalone preview. With Python 3.10 or later:
 
 ```sh
-python3 scripts/make_offline_preview.py _site ../Kojetin-Lab-Preview-v5.13.4.html
+python3 scripts/make_offline_preview.py _site ../Kojetin-Lab-Preview-v5.14.2.html
 ```
 
 This writes the preview beside the source folder. Node.js and PyMOL are not required for routine editing or the Mol* viewer.

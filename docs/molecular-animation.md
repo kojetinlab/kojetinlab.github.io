@@ -44,6 +44,14 @@ Offsets and anchors blend smoothly with **that component's own separation**. Ros
 
 The viewer keeps each complete moving label at least 12 pixels inside the panel, so an anchor may shift slightly near an edge. 6ONI retains its single fixed `label_offsets.ligand: [-38, -8]` setting; the older `label_offsets` form remains supported when no `label_layout` is supplied. Save, let Jekyll rebuild, and refresh. Static fallback views use `assets/css/molecular-labels.css`.
 
+## Keep the figure caption visible
+
+The animated desktop figure fits the available window height, including the space used by the full header before it scrolls away. The caption reserves enough height for the longest configured molecular, cell, or discovery note at the current window width. The visible wording still changes with the story, but the drawing area does not resize when the extra motion sentence appears. The pause/resume button keeps its natural height. The molecular image shrinks when the window gets shorter, retaining the short-window fix without a size jump at wiggle onset.
+
+The layout lives in `assets/css/molecular-layout.css`. The controller in `assets/js/molecular-viewer.js` measures the stage's position during scroll and resize, leaving 12 px above the figure and 24 px below it. If you change these margins, update the matching insets in `fitFigure()` too. The caption reservation is generated in `_layouts/home.html` from your settings, so changes to PDB notes or cell/discovery notes are included on rebuild. Invisible measurement copies are excluded from screen readers and are not shown in static or mobile layouts. No manual per-window setting is needed. Text size, PDB orientations, and animation timing remain unchanged.
+
+Phones keep their existing compact caption; the pause button now occupies its own space inside the sticky figure. Static and reduced-motion views use the ordinary document flow.
+
 ## Sharper molecular rendering on mobile
 
 Version 5.13.2 fixes a double reduction in rendering resolution: Mol*'s automatic mobile mode and the site's pixel-density cap were both scaling the canvas down. The viewer now uses Mol*'s native resolution mode with the cap applied once. Existing antialiasing and high-quality molecular geometry are retained.

@@ -7,3 +7,8 @@ sort_by: last_name
 # Members marked principal_investigator: true always appear first in Our People.
 # This setting controls alumni photos on BOTH the listing and profile pages.
 show_alumni_photos: false
+
+# A quieter directory below the current lab members. Set false for the larger layout.
+alumni_compact: true
+# Wide screens only (supported: 3–5); compact layout uses 2 on tablets, 1 on phones.
+alumni_columns: 4

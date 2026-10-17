@@ -99,7 +99,7 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
   const parts = new Map([
     [".molecule-renderer", host],
     [".motion-toggle", button],
-    [".figure-note", note],
+    [".figure-note-text", note],
   ]);
   parts.set(
     ".cell-illustration",
@@ -125,6 +125,8 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
   const story = Object.assign(element(), {
     getBoundingClientRect: () => ({ top }),
     querySelector(selector) {
+      if (selector === ".story-stage")
+        return { getBoundingClientRect: () => ({ top: Math.max(15, 102 + top) }) };
       if (selector === '[data-step="1"] h2')
         return { getBoundingClientRect: () => ({ top: heading1 }) };
       if (selector === '[data-step="2"] h2')
@@ -310,6 +312,12 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
     tick,
     scroll,
     scrollStory,
+    async resize(width, height) {
+      context.innerWidth = width;
+      context.innerHeight = height;
+      listeners.get("resize")();
+      await tick(2);
+    },
     requests,
     settingsHistory,
     parts,
@@ -321,6 +329,23 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
 }
 
 (async () => {
+  // The caption budget adapts before/after the header scrolls away and while
+  // motion is paused. Real browser checks verify wrapping inside that budget.
+  const fitted = await fixture();
+  await fitted.resize(1280, 500);
+  const initialHeight = parseFloat(fitted.figure.style["--molecular-available-height"]);
+  assert(initialHeight > 0 && initialHeight + 102 + 12 <= 500 - 24);
+  await fitted.scrollStory(500);
+  const stickyHeight = parseFloat(fitted.figure.style["--molecular-available-height"]);
+  assert(stickyHeight > initialHeight, "Scrolling away the header gives the figure more room");
+  assert(stickyHeight + 15 + 12 <= 500 - 24);
+  fitted.button.click();
+  await fitted.resize(1000, 400);
+  assert(parseFloat(fitted.figure.style["--molecular-available-height"]) + 15 + 12 <= 400 - 24);
+  const phoneLayout = await fixture("molstar", "6onj", true, { mobile: true });
+  assert.equal(phoneLayout.figure.style["--molecular-available-height"], undefined);
+  console.log("Figure height follows the header and viewport, including while paused");
+
   // Full label boxes stay inside the panel, including a short phone landscape view.
   for (const mobile of [false, true]) {
     for (const structure of ["6onj", "6oni"]) {
@@ -742,7 +767,7 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
       assert.equal(f.mockAdapter.suspended, true, "Suspend hidden Mol* after the pullback");
       assert.equal(f.parts.get(".pdb-link").hidden, true);
       assert.equal(f.parts.get(".cell-scene")["aria-hidden"], "false");
-      assert.equal(f.parts.get(".figure-note").textContent, cellPresentation.note);
+      assert.equal(f.parts.get(".figure-note-text").textContent, cellPresentation.note);
       assert.equal(
         f.frames.size,
         0,
@@ -832,7 +857,7 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
         "Compounds arrive with distinct timing",
       );
       assert.equal(f.parts.get(".figure-index").textContent, discoveryPresentation.caption);
-      assert.equal(f.parts.get(".figure-note").textContent, discoveryPresentation.note);
+      assert.equal(f.parts.get(".figure-note-text").textContent, discoveryPresentation.note);
       const snapshot = () =>
         JSON.stringify([
           f.figure.dataset.discoveryProgress,

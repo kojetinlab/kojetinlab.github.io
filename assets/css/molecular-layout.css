@@ -1,0 +1,57 @@
+/* Keep the caption and controls in the figure's measured height. Reserve the
+   longest note so story changes do not resize or reframe the molecular view. */
+.figure-note-reserve {
+  display: none;
+}
+
+.motion-enabled .molecular-figure {
+  display: flex;
+  flex-direction: column;
+}
+
+.motion-enabled .molecular-figure figcaption,
+.motion-enabled .motion-toggle,
+.motion-enabled .renderer-status {
+  flex: 0 0 auto;
+}
+
+.motion-enabled .motion-toggle {
+  position: static;
+  align-self: flex-end;
+  transform: none;
+  margin-top: 4px;
+}
+
+@media (min-width: 701px) {
+  .motion-enabled .figure-note {
+    display: grid;
+  }
+
+  .motion-enabled .figure-note-text,
+  .motion-enabled .figure-note-reserve {
+    grid-area: 1 / 1;
+    min-width: 0;
+  }
+
+  .motion-enabled .figure-note-reserve {
+    display: block;
+    visibility: hidden;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* The introduction keeps its natural height. Fit the figure independently,
+     including the space used by the full header before it scrolls away. */
+  .motion-enabled .story-stage > .molecular-figure {
+    align-self: start;
+    min-height: 0;
+    max-height: var(--molecular-available-height, calc(100svh - 138px));
+    margin: 12px 0 0;
+  }
+
+  .motion-enabled .molecule-view {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: 720px;
+  }
+}

@@ -4,9 +4,11 @@
   const figure = document.getElementById("molecule");
   if (!figure) return;
   const story = document.getElementById("molecular-story");
+  const stage = story.querySelector(".story-stage");
   const host = figure.querySelector(".molecule-renderer");
   const button = figure.querySelector(".motion-toggle");
   const status = figure.querySelector(".renderer-status");
+  const noteElement = figure.querySelector(".figure-note-text");
   const options = JSON.parse(document.getElementById("hero-config").textContent);
   const scrollOptions = JSON.parse(
     document.getElementById("scroll-story-config")?.textContent || "{}",
@@ -54,6 +56,7 @@
     lastDrawTime = 0;
   let twinkleTime = 0,
     lastTwinkleTime = 0;
+  let availableFigureHeight = null;
   const firstHeading = story.querySelector('[data-step="1"] h2');
   const secondHeading = story.querySelector('[data-step="2"] h2');
   const thirdHeading = story.querySelector('[data-step="3"] h2');
@@ -253,7 +256,7 @@
     figure.querySelector(".label-peptide small").textContent = config.peptide_role;
     figure.querySelector(".label-ligand small").textContent = config.ligand_role || "ligand";
     labelSizes.clear();
-    figure.querySelector(".figure-note").textContent = config.note;
+    noteElement.textContent = config.note;
     const link = figure.querySelector(".pdb-link");
     link.href = `https://www.rcsb.org/structure/${config.pdb_id}`;
     link.textContent = `PDB ${config.pdb_id} ↗`;
@@ -357,8 +360,21 @@
     element.style.right = element.style.bottom = "auto";
   }
 
+  function fitFigure() {
+    if (!stage || reduced.matches || innerWidth <= 700) return;
+    // Keep the full caption and controls visible both beneath the initial
+    // header and after the stage sticks to the top. CSS shrinks only the art.
+    // These insets match molecular-layout.css: 12px above, 24px below.
+    const top = Math.max(15, stage.getBoundingClientRect().top);
+    const height = Math.max(0, Math.floor(innerHeight - top - 36));
+    if (height === availableFigureHeight) return;
+    availableFigureHeight = height;
+    figure.style.setProperty("--molecular-available-height", `${height}px`);
+  }
+
   function render(now) {
     frame = 0;
+    fitFigure();
     if (!adapter || !visible || document.hidden) {
       adapter?.setSuspended(true);
       lastMotionTime = 0;
@@ -450,7 +466,6 @@
             (domainStrength > 0 && !reduced.matches
               ? " Motion illustrates conformational flexibility; it is not an MD simulation."
               : "");
-    const noteElement = figure.querySelector(".figure-note");
     if (noteElement.textContent !== note) noteElement.textContent = note;
     document.documentElement.style.setProperty(
       "--intro-opacity",
@@ -507,6 +522,7 @@
     figure.setAttribute("aria-busy", "true");
     // Reserve the live layout now, avoiding a late layout jump when Mol* arrives.
     document.documentElement.classList.toggle("motion-enabled", !reduced.matches);
+    requestRender();
     figure.classList.remove("molecule-ready");
     button.hidden = true;
     status.textContent = "Loading molecular view…";
@@ -552,7 +568,7 @@
     figure.classList.remove("molecule-ready");
     figure.dataset.renderer = "static";
     figure.setAttribute("aria-busy", "false");
-    figure.querySelector(".figure-note").textContent = preset().note;
+    noteElement.textContent = preset().note;
     document.documentElement.classList.remove("motion-enabled");
     cellProgress = 0;
     discoveryProgress = 0;

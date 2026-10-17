@@ -25,3 +25,65 @@
 .profile-grid > div {
   min-width: 0;
 }
+
+/* Compact alumni directory. Toggle and column count live in _data/people.yml.
+   Adjust these three font sizes to fine-tune the directory's emphasis. */
+.alumni-section.alumni-compact {
+  --alumni-name-size: 20px;
+  --alumni-detail-size: 16px;
+  --alumni-destination-size: 15px;
+  margin-top: 72px;
+  padding-top: 32px;
+}
+.alumni-compact > h2 {
+  margin-bottom: 0;
+  font-size: 30px;
+  line-height: 1.2;
+}
+.alumni-compact > p {
+  max-width: 65ch;
+  margin: 12px 0 28px;
+  font-size: var(--alumni-detail-size);
+  line-height: 1.5;
+}
+.alumni-compact .alumni-grid {
+  grid-template-columns: repeat(var(--alumni-columns, 4), minmax(0, 1fr));
+  gap: 28px;
+}
+.alumni-compact .alumni-grid h3 {
+  margin-bottom: 5px;
+  font-size: var(--alumni-name-size);
+  line-height: 1.3;
+}
+.alumni-compact .alumni-grid p {
+  margin: 0;
+  font-size: var(--alumni-detail-size);
+  line-height: 1.5;
+}
+.alumni-compact .alumni-grid .alumni-destination {
+  margin-top: 6px;
+  font-size: var(--alumni-destination-size);
+}
+.alumni-compact .alumni-portrait {
+  max-width: 120px;
+  margin-bottom: 12px;
+}
+.alumni-compact .member-placeholder {
+  font-size: 40px;
+  letter-spacing: -2px;
+}
+@media (max-width: 1000px) {
+  .alumni-compact .alumni-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .alumni-section.alumni-compact {
+    margin-top: 56px;
+    padding-top: 28px;
+  }
+  .alumni-compact .alumni-grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 24px;
+  }
+}

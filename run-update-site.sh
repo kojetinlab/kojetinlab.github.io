@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-version="5.13.4"
+version="5.14.2"
 release_dir="/Users/dkojetin/Downloads/Kojetin-Lab-Website-v${version}/kojetinlab-website"
 
 cd "/Users/dkojetin/Documents/GitHub/kojetinlab.github.io"

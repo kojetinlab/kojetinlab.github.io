@@ -19,7 +19,13 @@ Edit `_data/people.yml`:
 ```yaml
 sort_by: last_name
 show_alumni_photos: false
+alumni_compact: true
+alumni_columns: 4
 ```
+
+`alumni_compact: true` makes Alumni a quieter directory below the current lab members: 20 px names, 16 px role/year text, 15 px muted italic subsequent positions, a smaller section heading, and tighter spacing. `alumni_columns` controls the wide-screen column count (3–5, default 4). At widths of 601–1000 px the compact layout uses two columns; at 600 px or below it uses one column for readability. Set `alumni_compact: false` to restore the previous larger layout. The current-member cards and all profile pages keep their existing typography.
+
+To adjust the compact font sizes, edit `--alumni-name-size`, `--alumni-detail-size`, and `--alumni-destination-size` near the compact-directory rules in `assets/css/people.css`. Save and let Jekyll rebuild, then refresh. Photo visibility and sorting work with either layout; enabled alumni portraits are capped at 120 px wide in the compact directory.
 
 The same sort applies separately to Our People and Alumni. Douglas stays first in Our People because his member file has `principal_investigator: true`.
 
@@ -76,7 +82,7 @@ awards:
   - Fellowship name (2026)
 ```
 
-To move someone to alumni, change `status: alumni`, update their final lab role and its `seniority`, and set `years` to the completed interval. Optionally add `current_position` and `current_institution`. Keep their filename to preserve their profile URL and keep `joined_year` as their original joining year. Confirm current positions before adding them. On the alumni listing, a defined `current_position` appears on a separate line prefixed with “Subsequently:”, in muted italic text at 90% of the regular body size. No destination line appears when that field is blank. The last-reported-updates note remains in place. Adjust this styling in `assets/css/people.css` under `.alumni-destination`.
+To move someone to alumni, change `status: alumni`, update their final lab role and its `seniority`, and set `years` to the completed interval. Optionally add `current_position` and `current_institution`. Keep their filename to preserve their profile URL and keep `joined_year` as their original joining year. Confirm current positions before adding them. On the alumni listing, a defined `current_position` appears on a separate line prefixed with “Subsequently:”, in muted italic text (15 px in the compact directory; 90% of regular body size in the larger layout). No destination line appears when that field is blank. The last-reported-updates note remains in place. Adjust this styling in `assets/css/people.css` under `.alumni-destination`.
 
 ### Photo dimensions and cropping
 

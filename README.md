@@ -64,7 +64,7 @@ Open the down arrow after **Contact** to try palettes, PDB structures, illustrat
 | Lab text, footer logo size (`footer_logo_scale_percent`), links, and image paths | `_data/site.yml` |
 | Navigation | `_data/navigation.yml` |
 | People and alumni | `_members/` |
-| People sorting and alumni headshots | `_data/people.yml` |
+| People sorting, alumni layout, and headshots | `_data/people.yml` |
 | Publications | `_publications/` |
 | Research areas | `_research/` |
 | News | `_posts/` |
@@ -90,7 +90,7 @@ Saved visitor choices override defaults. Click **Site defaults** in the arrow me
 
 ### People display settings
 
-In `_data/people.yml`, choose `sort_by: last_name` (default), `seniority`, or `joined`. Douglas appears first in every mode. Set `show_alumni_photos: true` to enable alumni portraits on the list and profiles; the default is `false`. Member files hold `last_name`, `seniority`, and `joined_year`. See [the people guide](docs/updating-website.md#people-and-alumni-settings) for ranks, examples, and roster notes.
+In `_data/people.yml`, choose `sort_by: last_name` (default), `seniority`, or `joined`. Douglas appears first in every mode. Set `show_alumni_photos: true` to enable alumni portraits on the list and profiles; the default is `false`. The alumni directory defaults to a compact layout with four desktop columns; set `alumni_columns` to 3–5, or `alumni_compact: false` to restore the larger layout. Member files hold `last_name`, `seniority`, and `joined_year`. See [the people guide](docs/updating-website.md#people-and-alumni-settings) for ranks, examples, and roster notes.
 
 ## Publish an update
 

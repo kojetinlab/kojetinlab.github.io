@@ -4,7 +4,7 @@ title: Our people
 permalink: /people/
 summary: A shared curiosity about how molecules work.
 ---
-{% comment %}Edit _data/people.yml to choose the sort and alumni photos.{% endcomment %}
+{% comment %}Edit _data/people.yml to choose sorting, alumni photos, and layout.{% endcomment %}
 {% assign current = site.members | where: 'status', 'current' %}
 {% assign principal_investigators = current | where: 'principal_investigator', true %}
 {% assign current = current | where_exp: 'member', 'member.principal_investigator != true' %}
@@ -16,7 +16,10 @@ summary: A shared curiosity about how molecules work.
 </div>
 {% assign alumni = site.members | where: 'status', 'alumni' %}
 {% if alumni.size > 0 %}
-  <section class="alumni-section">
+  <section
+    class="alumni-section{% if site.data.people.alumni_compact != false %} alumni-compact{% endif %}"
+    style="--alumni-columns: {{ site.data.people.alumni_columns | default: 4 | at_least: 3 | at_most: 5 }};"
+  >
     <h2>Alumni</h2>
     <p>
       People who have helped shape our science. Alumni positions reflect the last reported updates.
