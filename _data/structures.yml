@@ -11,8 +11,8 @@
   peptide_role: coactivator peptide
   ligand: Rosiglitazone
   ligand_role: agonist
-  interaction_text: Here, a MED1 coactivator peptide meets the receptor’s AF-2 surface.
-  note: Experimental structure. Separation is schematic.
+  interaction_text: Here, rosiglitazone-bound PPARγ LBD recruits a MED1 coactivator peptide at its AF-2 surface.
+  note: Experimental structure. Assembly is schematic.
   receptor_chain: A
   peptide_chain: C
   ligand_chain: A
@@ -26,7 +26,8 @@
   resolution: 2.3
   allow_ligand_separation: true
   view:
-    # Positions blend as each component separates. Offsets are percentages
+    # Positions blend as each component approaches. initial = bound pose;
+    # separated = incoming pose. Offsets are percentages
     # of panel width/height: [right, down]; negative values move left/up.
     # anchor is the corner of the label placed at that offset from the molecule.
     label_layout:
@@ -39,8 +40,8 @@
     rotation_xyz: [0, 0, 0]
     # null derives the framing from the copied Mol* camera. Set a number to override zoom.
     camera_span: null
-    # Retreat early enough to keep the separated peptide inside this tighter framing.
-    scroll_zoom: {amount: 0.32, start: 0.05, end: 0.5}
+    # Keep the original large protein framing throughout ligand/peptide assembly.
+    scroll_zoom: {amount: 0, start: 0.05, end: 0.5}
     camera:
       # Mol* "Copy MVS JSON" uses the FoV-normalized position in original PDB coordinates.
       position_type: fov_normalized
@@ -59,8 +60,8 @@
   peptide_role: corepressor peptide
   ligand: T0070907
   ligand_role: inverse agonist
-  interaction_text: Here, an N-CoR corepressor peptide binds PPARγ in its repressive conformation.
-  note: Experimental structure. Peptide separation is schematic; the covalent ligand stays attached.
+  interaction_text: Here, T0070907-bound PPARγ recruits an N-CoR corepressor peptide.
+  note: Experimental structure. Assembly is schematic; the covalent ligand appears in its bound pose.
   receptor_chain: B
   peptide_chain: D
   ligand_chain: B

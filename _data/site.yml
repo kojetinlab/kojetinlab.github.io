@@ -9,18 +9,19 @@ address:
   - 756 Engineering and Science Building
   - 1212 25th Avenue S
   - Nashville, TN 37240
+headline2: "Strutural<br>Pharmacology<br><span>Function.</span>"
 headline: "Structure.<br>Dynamics.<br><span>Function.</span>"
 intro: We explore how nuclear receptors sense small molecules and regulate gene expression.
-mission: We study the molecular mechanisms of nuclear receptor function. By connecting protein structure, conformational dynamics, and pharmacology, we seek to understand how ligands and protein interactions shape transcriptional regulation.
+mission: We study the molecular mechanisms of nuclear receptor function. By connecting protein structure, conformational dynamics, pharmacology, and cell biology, we seek to understand how ligands and protein interactions shape nuclear receptor transcriptional regulation, gene expression, and cell fate.
 institution_url: https://www.vanderbilt.edu/
 school_url: https://medschool.vanderbilt.edu/
 department_url: https://medschool.vanderbilt.edu/biochemistry/
-footer: Structural biology & molecular pharmacology
+footer: Structural pharmacology — the intersection of structural biology, biochemistry, biophysics, & molecular pharmacology
 github_url: https://github.com/kojetinlab/kojetinlab.github.io
 
 # Contact photograph and footer branding. Paths are relative to the website root.
 contact_photo: /assets/images/contact/vanderbilt-building-at-night.jpg
-contact_photo_alt: Vanderbilt campus building at night, with an illuminated glass facade.
+contact_photo_alt: Vanderbilt campus Engineering and Science Building (ESB) at night, with an illuminated glass facade.
 contact_photo_caption: Our home at Vanderbilt · Nashville, Tennessee
 # SVG stays sharp at every display size. A matching .png is also included.
 footer_logo: /assets/images/brand/vanderbilt-basic-sciences.svg

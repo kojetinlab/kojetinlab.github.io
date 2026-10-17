@@ -178,7 +178,13 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
         : id === "molecular-story"
           ? story
           : id === "hero-config"
-            ? { textContent: JSON.stringify({ ...presentation, enable_domain_motion: motion }) }
+            ? {
+                textContent: JSON.stringify({
+                  ...presentation,
+                  ...cell.presentation,
+                  enable_domain_motion: motion,
+                }),
+              }
             : id === "scroll-story-config"
               ? { textContent: JSON.stringify(cell.pacing || scrollPresentation) }
               : id === "cell-config"
@@ -346,6 +352,93 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
   assert.equal(phoneLayout.figure.style["--molecular-available-height"], undefined);
   console.log("Figure height follows the header and viewport, including while paused");
 
+  // Ordered assembly, component/label visibility, covalent fade-in, and reversal.
+  for (const pdb of ["6onj", "6oni"]) {
+    for (const mobile of [false, true]) {
+      const f = await fixture("molstar", pdb, true, { mobile });
+      const snapshot = () => {
+        const s = f.mockAdapter.state;
+        return [
+          s.ligandBinding,
+          s.peptideBinding,
+          s.ligandOpacity,
+          s.peptideOpacity,
+          s.ligandT,
+          s.peptideT,
+          s.span,
+          s.angle,
+        ];
+      };
+      await f.scrollStory(0);
+      assert.equal(+f.figure.dataset.ligandOpacity, 0, "Start with receptor only");
+      assert.equal(+f.figure.dataset.peptideOpacity, 0);
+      assert.equal(f.parts.get(".label-ligand")["aria-hidden"], "true");
+      assert.equal(f.parts.get(".label-peptide")["aria-hidden"], "true");
+      const initialSpan = f.mockAdapter.state.span;
+      const samples = [];
+      let previousLigand = 0,
+        previousPeptide = 0;
+      for (let y = 0; y <= 2500; y += 50) {
+        await f.scrollStory(y);
+        const s = f.mockAdapter.state;
+        assert.equal(s.span, initialSpan, "Assembly preserves the original protein camera scale");
+        assert(s.ligandBinding >= previousLigand && s.peptideBinding >= previousPeptide);
+        assert(
+          s.peptideOpacity === 0 || s.ligandBinding === 1,
+          "Ligand binding completes before the peptide appears",
+        );
+        if (pdb === "6oni") assert.equal(s.ligandT, 0, "Covalent ligand never translates");
+        if (s.ligandBinding > 0 && s.ligandBinding < 0.1)
+          assert(s.ligandOpacity > 0 && s.ligandOpacity < 1, "Ligand fades in");
+        for (const name of ["ligand", "peptide"])
+          assert.equal(
+            +f.parts.get(`.label-${name}`).style["--component-opacity"],
+            s[`${name}Opacity`],
+          );
+        samples.push([y, snapshot()]);
+        previousLigand = s.ligandBinding;
+        previousPeptide = s.peptideBinding;
+      }
+      assert.equal(f.mockAdapter.state.ligandT, 0);
+      assert.equal(f.mockAdapter.state.peptideT, 0);
+      assert.equal(f.mockAdapter.state.ligandOpacity, 1);
+      assert.equal(f.mockAdapter.state.peptideOpacity, 1);
+      assert(+f.figure.dataset.domainMotion > 0.9, "The assembled complex wiggles");
+      for (const [y, expected] of samples.reverse()) {
+        await f.scrollStory(y);
+        assert.deepEqual(snapshot(), expected, "Reverse scroll follows the same assembly path");
+      }
+      await f.scrollStory(450);
+      f.button.click();
+      await f.tick(2);
+      const paused = snapshot();
+      await f.scrollStory(1800);
+      assert.deepEqual(snapshot(), paused, "Pause freezes approach and visibility");
+      f.button.click();
+      await f.tick(2);
+      assert.equal(f.mockAdapter.state.peptideT, 0);
+      f.reduced.matches = true;
+      f.reduced.change();
+      await f.tick(2);
+      assert.equal(f.mockAdapter.state.ligandOpacity, 1);
+      assert.equal(f.mockAdapter.state.peptideOpacity, 1);
+      assert.equal(f.mockAdapter.state.ligandT, 0);
+      assert.equal(f.mockAdapter.state.peptideT, 0);
+      assert.equal(f.mockAdapter.state.wiggleAmplitude, 0);
+    }
+  }
+  const fadeOnly = await fixture("molstar", "6onj", true, {
+    presentation: { enable_ligand_separation: false, enable_peptide_separation: false },
+  });
+  await fadeOnly.scrollStory(450);
+  assert.equal(fadeOnly.mockAdapter.state.ligandT, 0);
+  assert.equal(fadeOnly.mockAdapter.state.peptideT, 0);
+  assert(fadeOnly.mockAdapter.state.ligandOpacity > 0);
+  assert.equal(fadeOnly.mockAdapter.state.peptideOpacity, 0);
+  console.log(
+    "Ligand-first assembly, label fades, covalent pose, pause/reverse, and reduced-motion complex passed",
+  );
+
   // Full label boxes stay inside the panel, including a short phone landscape view.
   for (const mobile of [false, true]) {
     for (const structure of ["6onj", "6oni"]) {
@@ -374,7 +467,7 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
       }
     }
   }
-  // Labels must remain distinct before, during, and after ligand separation.
+  // Visible labels must remain distinct during assembly and in the bound complex.
   for (const [width, height] of [
     [280, 260],
     [350, 329],
@@ -420,15 +513,17 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
     for (let y = 0; y <= 2400; y += 50) {
       await f.scrollStory(y);
       assert(
-        separate(box("ligand"), box("peptide")),
+        +f.figure.dataset.peptideOpacity === 0 ||
+          +f.figure.dataset.ligandOpacity === 0 ||
+          separate(box("ligand"), box("peptide")),
         `Ligand/peptide overlap at ${width}px, scroll ${y}`,
       );
       assert(
-        separate(box("ligand"), receptor),
+        +f.figure.dataset.ligandOpacity === 0 || separate(box("ligand"), receptor),
         `Ligand/receptor overlap at ${width}px, scroll ${y}`,
       );
     }
-    assert(box("ligand").x < initial.x - 30, "Separated ligand label shifts clearly left");
+    assert(box("ligand").x > initial.x + 30, "Ligand label approaches the pocket from the left");
     await f.scrollStory(0);
     assert.deepEqual(
       box("ligand"),
@@ -437,7 +532,7 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
     );
   }
   console.log(
-    "Initial label spacing, separation sweep, leftward anchor, and reverse positions passed",
+    "Visible label spacing, binding sweep, incoming anchor, and reverse positions passed",
   );
 
   // Move the whole story together. Check actions as each heading ENTERS the
@@ -447,15 +542,12 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
     await f.scrollStory(0);
     assert.equal(+f.figure.dataset.progress, 0);
     await f.scrollStory(1400 - 950);
-    assert(
-      +f.figure.dataset.peptideSeparation > 0.1,
-      "Peptide action begins as its own heading enters",
-    );
-    assert.equal(+f.figure.dataset.ligandSeparation, 0, "Ligand waits for its own concept");
+    assert(+f.figure.dataset.ligandBinding > 0.1, "Ligand action begins as its own heading enters");
+    assert.equal(+f.figure.dataset.peptideOpacity, 0, "Peptide waits for its own concept");
     await f.scrollStory(2400 - 1100);
     assert(
-      +f.figure.dataset.ligandSeparation > 0.1,
-      "Ligand action is underway when approaching its heading",
+      +f.figure.dataset.peptideBinding > 0.1,
+      "Peptide action is underway when approaching its heading",
     );
     assert.equal(+f.figure.dataset.domainMotion, 0);
     await f.scrollStory(3400 - 1050);
@@ -652,8 +744,8 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
       +f.figure.dataset.wiggleAmplitude > 1.8,
       "Internal wiggle is clearly enabled at the third section",
     );
-    assert.equal(+f.figure.dataset.peptideSeparation, 1);
-    assert.equal(+f.figure.dataset.ligandSeparation, 1);
+    assert.equal(+f.figure.dataset.peptideSeparation, 0);
+    assert.equal(+f.figure.dataset.ligandSeparation, 0);
     f.button.click();
     await f.tick(2);
     const frozen = f.figure.dataset.domainAngle;

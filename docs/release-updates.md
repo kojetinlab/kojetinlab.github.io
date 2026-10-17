@@ -2,23 +2,23 @@
 
 The `update-site.sh` script copies new and changed release files into your existing GitHub clone. It uses content hashes and rsync, leaves unrelated files in place, and never deletes files. Preview is the default on every run; `--apply` performs the copy. After a successful preview, the script prints the Up Arrow instructions for applying it. After copying, it prints the separate GitHub Desktop commit/push steps. You still review, commit, and push in GitHub Desktop.
 
-Version 5.14.2 prevents the molecular view from shifting up and shrinking when the wiggle begins. The caption reserves the height of the longest configured note from the start, so its extra motion sentence does not reduce the drawing area. Text still changes with the story and adapts to window width. This retains the short-window caption fix and the compact Alumni layout. Asset cache version is 27: restart Jekyll after applying, then refresh the browser. Keep the extracted download and your GitHub clone in separate folders.
+Version 5.15.2 preserves the original large protein size during ligand and peptide assembly. LOADING... now reveals one letter/dot at a time, clears, and repeats by default. In `_data/molecular_loading.yml`, choose `animation: typewriter`, `blink`, or `static`; reduced-motion visitors see the full still sign. The later protein-to-cell transition is retained. Asset cache version is 30: restart Jekyll after applying, then refresh. Keep the extracted download and your GitHub clone in separate folders.
 
 ## Import this release
 
-1. Download and unzip **Kojetin-Lab-Website-v5.14.2.zip**. Open the extracted `kojetinlab-website` source folder; find `update-site.sh` at its top level.
+1. Download and unzip **Kojetin-Lab-Website-v5.15.2.zip**. Open the extracted `kojetinlab-website` source folder; find `update-site.sh` at its top level.
 2. In GitHub Desktop, select `kojetinlab.github.io`, choose the branch you normally publish, and use **Repository → Show in Finder**. If you have remote changes, fetch/pull them first.
 3. Open Terminal. Type `cd `, including the trailing space, drag your **GitHub repository folder** into Terminal, and press Return.
 4. Type `bash `, drag **update-site.sh from the extracted download** into Terminal, and press Return. This previews the update without changing repository files.
 5. To apply that preview, press the Up Arrow to recall the command, add ` --apply` at the end, and press Return.
-6. Review the changed files in GitHub Desktop, including `.site-release.json`. Commit with a summary such as `Keep the molecular framing steady when motion starts`, then **Push origin**.
+6. Review the changed files in GitHub Desktop, including `.site-release.json`. Commit with a summary such as `Preserve protein size and add typewriter loading`, then **Push origin**.
 
 The commands will resemble these; substitute your actual paths:
 
 ```sh
 cd "/Users/your-name/Documents/GitHub/kojetinlab.github.io"
-bash "/Users/your-name/Downloads/Kojetin-Lab-Website-v5.14.2/kojetinlab-website/update-site.sh"
-bash "/Users/your-name/Downloads/Kojetin-Lab-Website-v5.14.2/kojetinlab-website/update-site.sh" --apply
+bash "/Users/your-name/Downloads/Kojetin-Lab-Website-v5.15.2/kojetinlab-website/update-site.sh"
+bash "/Users/your-name/Downloads/Kojetin-Lab-Website-v5.15.2/kojetinlab-website/update-site.sh" --apply
 ```
 
 The script copies itself and its supporting files into your repository during this first update. Nothing is committed or pushed by the script. The normal GitHub Pages workflow builds the site after you push.

@@ -8,8 +8,6 @@ seniority: 30
 joined_year: 2014
 years: 2014–2019
 photo: ''
-current_position: Research Safety Officer
-current_institution: Florida Atlantic University
 position_note: Reported in the October 2026 roster supplied by the laboratory.
 lab_history:
 - role: Postdoctoral Fellow

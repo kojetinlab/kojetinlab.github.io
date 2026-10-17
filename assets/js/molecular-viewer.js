@@ -1,5 +1,5 @@
 /* Mol* scroll choreography. The adapter draws the current state.
-   Separation, rocking, and procedural internal wiggle are illustrative. */
+   Ligand binding, coregulator recruitment, and internal wiggle are illustrative. */
 (() => {
   const figure = document.getElementById("molecule");
   if (!figure) return;
@@ -41,6 +41,8 @@
     scene,
     cameraView,
     progress = 0,
+    ligandBinding = 0,
+    peptideBinding = 0,
     paused = false,
     frame = 0;
   let desiredStructure,
@@ -270,8 +272,15 @@
   function stateAt(p) {
     const period = Math.max(1, Number(options.domain_motion_period_seconds) || 4.5);
     const phase = (motionTime * Math.PI * 2) / period;
+    // Reduced motion presents the completed experimental complex as a still.
+    const ligand = reduced.matches ? 1 : ligandBinding;
+    const peptide = reduced.matches ? 1 : peptideBinding;
     return {
       progress: p,
+      ligandBinding: ligand,
+      peptideBinding: peptide,
+      ligandOpacity: smooth(0, 0.18, ligand),
+      peptideOpacity: smooth(0, 0.18, peptide),
       motionTime,
       wiggleAmplitude:
         clamp(Number(options.domain_wiggle_amplitude_angstroms) || 0, 0, 5) *
@@ -281,10 +290,12 @@
           (reduced.matches ? 0 : domainStrength) *
           (Math.sin(phase) + 0.2 * Math.sin(2 * phase))) /
         1.2,
-      peptideT: options.enable_peptide_separation ? smooth(0.13, 0.48, p) : 0,
+      // T remains a geometric displacement: 1 = incoming, 0 = bound.
+      // Fade in first, then approach; the 6ONI covalent ligand never translates.
+      peptideT: options.enable_peptide_separation ? 1 - smooth(0.12, 1, peptide) : 0,
       ligandT:
         options.enable_ligand_separation && preset().allow_ligand_separation
-          ? smooth(0.44, 0.78, p)
+          ? 1 - smooth(0.12, 1, ligand)
           : 0,
       angle: options.enable_rotation ? 0.28 * smooth(0, 1, p) : 0,
       span:
@@ -296,6 +307,10 @@
   function label(name, state) {
     const element = figure.querySelector(`.label-${name}`);
     if (!element || !scene) return;
+    const opacity = state[`${name}Opacity`];
+    element.style.setProperty("--component-opacity", String(opacity));
+    element.dataset.componentVisible = String(opacity > 0);
+    element.setAttribute("aria-hidden", String(opacity <= 0 || cellProgress > 0.1));
     const offset =
       name === "peptide"
         ? [16, 17, 2].map((v) => v * state.peptideT)
@@ -309,7 +324,7 @@
     let x = Math.cos(state.angle) * point[0] + Math.sin(state.angle) * point[2];
     let y = point[1];
     const z = -Math.sin(state.angle) * point[0] + Math.cos(state.angle) * point[2];
-    if (name === "ligand" && !preset().allow_ligand_separation) {
+    if (state.domainAngle) {
       const c = Math.cos(state.domainAngle),
         s = Math.sin(state.domainAngle);
       [x, y] = [c * x - s * y, s * x + c * y];
@@ -331,7 +346,7 @@
     };
     const initialAnchor = anchors[initial.anchor] || anchors["top-left"];
     const separatedAnchor = anchors[separated.anchor] || initialAnchor;
-    // Follow each component's own separation, including when the story reverses.
+    // Follow each component's approach; retain the bound/incoming preset anchors.
     const t = name === "peptide" ? state.peptideT : state.ligandT;
     const blend = (a, b) => a + (b - a) * t;
     const number = (n) => (Number.isFinite(Number(n)) ? Number(n) : 0);
@@ -389,13 +404,12 @@
     lastDrawTime = now;
     if (!paused && !reduced.matches) {
       const mobile = innerWidth <= 700;
-      const separationEntry = { start: 1.1, end: 0.4 };
-      const separationTiming = { desktop: separationEntry, mobile: separationEntry };
-      // Anchor the two molecular stages to their own headings. Keep the same
-      // pose/camera path, with ligand separation starting only in stage two.
-      progress =
-        0.44 * headlineProgress(firstHeading, separationTiming, mobile, false) +
-        0.56 * headlineProgress(secondHeading, separationTiming, mobile, false);
+      const bindingEntry = { start: 1.1, end: 0.4 };
+      const bindingTiming = { desktop: bindingEntry, mobile: bindingEntry };
+      ligandBinding = headlineProgress(firstHeading, bindingTiming, mobile, false);
+      peptideBinding =
+        ligandBinding >= 1 ? headlineProgress(secondHeading, bindingTiming, mobile, false) : 0;
+      progress = 0.44 * ligandBinding + 0.56 * peptideBinding;
       cellProgress = cellEnabled() ? headlineProgress(fourthHeading, cellOptions, mobile) : 0;
       discoveryProgress = discoveryEnabled()
         ? headlineProgress(fifthHeading, discoveryOptions, mobile)
@@ -454,6 +468,10 @@
     figure.dataset.progress = state.progress.toFixed(4);
     figure.dataset.peptideSeparation = state.peptideT.toFixed(4);
     figure.dataset.ligandSeparation = state.ligandT.toFixed(4);
+    figure.dataset.ligandBinding = state.ligandBinding.toFixed(4);
+    figure.dataset.peptideBinding = state.peptideBinding.toFixed(4);
+    figure.dataset.ligandOpacity = state.ligandOpacity.toFixed(4);
+    figure.dataset.peptideOpacity = state.peptideOpacity.toFixed(4);
     figure.dataset.domainMotion = (reduced.matches ? 0 : domainStrength).toFixed(4);
     figure.dataset.domainAngle = state.domainAngle.toFixed(6);
     figure.dataset.wiggleAmplitude = state.wiggleAmplitude.toFixed(4);
@@ -574,6 +592,11 @@
     discoveryProgress = 0;
     updateCellMode();
     drawCellTransition();
+    for (const name of ["ligand", "peptide"]) {
+      const element = figure.querySelector(`.label-${name}`);
+      element.dataset.componentVisible = "true";
+      element.style.setProperty("--component-opacity", "1");
+    }
     button.hidden = true;
     status.textContent =
       "Showing a still structure because the interactive Mol* view is unavailable.";

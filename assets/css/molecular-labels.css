@@ -4,6 +4,16 @@
   max-width: calc(100% - 24px);
 }
 
+/* Reveal each label with its own component; keep the cell-transition fade. */
+.motion-enabled .label-ligand,
+.motion-enabled .label-peptide {
+  opacity: calc(var(--molecule-label-opacity, 1) * var(--component-opacity, 0));
+}
+
+.motion-enabled .molecule-label[data-component-visible="false"] {
+  visibility: hidden;
+}
+
 /* Also keep the ligand caption above the lower edge in static fallback views. */
 .label-ligand {
   left: 8%;

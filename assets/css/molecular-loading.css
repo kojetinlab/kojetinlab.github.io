@@ -10,6 +10,8 @@
 .molecular-loading-art {
   position: absolute;
   inset: 6%;
+  display: grid;
+  place-items: center;
   z-index: 4;
   opacity: 0;
   visibility: hidden;
@@ -17,6 +19,21 @@
   transition:
     opacity 180ms ease-out,
     visibility 0s 180ms;
+}
+
+.molecular-loading-word {
+  display: block;
+  width: min(82%, 360px);
+  height: auto;
+  overflow: visible;
+}
+
+.molecular-loading-shadow {
+  fill: var(--gold);
+}
+
+.molecular-loading-ink {
+  fill: var(--ink);
 }
 
 .molecular-loading-art img {
@@ -32,11 +49,23 @@
   transition: none;
 }
 
+/* A stepped blink evokes an arcade title screen without rapid flashing. */
+#molecule[data-renderer="loading"] [data-loading-animation="blink"] .molecular-loading-word {
+  animation: molecular-loading-blink max(0.8s, var(--molecular-loading-blink, 1.2s)) steps(1, end)
+    infinite;
+}
+
+/* Reveal whole pixel glyphs, including their shadows, in fixed character slots.
+   All characters share a cycle, so they clear together before starting again. */
+#molecule[data-renderer="loading"] [data-loading-animation="typewriter"] .molecular-loading-character {
+  animation: var(--loading-character-animation) max(1.2s, var(--molecular-loading-typewriter, 2.4s)) steps(1, end) infinite;
+}
+
 #molecule[data-renderer="loading"] .molecular-loading-animate img {
   animation: molecular-loading-drift 4.5s ease-in-out 1;
 }
 
-/* Keep the status available to screen readers without visible loading text.
+/* Keep a single accessible status; the visual lettering is decorative.
    An error status remains visible when the static fallback is active. */
 #molecule[data-renderer="loading"] .renderer-status {
   position: absolute;
@@ -48,6 +77,77 @@
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
+}
+
+@keyframes molecular-loading-blink {
+  0%,
+  59% {
+    opacity: 1;
+  }
+  60%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes molecular-loading-character-1 {
+  0% { opacity: 0; }
+  6% { opacity: 1; }
+  85%, 100% { opacity: 0; }
+}
+
+@keyframes molecular-loading-character-2 {
+  0% { opacity: 0; }
+  12% { opacity: 1; }
+  85%, 100% { opacity: 0; }
+}
+
+@keyframes molecular-loading-character-3 {
+  0% { opacity: 0; }
+  18% { opacity: 1; }
+  85%, 100% { opacity: 0; }
+}
+
+@keyframes molecular-loading-character-4 {
+  0% { opacity: 0; }
+  24% { opacity: 1; }
+  85%, 100% { opacity: 0; }
+}
+
+@keyframes molecular-loading-character-5 {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  85%, 100% { opacity: 0; }
+}
+
+@keyframes molecular-loading-character-6 {
+  0% { opacity: 0; }
+  36% { opacity: 1; }
+  85%, 100% { opacity: 0; }
+}
+
+@keyframes molecular-loading-character-7 {
+  0% { opacity: 0; }
+  42% { opacity: 1; }
+  85%, 100% { opacity: 0; }
+}
+
+@keyframes molecular-loading-character-8 {
+  0% { opacity: 0; }
+  48% { opacity: 1; }
+  85%, 100% { opacity: 0; }
+}
+
+@keyframes molecular-loading-character-9 {
+  0% { opacity: 0; }
+  54% { opacity: 1; }
+  85%, 100% { opacity: 0; }
+}
+
+@keyframes molecular-loading-character-10 {
+  0% { opacity: 0; }
+  60% { opacity: 1; }
+  85%, 100% { opacity: 0; }
 }
 
 @keyframes molecular-loading-drift {
@@ -64,6 +164,8 @@
   .molecular-loading-art {
     transition: none;
   }
+  #molecule[data-renderer="loading"] .molecular-loading-word,
+  #molecule[data-renderer="loading"] .molecular-loading-character,
   #molecule[data-renderer="loading"] .molecular-loading-animate img {
     animation: none;
   }

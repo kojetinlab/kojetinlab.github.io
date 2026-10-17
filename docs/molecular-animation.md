@@ -18,7 +18,19 @@ The site uses Mol* exclusively. Visitors can change the palette and PDB under th
 
 Both structures come from Shang et al., *Nature Communications* (2020), DOI [10.1038/s41467-020-14750-x](https://doi.org/10.1038/s41467-020-14750-x). Sources: [RCSB 6ONJ](https://www.rcsb.org/structure/6ONJ), [RCSB 6ONI](https://www.rcsb.org/structure/6ONI). The deposited coordinates and ligand dictionaries are retained in `molecular-source/`. See `molecular-science.md` for chain, bond, and missing-residue details.
 
-6ONI's ligand is covalently attached to Cys285. Its preset therefore disables ligand separation. The receptor cartoon and ligand sticks do not explicitly draw the cross-component covalent bond. Peptide separation remains schematic. Neither animation is a dissociation simulation or a change in receptor conformation.
+6ONI's ligand is covalently attached to Cys285. Its preset therefore fades the ligand and label into the deposited bound pose without translating the ligand. The receptor cartoon and ligand sticks do not explicitly draw the cross-component covalent bond. Coregulator approach remains schematic.
+
+## Homepage assembly sequence
+
+1. **Introduction:** receptor only; peptide, ligand, and their labels are hidden.
+2. **Small molecules. Specific effects.:** rosiglitazone and its label fade in, then approach the 6ONJ pocket. For 6ONI, T0070907 and its label fade in at the bound position.
+3. **A meeting of molecules.:** the coregulator peptide and its label fade in, then approach the AF-2 surface. This is MED1 for 6ONJ and N-CoR for 6ONI. The ligand is already bound.
+4. **Beyond a single structure.:** the assembled receptor, ligand, and peptide rock and wiggle together.
+5. **From structure to cellular function.:** the bound complex shrinks toward the adipocyte nucleus while the cell comes into view. Wiggle fades with this pullback. The chemical-discovery scene follows.
+
+Scrolling upward reverses assembly and label visibility. The starting receptor uses the deposited complex's receptor conformation with its partners hidden; it is not a separately measured apo structure. Approach paths and the ligand-first story are schematic, not measured binding trajectories or kinetics.
+
+The existing `enable_ligand_separation` and `enable_peptide_separation` settings in `_data/hero_animation.yml` retain their names for compatibility. They now control the corresponding **approach** movement. Setting either to `false` makes that partner and its label appear at the binding site without translating. Each PDB's `allow_ligand_separation` setting is also retained: `false` enforces bound-position appearance, as configured for 6ONI.
 
 ## Molecular labels
 
@@ -26,7 +38,7 @@ The 6ONJ display uses **MED1**, **Rosiglitazone / agonist**, and **PPARγ**. The
 
 Edit `peptide`, `peptide_role`, `ligand`, and `ligand_role` in each PDB entry in `_data/structures.yml`. The initial page and PDB switching both use these values.
 
-Inside 6ONJ's existing `view:` block, `label_layout` gives each label separate positions before and after its component moves:
+Inside 6ONJ's existing `view:` block, `label_layout` gives each label bound and incoming positions. The legacy names are retained: `initial` means the **bound** position and `separated` means the **incoming** position:
 
 ```yaml
     label_layout:
@@ -40,7 +52,7 @@ Inside 6ONJ's existing `view:` block, `label_layout` gives each label separate p
 
 `offset` is `[horizontal, vertical]` in percentages of panel width/height. Negative values move left/up; positive values move right/down. `anchor` selects the corner of the label placed at that offset from its molecular component. For example, `bottom-right` places the label's lower-right corner there, making the text extend to the left and upward. Supported corners are `top-left`, `top-right`, `bottom-left`, and `bottom-right`.
 
-Offsets and anchors blend smoothly with **that component's own separation**. Rosiglitazone starts farther down/right than in v5.13.3, while MED1 starts up/right, leaving the labels apart and clearing the ligand/peptide. As rosiglitazone moves out, its caption shifts farther left with the lower-right anchor. MED1's final caption sits beside the separated peptide, clear of the floating menu in the tested phone layouts. Reverse scrolling restores the starting positions; pause holds the current positions.
+Offsets and anchors blend smoothly from `separated` to `initial` as **that component approaches its binding site**. The incoming rosiglitazone label uses a lower-right anchor, so its text extends leftward; it shifts right as the ligand binds. Bound MED1 sits above the ligand label. Each label fades with its component and remains hidden until that component's section begins. Reverse scrolling retraces these positions and fades the labels away; pause holds the current positions and visibility.
 
 The viewer keeps each complete moving label at least 12 pixels inside the panel, so an anchor may shift slightly near an edge. 6ONI retains its single fixed `label_offsets.ligand: [-38, -8]` setting; the older `label_offsets` form remains supported when no `label_layout` is supplied. Save, let Jekyll rebuild, and refresh. Static fallback views use `assets/css/molecular-labels.css`.
 
@@ -79,7 +91,7 @@ Open `_data/structures.yml`. Each preset has an independent `view` section. The 
 view:
   rotation_xyz: [0, 0, 0]
   camera_span: null
-  scroll_zoom: {amount: 0.32, start: 0.05, end: 0.5}
+  scroll_zoom: {amount: 0, start: 0.05, end: 0.5}
   camera:
     position_type: fov_normalized
     position: [-29.09, 204.96, -1.18]
@@ -98,8 +110,8 @@ If copying the panel's raw **Position** instead, set `position_type: raw` and re
 
 - `camera_span: null` derives the framing from the copied camera. A positive number overrides zoom: it is half the view's vertical extent at the target plane, in ångströms. Larger values make the molecule smaller. Mobile adds 3 Å of margin.
 - `rotation_xyz` makes additional view-space adjustments in degrees, in X → Y → Z order (`Rz × Ry × Rx`). X points right, Y up, and Z toward the viewer; positive rotations follow the right-hand rule. Leave `[0, 0, 0]` to preserve the copied pose. With a copied camera, adjustments rotate around its target.
-- `scroll_zoom` controls the camera retreat during separation. `amount` is the fractional reduction in apparent scale; `start` and `end` are normalized motion progress. The earlier 32% retreat for 6ONJ keeps its separated peptide visible in your tighter starting view.
-- All components share the camera orientation and then undergo the same schematic separation and small animated Y rotation. Labels follow their projected positions.
+- `scroll_zoom` controls the camera retreat during assembly. `amount` is the fractional reduction in apparent scale; `start` and `end` are normalized assembly progress. The default is `amount: 0` for both structures, preserving the original large protein size throughout ligand and peptide assembly. The later, intentional protein-to-cell transition retains its own scale animation.
+- All components share the camera orientation and small scroll-controlled Y rotation. Ligand and peptide approach independently; once bound, all three components share the same rocking transform and wiggle clock. Labels follow their projected positions.
 
 For a new preset without a `camera` block, the automatic starting basis faces the ligand toward the viewer and places the peptide upward. Rotations then occur around the receptor Cα centroid:
 
@@ -169,7 +181,7 @@ The first script checks the selected assembly, reads deposited polymer coordinat
 
 The site uses locally hosted Mol* 5.13.1. There is no renderer selector. Saved Three.js or PyMOL choices from earlier versions are ignored. Palette, PDB, Illustrative cartoon, and SSGI controls remain available. See [Mol*](https://molstar.org/) and its [plugin documentation](https://molstar.org/docs/v5/plugin/instance/).
 
-The peptide and ligand separate across the first two concepts, finishing by the arrival of the third headline. As the third heading approaches, the receptor rocks and all three molecular components visibly flex while **Beyond a single structure** is in view. As **From structure to cellular function** arrives, the protein shrinks toward the nucleus of an illustrated adipocyte and the view pulls back to reveal the complete cell. As **Mechanisms that guide discovery** arrives, the cell pulls back further and six black-marker chemical sketches sweep in from different directions, with staggered arrivals and faint contact rings. The final cell fades to 50% opacity and the compounds hold their positions while the contact rings gently twinkle. Scrolling backward retraces both transitions. **Pause motion** freezes the wiggle, rocking, zoom, chemical approaches, and ring twinkles.
+The receptor starts alone. The ligand appears and binds during the first concept, then the coregulator peptide appears and binds during the second. As the third heading approaches, the bound complex rocks and all three molecular components visibly flex while **Beyond a single structure** is in view. As **From structure to cellular function** arrives, the protein shrinks toward the nucleus of an illustrated adipocyte and the view pulls back to reveal the complete cell. As **Mechanisms that guide discovery** arrives, the cell pulls back further and six black-marker chemical sketches sweep in from different directions, with staggered arrivals and faint contact rings. The final cell fades to 50% opacity and the compounds hold their positions while the contact rings gently twinkle. Scrolling backward retraces both transitions. **Pause motion** freezes the wiggle, rocking, zoom, chemical approaches, and ring twinkles.
 
 ### Slower scrolling and a longer molecular-motion section
 
@@ -199,7 +211,7 @@ Save and let Jekyll rebuild. If LiveReload is enabled, the page refreshes automa
 
 The multiplier stretches the cell/discovery transition windows backward from their base end positions in `_data/cell_scene.yml` / `_data/discovery_scene.yml`. Then `action_lead_vh` shifts **both** ends earlier. The formula is `effective_start = end + (start - end) × multiplier + lead / 100`, `effective_end = end + lead / 100`. For the desktop cell transition, the original 85%-to-40% window becomes 150%-to-60% with multiplier 2 and lead 20: it still takes 90% of a screen of scrolling. The fourth headline is below the screen when the transition begins, and the cell is revealed while that headline is still visible. Mobile cell scrolling spans 70% of a screen; chemical arrival spans 110% on desktop and 74% on mobile.
 
-The peptide action follows **A meeting of molecules**, and ligand separation follows **Small molecules. Specific effects**. They use the same validated molecular pose/camera path, now scheduled from these two headings instead of the overall story distance. The covalent 6ONI ligand remains attached. The wiggle has its own entrance window and no longer waits on overall separation progress. With default lead 20, it fades in while the third heading moves from 125% to 100% of the viewport height: full motion is already established as the heading enters. Extra third-section space extends the viewing interval, and the motion fades with the cell pullback.
+Ligand binding follows **Small molecules. Specific effects** first, then peptide recruitment follows **A meeting of molecules**. Each action starts as its heading approaches, using a base entrance window from 110% to 40% of viewport height plus your action lead. A partner and its label fade in over the first 18% of its window; approach runs from 12% to 100%. Peptide recruitment waits until the ligand stage is complete. The covalent 6ONI ligand fades in at its bound position. Wiggle has its own entrance window at the third heading. With default lead 20, it fades in while the third heading moves from 125% to 100% of the viewport height: full motion is already established as the heading enters. Extra third-section space extends the viewing interval, and the motion fades with the cell pullback.
 
 Increase `action_lead_vh` when you want the action earlier relative to its text; increase `transition_scroll_multiplier` when you want the cell/discovery transition to span more scrolling. If you increase either substantially, also increase section heights to leave room to enjoy each settled scene before the next begins. Mobile uses the same entrance logic so the action starts while the text arrives below the sticky illustration.
 
@@ -232,7 +244,7 @@ Set `enable_domain_motion: false` to turn off both rocking and internal wiggle. 
 
 The internal effect uses Mol* 5.13.1's native, position-based procedural wiggle. It deforms the displayed cartoon smoothly instead of only rotating the entire receptor. Nearby positions receive correlated displacement, keeping the motion coherent. It does not change the stored atomic coordinates, calculate forces, preserve every bond length, or represent measured molecular dynamics. The figure labels it as illustrative motion.
 
-The receptor, peptide, and ligand all use the same wiggle amplitude, speed, frequency, and clock. This includes the separated peptide and noncovalent 6ONJ ligand. For 6ONI, the covalent ligand shares the receptor's spatial displacement field, clock, and rocking transform. This keeps their visual motion coupled; it is not a constrained molecular simulation.
+The bound receptor, peptide, and ligand all use the same wiggle amplitude, speed, frequency, spatial displacement field, clock, and rigid rocking transform. This keeps both 6ONJ's noncovalent complex and 6ONI's covalent complex visually coupled while their displayed geometry flexes. It is not a constrained molecular simulation.
 
 Motion fades in during the third topic and out as Functional regulation arrives. The controller and Mol* shader use one clock, so **Pause motion** freezes the flexed pose. Rendering is capped at 30 frames per second and suspends while offscreen or while the tab is hidden. A short sequence of stationary draws allows lighting and antialiasing to settle after an update. Reduced-motion preference disables both effects.
 
@@ -275,7 +287,7 @@ The illustration was created for this website with OpenAI image generation. Whit
 | `_data/structures.yml` | Independent PDB cameras, scientific selections, and labels |
 | `_data/display.yml` | Default structure, palette, and Mol* appearance |
 | `_data/scroll_story.yml` | Section heights, molecular-motion viewing interval, and transition scroll distance |
-| `_data/hero_animation.yml` | Separation switches, internal wiggle, rocking, and live pixel ratio |
+| `_data/hero_animation.yml` | Approach switches (legacy separation names), internal wiggle, rocking, and live pixel ratio |
 | `_data/cell_scene.yml` | Cell transition, timing, artwork path, and nucleus landing point |
 | `_includes/adipocyte.html` | Cell illustration and visible labels |
 | `assets/images/science/adipocyte-cutaway.png` | Transparent illustrated cell used by the webpage |
@@ -284,15 +296,15 @@ The illustration was created for this website with OpenAI image generation. Whit
 | `assets/js/molecular-viewer.js` | Scroll, labels, structure switching, and motion controls |
 | `assets/js/molstar-adapter.js` | Mol* representation and rendering |
 | `assets/molecular/<key>/scene.json` | Prepared molecular coordinates |
-| `assets/molecular/<key>/posters/<palette>.webp` | Still image while loading or if WebGL is unavailable |
+| `assets/molecular/<key>/posters/<palette>.webp` | Still fallback image if WebGL is unavailable |
 
 Earlier Three.js/PyMOL source files and frame sequences remain in the source download as reference. They are excluded from Jekyll builds and the standalone preview by `_config.yml`. The website does not load or animate them. The original rendering scripts generated the ordinary still poster images; no PyMOL installation or frame sequence is needed to use the website.
 
 ## Accessibility and failure handling
 
-Reduced-motion preference uses Mol* held at its initial pose, with separation, rocking, internal wiggle, and the zoom disabled. The still cell illustration remains in the fourth section. Without JavaScript or if Mol* cannot initialize WebGL, the still poster and complete scientific text remain visible. Changing the PDB also changes its fallback image. Each supplied poster matches that preset's initial camera; after a future camera edit, replace its still images if you want the fallback pose to match. The live Mol* camera updates immediately after rebuilding Jekyll.
+Reduced-motion preference shows the completed bound complex at its configured starting camera, with all component labels visible and assembly, rocking, internal wiggle, and zoom disabled. The still cell illustration remains in the fourth section. Without JavaScript or if Mol* cannot initialize WebGL, the still poster and complete scientific text remain visible. Changing the PDB also changes its fallback image. Each supplied poster matches that preset's initial camera; after a future camera edit, replace its still images if you want the fallback pose to match. The live Mol* camera updates immediately after rebuilding Jekyll.
 
-Component identity is always labeled. Mobile uses a shorter sticky molecular panel above the text. Unsupported SSGI disables only that lighting option, leaving the ordinary cartoon usable.
+Each visible molecular component is labeled; hidden partners' labels are also hidden and excluded from screen readers. Mobile uses a shorter sticky molecular panel above the text. Unsupported SSGI disables only that lighting option, leaving the ordinary cartoon usable.
 
 
 ## From cellular function to chemical discovery
@@ -353,39 +365,54 @@ The markup is in `_includes/discovery.html` and `_layouts/home.html`, the stylin
 
 ## Initial loading and fallback images
 
-During startup, a light scientific sketch of a protein ribbon, peptide, and
-ligand fills the reserved molecular panel. This conceptual illustration is not
-an experimental PDB rendering. It drifts gently once over 4.5 seconds, then rests
-if loading takes longer. Reduced-motion visitors see a still illustration.
+During startup, a centered **LOADING...** sign uses original pixel lettering
+with a letter-by-letter arcade-style reveal by default. Lettering and its block shadow follow the
+site's ink and gold colors. The SVG is included directly in the page, so no
+font or loading-image download is needed. It remains sharp on phones.
 
-The live model becomes visible immediately after its first draw with the selected
-PDB camera, palette, and appearance. The sketch fades out over 180 milliseconds;
-there is no minimum display time or artificial loading delay. Selecting another
-PDB uses the same loading behavior. The former loading text is still available
-to screen readers but is not displayed visually.
+The live model becomes visible immediately after its first draw with the
+selected PDB camera, palette, and appearance. The sign fades out over 180
+milliseconds; there is no minimum display time or artificial loading delay.
+Selecting another PDB uses the same loading behavior. Screen readers receive
+one polite “Loading molecular view…” status; the decorative pixel lettering
+is excluded from the accessibility tree.
 
-To customize the sketch, edit `_data/molecular_loading.yml`:
+Edit `_data/molecular_loading.yml`:
 
 ```yaml
-image: /assets/images/science/molecular-loading.webp
+style: arcade
+animation: typewriter # typewriter, blink, or static
+typewriter_period_seconds: 2.4
 animate: true
+blink_period_seconds: 1.2
+image: /assets/images/science/molecular-loading.webp
 ```
 
-Set `animate: false` to keep the sketch still. To replace it, save a transparent
-PNG, WebP, or SVG in `assets/images/science/` and change `image` to that path.
-A square image with some empty margin works well. Rebuild Jekyll after editing.
-The shipped 720 × 720 WebP is approximately 98 KB and loads with high priority.
-Size, drift, and fade timing are in `assets/css/molecular-loading.css`.
+- `animation: typewriter` (default) reveals L → LO → LOA → … → LOADING..., including the dots one at a time. It holds the complete message, clears every character together, pauses briefly, and repeats until the structure is ready. The entire word reserves its final width, so letters never shift position.
+- `animation: blink` switches the entire message on and off; `animation: static` displays the complete message without animation.
+- `typewriter_period_seconds` controls the complete reveal/hold/clear cycle. Default: 2.4 seconds; minimum: 1.2 seconds.
+- The legacy `animate: false` master switch also keeps either design still. Visitors who prefer reduced motion always get the complete, still loading message.
+- `blink_period_seconds` is one complete on/off cycle. Larger values blink
+  more slowly; CSS enforces at least 0.8 seconds per cycle. Default: 1.2.
+- `style: illustration` restores the previous protein sketch. Its `image`
+  path is used only in this mode; the arcade mode does not request that image.
+  With animation enabled, the sketch drifts once over 4.5 seconds, then rests.
+- To replace the optional illustration, use a transparent PNG, WebP, or SVG
+  under `assets/images/science/`. A square image with some margin works well.
 
-The stored static poster and molecular labels remain hidden from the first HTML
-paint. The hidden canvas stays measurable so Mol* can render at the correct size.
-If the page opens at a later cell/discovery topic, Mol* completes its initial
-draw before suspending its hidden renderer, avoiding a stuck loading state.
+Rebuild Jekyll after editing. Pixel shapes live in
+`_includes/molecular-loading-pixels.html`; size, colors, reveal, blink, and fade rules
+are in `assets/css/molecular-loading.css`. The outer loading container is in
+`_layouts/home.html`. No animation-controller changes are required.
 
-The poster remains available if Mol* or WebGL fails, with a visible explanatory
-message. With JavaScript disabled, a `noscript` style shows the poster and hides
-the sketch and loading status. The sketch never holds up a working live model.
+The stored static poster and molecular labels remain hidden from the first
+HTML paint. The hidden canvas stays measurable so Mol* can render at the
+correct size. If the page opens at a later cell/discovery topic, Mol* completes
+its initial draw before suspending its hidden renderer, avoiding a stuck
+loading state.
 
-Loading markup is in `_layouts/home.html`. `molstar-adapter.js` reports the
-configured first frame, and `molecular-viewer.js` then reveals it. Coordinate,
-camera, scroll, and molecular appearance settings are unchanged.
+If Mol* or WebGL fails, the poster appears with a visible explanatory message.
+With JavaScript disabled, a `noscript` style shows the poster and hides the
+loading sign and status. `molstar-adapter.js` reports the configured first
+frame, and `molecular-viewer.js` then reveals it. The ligand-first assembly
+sequence, PDB cameras, and molecular appearance settings are unchanged.

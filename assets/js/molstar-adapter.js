@@ -48,6 +48,7 @@ window.KojetinRenderers.molstar = async function ({
   let lastCamera = "";
   const wiggleLoci = new Map();
   const lastWiggles = new Map();
+  const lastOpacities = new Map();
   let motionTime = 0,
     drawFrame = 0,
     drawBudget = 0,
@@ -124,6 +125,7 @@ window.KojetinRenderers.molstar = async function ({
     await update.commit();
     lastTransforms.clear();
     lastWiggles.clear();
+    lastOpacities.clear();
     highlight(colors);
     plugin.canvas3d.update(representations.receptor.obj.data.repr);
     requestDraw();
@@ -150,6 +152,7 @@ window.KojetinRenderers.molstar = async function ({
     await update.commit();
     lastTransforms.clear();
     lastWiggles.clear();
+    lastOpacities.clear();
     const pp = plugin.canvas3d.props.postprocessing;
     plugin.canvas3d.setProps({
       illumination: { enabled, ignoreOutline: !illustrative },
@@ -177,6 +180,12 @@ window.KojetinRenderers.molstar = async function ({
     motionTime = state.motionTime;
     for (const [name, representation] of Object.entries(representations)) {
       const repr = representation.obj.data.repr;
+      const opacity = name === "receptor" ? 1 : (state[`${name}Opacity`] ?? 1);
+      if (lastOpacities.get(name) !== opacity) {
+        repr.setState({ visible: opacity > 0, alphaFactor: opacity });
+        plugin.canvas3d.update(repr);
+        lastOpacities.set(name, opacity);
+      }
       const amplitude = wiggleLoci.has(name) ? state.wiggleAmplitude : 0;
       if (lastWiggles.get(name) !== amplitude) {
         repr.setState({
@@ -189,10 +198,8 @@ window.KojetinRenderers.molstar = async function ({
         plugin.canvas3d.update(repr);
         lastWiggles.set(name, amplitude);
       }
-      const domainAngle =
-        name === "receptor" || (name === "ligand" && settings.ligand_moves_with_domain)
-          ? state.domainAngle
-          : 0;
+      // The assembled complex rocks together, in addition to the shared wiggle.
+      const domainAngle = state.domainAngle;
       const transformKey = [
         state.angle,
         name === "peptide" ? state.peptideT : name === "ligand" ? state.ligandT : 0,

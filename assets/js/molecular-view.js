@@ -52,6 +52,6 @@ window.KojetinMolecularView = (view, scene) => {
     mode,
     fov,
     radius: camera?.radius || 100,
-    zoom: view.scroll_zoom || { amount: 0.12, start: 0.25, end: 0.9 },
+    zoom: view.scroll_zoom || { amount: 0, start: 0.25, end: 0.9 },
   };
 };

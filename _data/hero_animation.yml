@@ -1,6 +1,8 @@
 # Molecular identity and orientation live in _data/structures.yml.
 presentation:
   enable_rotation: true
+  # Legacy names: these control approach into the bound pose.
+  # false = fade in at the binding site without translation.
   enable_peptide_separation: true
   enable_ligand_separation: true
   enable_labels: true

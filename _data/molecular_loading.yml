@@ -1,7 +1,21 @@
-# A conceptual scientific sketch shown while Mol* prepares its first frame.
-# Replace this path with your own transparent PNG, WebP, or SVG if desired.
-image: /assets/images/science/molecular-loading.webp
+# Shown only until the selected Mol* structure has rendered its first frame.
+# arcade = pixel lettering; illustration = the previous protein sketch.
+style: arcade
 
-# One gentle 4.5-second drift; then the sketch rests if loading takes longer.
-# The visitor's reduced-motion preference always disables this animation.
+# Choose one: typewriter (default), blink, or static.
+# typewriter reveals L, LO, LOA, ... LOADING... then clears and repeats.
+animation: typewriter
+
+# Seconds per full typewriter cycle, including the full-word hold and blank pause.
+typewriter_period_seconds: 2.4
+
+# Legacy master switch: false keeps either loading design still.
+# Prefer animation: static for a still sign. Reduced motion always disables motion.
 animate: true
+
+# Seconds per complete arcade blink. Larger values blink more slowly.
+# CSS enforces a minimum of 0.8 seconds per cycle.
+blink_period_seconds: 1.2
+
+# Used only when style: illustration (transparent PNG, WebP, or SVG).
+image: /assets/images/science/molecular-loading.webp

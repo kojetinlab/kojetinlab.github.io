@@ -225,8 +225,10 @@ async function fixture(key, { width = 1200, dpr = 1, limits = {} } = {}) {
     progress: 1,
     angle: 0.28,
     domainAngle: 0.03,
-    peptideT: 1,
-    ligandT: preset.allow_ligand_separation ? 1 : 0,
+    peptideT: 0,
+    ligandT: 0,
+    peptideOpacity: 1,
+    ligandOpacity: 1,
     span: settings.span,
     motionTime: 1.25,
     wiggleAmplitude: 2,
@@ -353,6 +355,35 @@ async function fixture(key, { width = 1200, dpr = 1, limits = {} } = {}) {
       );
       assert.equal(cell.obj.data.repr.state.themeStrength.wiggle, 2);
     }
+    // All bound components use the same rigid rocking transform, while the
+    // procedural deformation uses the same clock and spatial field.
+    const receptorTransform = f.reps.get("receptor").obj.data.repr.state.transform;
+    for (const name of ["ligand", "peptide"])
+      assert.deepEqual(
+        Array.from(f.reps.get(name).obj.data.repr.state.transform),
+        Array.from(receptorTransform),
+        "Bound components rock as one complex",
+      );
+    f.adapter.render({ ...f.state, ligandOpacity: 0, peptideOpacity: 0 });
+    for (const name of ["ligand", "peptide"]) {
+      assert.equal(f.reps.get(name).obj.data.repr.state.visible, false);
+      assert.equal(f.reps.get(name).obj.data.repr.state.alphaFactor, 0);
+    }
+    assert.equal(f.reps.get("receptor").obj.data.repr.state.visible, true);
+    f.adapter.render({ ...f.state, ligandOpacity: 0.4, peptideOpacity: 0 });
+    assert.equal(f.reps.get("ligand").obj.data.repr.state.alphaFactor, 0.4);
+    assert.equal(f.reps.get("ligand").obj.data.repr.state.visible, true);
+    assert.equal(f.reps.get("peptide").obj.data.repr.state.visible, false);
+    await f.adapter.setPalette(f.settings);
+    await f.adapter.setAppearance({ illustrative: false, ssgi: false });
+    f.adapter.render({ ...f.state, ligandOpacity: 0.4, peptideOpacity: 0 });
+    assert.equal(
+      f.reps.get("peptide").obj.data.repr.state.visible,
+      false,
+      "Appearance/palette changes do not reveal hidden components",
+    );
+    f.adapter.render(f.state);
+    assert.equal(f.reps.get("peptide").obj.data.repr.state.alphaFactor, 1);
     f.adapter.setSuspended(true);
     f.adapter.render({ ...f.state, motionTime: 1.5 });
     const count = f.ticks.length;

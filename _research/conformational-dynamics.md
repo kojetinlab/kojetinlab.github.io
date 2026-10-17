@@ -1,9 +1,11 @@
 ---
-title: "Conformational dynamics"
-summary: "Understanding the moving structures that connect ligand binding to function."
+title: "Conformational dynamics and ensembles"
+summary: "How changes in structural motions (dynamics) connect ligand binding to shifting nuclear receptor conformational ensembles and changes in function."
 order: 2
-topics: ["PPARγ", "Conformational dynamics", "NMR"]
-publication_ids: ["2025-mactavish-ensemble", "2020-shang-molecular-switch"]
+topics2: ["PPARγ", "Conformational dynamics", "NMR"]
+topics: []
+publication_ids: ["2025-mactavish-ensemble", "2020-shang-molecular-switch", "2019-shang-graded-agonism",
+"2019-defining-a-canonical-ligand-binding-pocket-in-the-orphan-nuclear-receptor-nurr1"]
 source_urls: ["https://www.kojetinlab.org/", "https://www.kojetinlab.org/publications-2"]
 ---
 

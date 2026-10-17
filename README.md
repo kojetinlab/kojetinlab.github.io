@@ -49,10 +49,11 @@ The molecular viewer needs the local HTTP server. Opening a source HTML file dir
 
 ## Explore the settings
 
-Open the down arrow after **Contact** to try palettes, PDB structures, illustrative cartoons, and SSGI lighting. Mol* is the active molecular renderer.
+Open the down arrow after **Contact** to try palettes, PDB structures, illustrative cartoons, and SSGI lighting. Mol* is the active molecular renderer. The homepage starts with the receptor alone, adds the ligand, recruits the coregulator peptide, then shows the bound complex wiggling before the adipocyte transition. For covalent 6ONI, the ligand appears directly in its bound pose. See [the molecular guide](docs/molecular-animation.md#homepage-assembly-sequence) for timing and configuration.
 
 | What to change | File or folder |
 | --- | --- |
+| Loading mode (typewriter/blink/static), speed, and optional illustration | `_data/molecular_loading.yml` |
 | Default palette, PDB, illustrative cartoon, SSGI, and visible controls | `_data/display.yml` |
 | Page and molecular colors | `_data/palettes.yml` |
 | Each PDB's camera, chain selections, label names/roles, and label offsets | `_data/structures.yml` |

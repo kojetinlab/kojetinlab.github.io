@@ -1,8 +1,8 @@
 ---
 title: "Receptor partnerships"
-summary: "How nuclear receptor interactions create distinct pharmacological responses."
+summary: "How ligand-dependent nuclear receptor self and partner (heterodimer) interactions create distinct pharmacological responses."
 order: 3
-topics: ["NR4A", "RXR"]
+topics: []
 publication_ids: ["2026-yu-nr4a-rxr", "2023-yu-nurr1-rxr"]
 source_urls: ["https://www.kojetinlab.org/", "https://www.kojetinlab.org/publications-2"]
 ---

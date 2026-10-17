@@ -3,7 +3,7 @@
 enabled: true
 image: /assets/images/science/adipocyte-cutaway.png
 alt: "Illustrated white adipocyte in cutaway: a large gold lipid droplet, a teal nucleus at the left edge, and mitochondria and endoplasmic reticulum in the surrounding cytoplasm."
-caption: "Adipocyte · cellular context"
+caption: "CELLULAR CONTEXT · Adipocyte"
 note: "Nucleus, lipid droplet, and surrounding cytoplasm. Conceptual illustration; not to scale."
 
 # Position within the square artwork, from 0 (left/top) to 1 (right/bottom).

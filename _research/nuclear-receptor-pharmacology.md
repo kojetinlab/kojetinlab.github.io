@@ -1,9 +1,14 @@
 ---
-title: "Nuclear receptor pharmacology"
-summary: "How small molecules change the activity of gene-regulating proteins."
+title: "Nuclear receptor structural and molecular pharmacology"
+summary: "How small molecules (endogenous lipids, synthetic ligands, and FDA-approved drugs) change the activity of these therapeutically important transcription factors."
 order: 1
-topics: ["PPARγ", "Ligand binding"]
-publication_ids: ["2025-laughlin-fx909", "2024-shang-cobinding"]
+topics2: ["PPARγ", "Ligand binding"]
+topics: []
+publication_ids: [
+"2026-arifova-pparg-inhibitors",
+"2025-laughlin-fx909",
+"2024-shang-cobinding"
+]
 source_urls: ["https://www.kojetinlab.org/", "https://www.kojetinlab.org/publications-2"]
 ---
 
