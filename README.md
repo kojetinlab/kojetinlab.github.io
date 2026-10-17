@@ -17,6 +17,12 @@ Markdown and YAML for editable content and settings
 
 The site builds into static files. People, publications, research, and news are editable collections; no database or CMS subscription is required.
 
+## Publication update (v5.16.0)
+
+The collection now contains 82 published papers from PubMed and 2 unpublished bioRxiv preprints, with source abstracts on all individual publication pages. Preprints appear first; published papers follow, newest first. Metadata was refreshed October 17, 2026.
+
+To generate a new publication file from a PMID, run `python3 scripts/add_publication.py --pmid ACTUAL_PMID`. To refresh citations and abstracts while keeping your figures, topics, summaries, and page text, preview with `python3 scripts/refresh_publications.py`, then add `--apply`. Review, commit, and push the resulting changes in GitHub Desktop. See [Publication management](docs/publication-management.md) for bioRxiv imports and all settings.
+
 ## First-time GitHub setup
 
 Follow [Publishing to GitHub Pages](docs/deployment.md) for a beginner walkthrough using GitHub Desktop on a Mac. It explains how to back up the old site, replace its files in the existing repository, and enable automatic rebuilding.

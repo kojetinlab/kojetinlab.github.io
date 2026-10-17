@@ -49,11 +49,27 @@ summary: Our work on nuclear receptor structure, dynamics, and molecular pharmac
   {{ publications.size }} publications
 </p>
 <div id="publication-list">
-  {% for pub in publications -%}
-    {%- include publication-card.html pub=pub -%}
-  {%- endfor %}
+  {% assign preprints = publications | where: 'publication_type', 'preprint' -%}
+  {%- assign published = publications | where_exp: 'pub', 'pub.publication_type != "preprint"' -%}
+  {%- if preprints.size > 0 %}
+    <section class="publication-group" aria-labelledby="preprints-heading">
+      <h2 id="preprints-heading">Preprints</h2>
+      <p class="publication-group-note">Manuscripts not yet published in a journal.</p>
+      {% for pub in preprints -%}
+        {%- include publication-card.html pub=pub -%}
+      {%- endfor %}
+    </section>
+  {% endif -%}
+  {%- if published.size > 0 %}
+    <section class="publication-group" aria-labelledby="published-heading">
+      <h2 id="published-heading">Published papers</h2>
+      {% for pub in published -%}
+        {%- include publication-card.html pub=pub -%}
+      {%- endfor %}
+    </section>
+  {% endif %}
 </div>
 <p id="no-results" hidden>
   No publications match these filters. Try another search or reset the filters.
 </p>
-<script defer src="{{ '/assets/js/publications.js' | relative_url }}"></script>
+<script defer src="{{ '/assets/js/publications.js' | relative_url }}?v={{ site.asset_version }}"></script>

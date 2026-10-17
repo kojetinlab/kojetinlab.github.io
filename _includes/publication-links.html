@@ -46,4 +46,7 @@
   {% for link in include.pub.additional_links -%}
     <a href="{{ link.url }}">{{ link.label }} ↗</a>
   {%- endfor %}
+  {% for url in include.pub.correction_urls -%}
+    <a href="{{ url }}">Correction ↗</a>
+  {%- endfor %}
 </div>

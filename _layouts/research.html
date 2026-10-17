@@ -12,7 +12,9 @@ layout: default
     {% assign publications = site.publications | sort: 'date' | reverse -%}
     {%- for pub in publications -%}
       {%- assign related = false -%}
-      {%- if page.publication_ids contains pub.slug %}{% assign related = true %}{% endif -%}
+      {%- comment -%}Use the filename: Jekyll reserves pub.id and may normalize pub.slug.{%- endcomment -%}
+      {%- assign publication_key = pub.path | split: '/' | last | remove: '.md' -%}
+      {%- if page.publication_ids contains publication_key %}{% assign related = true %}{% endif -%}
       {%- for topic in page.topics -%}
         {%- if pub.topics contains topic %}{% assign related = true %}{% endif -%}
       {%- endfor -%}

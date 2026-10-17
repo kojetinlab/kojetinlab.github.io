@@ -19,7 +19,8 @@ show_contact_rings: true
 twinkle_contact_rings: true
 contact_twinkle_period_seconds: 2.8
 
-# _data/scroll_story.yml stretches this base window, then shifts both ends earlier.
+# _data/scroll_story.yml stretches this window FORWARD from its start.
+# Its action_lead_vh does not apply here: the full cell holds through topic four.
 # Fifth headline's distance from viewport top, as a fraction of height.
 # Begin the pullback first, then bring the six structures in with staggered timing.
 desktop: { start: 0.90, end: 0.35 }

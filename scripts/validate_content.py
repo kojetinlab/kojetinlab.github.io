@@ -27,6 +27,9 @@ def main():
                     if key in data and not isinstance(data[key],list): errors.append(f'{label}: {key} must be a list')
                 if folder=='_publications':
                     if not isinstance(data.get('authors'),list): errors.append(f'{label}: authors must be a list')
+                    if 'abstract' in data and not isinstance(data['abstract'],str): errors.append(f'{label}: abstract must be text')
+                    if data.get('publication_type','article') not in ('article','preprint','correction'): errors.append(f'{label}: publication_type must be article, preprint, or correction')
+                    if data.get('publication_type')=='preprint' and data.get('published_doi'): errors.append(f'{label}: this preprint has a journal version; run refresh_publications.py')
                     for key,seen in [('id',ids),('doi',dois),('pmid',pmids)]:
                         val=str(data.get(key,'')).strip().lower()
                         if val:
@@ -44,10 +47,11 @@ def main():
                     value=data.get(key)
                     if value and not str(value).startswith(('https://','http://')) and not (ROOT/str(value).lstrip('/')).is_file(): errors.append(f'{label}: missing {key}: {value}')
             except (ValueError,TypeError,yaml.YAMLError) as exc: errors.append(f'{label}: {exc}')
+    publication_slugs={p.stem for p in (ROOT/'_publications').glob('*.md')}
     for path in (ROOT/'_research').glob('*.md'):
         data=yaml.safe_load(path.read_text().split('---',2)[1])
         for pub_id in data.get('publication_ids',[]):
-            if pub_id.lower() not in ids: errors.append(f'{path.name}: unknown publication ID {pub_id}')
+            if pub_id not in publication_slugs: errors.append(f'{path.name}: publication_ids must match a publication filename without .md: {pub_id}')
     people=yaml.safe_load((ROOT/'_data/people.yml').read_text())
     if people.get('sort_by') not in ('last_name','seniority','joined'):
         errors.append('people.yml: sort_by must be last_name, seniority, or joined')

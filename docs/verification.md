@@ -369,3 +369,12 @@ This pass does not constitute a full cross-browser or accessibility audit. Unsup
 - Jekyll production build succeeded. Content validation reported 0 errors; all 148 generated pages passed internal-link and structure checks.
 - Existing controller checks passed, including a new assertion that camera span stays equal to its initial value throughout assembly for both PDBs on desktop and mobile, as well as reverse scroll, pause, first-frame loading gates, and the later cell/discovery transitions.
 - Live Mol* rendered successfully in Chrome with no page JavaScript errors. Desktop and mobile assembly screenshots and the full pixel loading sign were visually inspected.
+
+
+## Version 5.16.1 — abstracts upgrade and later chemical discovery
+
+- Confirmed the inspected local GitHub clone was v5.15.2: its 83 publication files had no abstracts, and its publication template did not render an abstract. The v5.16.0 updater preview stopped on research-template and shared-CSS conflicts before copying. The new release includes 84 source abstracts and the required template.
+- Discovery now ignores the early-action lead and stretches forward from its fifth-heading entry, holding the full-size, opaque adipocyte through the fourth topic. Existing start/end and scroll multiplier settings still control its pace.
+- Controller regression checks passed for both PDBs on desktop and mobile, including the fourth-topic hold, maximum lead/multiplier, forward/reverse scrolling, pause, loading, reduced motion and fallback behavior. These checks execute the real controller with deterministic layout fixtures; this revision has not received a live browser scroll review.
+- Production Jekyll build and content checks passed: 84 publications; 149 generated HTML pages; zero broken internal references or structural errors.
+- A trial upgrade of an isolated copy of the actual v5.15.2 clone preserved 32 locally modified/added files plus the resolved subtitle styling and discovery caption. All 84 abstracts rendered; all 150 generated pages passed link/structure checks. The controller suite also passed with the retained local settings. The real clone was inspected and previewed only; it was not modified or published.

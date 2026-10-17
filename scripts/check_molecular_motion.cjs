@@ -25,6 +25,7 @@ function expandedTiming(
 ) {
   const { start, end } = config[mobile ? "mobile" : "desktop"];
   const lead = (scrollPresentation[mobile ? "mobile" : "desktop"].action_lead_vh ?? 20) / 100;
+  if (config === discoveryPresentation) return { start, end: start - (start - end) * multiplier };
   return { start: end + (start - end) * multiplier + lead, end: end + lead };
 }
 const colors = Object.fromEntries(
@@ -567,8 +568,14 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
       +f.figure.dataset.cellProgress > 0.5,
       "Cell pullback is clearly visible on fourth-heading entry",
     );
+    assert.equal(+f.figure.dataset.discoveryProgress, 0, "Fourth-heading entry retains the full cell");
+    await f.scrollStory(5000 - 500);
+    assert.equal(+f.figure.dataset.discoveryCellScale, 1, "Cell stays full size while reading the fourth heading");
+    assert(f.compoundFrames.every((e) => e.style.opacity === "0"));
     await f.scrollStory(6000 - 950);
-    assert(+f.figure.dataset.discoveryProgress > 0.5, "Compounds arrive on fifth-heading entry");
+    assert.equal(+f.figure.dataset.discoveryProgress, 0, "Chemicals wait until scrolling into the fifth topic");
+    await f.scrollStory(6000 - 500);
+    assert(+f.figure.dataset.discoveryProgress > 0.1, "Further scrolling starts chemical discovery");
     assert(
       f.compoundFrames.some((e) => +e.style.opacity > 0.5),
       "At least one chemical sketch is visible",
@@ -598,8 +605,23 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
     );
   }
   console.log(
-    "All five actions match approaching headings; action lead, full entry-strength wiggle, and reversal passed",
+    "Earlier actions lead their headings; the full cell holds until scrolling into chemical discovery; reversal passed",
   );
+  for (const mobile of [false, true]) {
+    const f = await fixture("molstar", "6onj", true, {
+      mobile,
+      pacing: {
+        desktop: { transition_scroll_multiplier: 3, action_lead_vh: 60 },
+        mobile: { transition_scroll_multiplier: 3, action_lead_vh: 60 },
+      },
+    });
+    await f.scrollStory(5000 - 500);
+    assert.equal(+f.figure.dataset.cellProgress, 1);
+    assert.equal(+f.figure.dataset.discoveryCellScale, 1);
+    assert(f.compoundFrames.every((e) => e.style.opacity === "0"));
+    await f.scrollStory(6000 - 1000);
+    assert.equal(+f.figure.dataset.discoveryProgress, 0, "Even maximum pacing/lead cannot start discovery before its heading enters");
+  }
   // Sweep actual heading positions, not a timer: longer viewing distance must
   // not delay the start of wiggle or weaken its full-strength plateau.
   for (const mobile of [false, true]) {
@@ -1015,7 +1037,7 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
       assert.equal(snapshot(), halfway, "Reverse scrolling exactly retraces the same poses");
       f.visibility(false);
       await f.tick(2);
-      await f.scroll(2.3, -1500, -900, 100);
+      await f.scroll(2.3, -1500, -900, -300);
       assert.equal(snapshot(), halfway, "Offscreen scroll does not draw");
       f.visibility(true);
       await f.tick(2);
@@ -1028,7 +1050,7 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
         "1",
         "Reverse scroll restores cell opacity",
       );
-      await f.scroll(2.3, -1500, -900, 100);
+      await f.scroll(2.3, -1500, -900, -300);
       f.reduced.matches = true;
       f.reduced.change();
       await f.tick(2);
@@ -1058,7 +1080,7 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
     { reduced: true },
   ]) {
     const f = await fixture("molstar", "6onj", true, settings);
-    await f.scroll(2.3, -1500, -900, 100);
+    await f.scroll(2.3, -1500, -900, -300);
     assert.equal(+f.figure.dataset.discoveryProgress, 0);
     assert.equal(+f.figure.dataset.discoveryCellScale, 1);
     assert.equal(
@@ -1068,14 +1090,14 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
   }
   for (const settings of [{ twinkle: false }, { rings: false }]) {
     const f = await fixture("molstar", "6onj", true, settings);
-    await f.scroll(2.3, -1500, -900, 100);
+    await f.scroll(2.3, -1500, -900, -300);
     await f.tick(4);
     assert.equal(f.frames.size, 0, "Disabling rings or twinkling stops the idle loop");
     for (let i = 0; i < f.compoundFrames.length; i++)
       assert(+f.parts.get(`[data-contact="${i}"]`).style.opacity < 0.000001);
   }
   const sketches = await fixture("molstar", "6onj", true, { sketchFailed: true });
-  await sketches.scroll(2.3, -1500, -900, 100);
+  await sketches.scroll(2.3, -1500, -900, -300);
   const firstImage = sketches.compoundFrames[0].image;
   firstImage.naturalWidth = 1536;
   firstImage.load();

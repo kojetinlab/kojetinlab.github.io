@@ -1,28 +1,36 @@
 ---
-id: "2023-go-big-and-go-home-a-bulky-extension-makes-promiscuous-ligands-settle-down"
-title: "Go big and go home: A bulky extension makes promiscuous ligands settle down"
-authors: ["Xiaoyu Yu", "Douglas J Kojetin"]
-journal: "Structure (London, England : 1993)"
+id: 2023-go-big-and-go-home-a-bulky-extension-makes-promiscuous-ligands-settle-down
+title: 'Go big and go home: A bulky extension makes promiscuous ligands settle down'
+authors:
+- Xiaoyu Yu
+- Douglas J Kojetin
+journal: 'Structure (London, England : 1993)'
 year: 2023
-date: "2023-12-07"
-doi: "10.1016/j.str.2023.11.001"
-pmid: "38065074"
-topics: ["Structural biology"]
+date: '2023-12-07'
+doi: 10.1016/j.str.2023.11.001
+pmid: '38065074'
+topics:
+- Structural biology
 featured: false
-image: ""
-image_alt: ""
+image: ''
+image_alt: ''
 pdb: []
-source_url: "https://www.kojetinlab.org/publications-2"
-source_citation: "Yu X, Kojetin DJ. Go big and go home: A bulky extension makes promiscuous ligands settle down. Structure. 2023 Dec 7;31(12):1520-1522. [ pubmed ] [ journal ]"
-journal_url: "https://doi.org/10.1016/j.str.2023.11.001"
-volume: "31"
-issue: "12"
-pages: "1520"
-date_precision: "day"
-pmcid: ""
-publication_type: "article"
-metadata_source: "https://pubmed.ncbi.nlm.nih.gov/38065074/"
-metadata_verified: "2026-10-15"
+journal_url: https://doi.org/10.1016/j.str.2023.11.001
+volume: '31'
+issue: '12'
+pages: 1520-1522
+date_precision: day
+pmcid: ''
+publication_type: article
+metadata_source: https://pubmed.ncbi.nlm.nih.gov/38065074/
+metadata_verified: '2026-10-17'
+online_date: ''
+abstract: Synthetic ligands often show undesired polypharmacology, affecting the function of multiple
+  targets. In this issue of Structure, Huber et al. developed a PXR-specific agonist based on a promiscuous
+  ligand. Their structure-guided approach exploited the malleability of the PXR ligand-binding pocket,
+  which unlike other nuclear receptors could accommodate bulkier ligands.
+abstract_source: https://pubmed.ncbi.nlm.nih.gov/38065074/
+pubmed_relations: {}
 ---
 
 

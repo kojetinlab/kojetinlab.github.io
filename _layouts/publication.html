@@ -3,17 +3,23 @@ layout: default
 ---
 <article class="wrap article-shell">
   <a class="back-link" href="{{ '/publications/' | relative_url }}">← Publications</a>
-  <p class="eyebrow">{{ page.journal }} · {{ page.year }}</p>
+  <p class="eyebrow">{{ page.journal }} · {{ page.year }}{% if page.publication_type == 'preprint' %} · Preprint{% endif %}</p>
   <h1 class="article-title">{{ page.title }}</h1>
   <p class="authors">{{ page.authors | join: ', ' }}</p>
   <p>
     {{ page.journal -}}
-    {%- if page.volume %}, {{ page.volume }}{% endif -%}
+    {%- if page.volume and page.volume != '' %}, {{ page.volume }}{% endif -%}
     {%- if page.issue and page.issue != '' %}({{ page.issue }}){% endif -%}
     {%- if page.pages and page.pages != '' %}, {{ page.pages }}{% endif %}
     ({{ page.year }})
   </p>
   {% include publication-links.html pub=page -%}
+  {%- if page.abstract and page.abstract != '' %}
+    <section class="prose publication-abstract" aria-labelledby="abstract-heading">
+      <h2 id="abstract-heading">Abstract</h2>
+      <p>{{ page.abstract | escape | newline_to_br }}</p>
+    </section>
+  {% endif -%}
   {%- if page.image and page.image != '' %}
     <figure class="article-figure">
       <a href="{{ page.image | relative_url }}">

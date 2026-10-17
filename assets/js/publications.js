@@ -2,6 +2,7 @@
   const form = document.getElementById("publication-filters");
   if (!form) return;
   const rows = [...document.querySelectorAll("#publication-list .publication-row")];
+  const groups = [...document.querySelectorAll("#publication-list .publication-group")];
   const search = document.getElementById("publication-search");
   const year = document.getElementById("publication-year");
   const topic = document.getElementById("publication-topic");
@@ -23,6 +24,9 @@
         (!featured.checked || row.dataset.featured === "true");
       row.hidden = !visible;
       if (visible) count++;
+    });
+    groups.forEach((group) => {
+      group.hidden = ![...group.querySelectorAll(".publication-row")].some((row) => !row.hidden);
     });
     document.getElementById("publication-count").textContent =
       `${count} publication${count === 1 ? "" : "s"}`;

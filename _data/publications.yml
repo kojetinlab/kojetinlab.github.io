@@ -1,0 +1,33 @@
+# Source settings for scripts/refresh_publications.py.
+# Add bioRxiv-only manuscripts here; PubMed-indexed preprints are also discovered automatically.
+# The CAR preprint has a journal version, but bioRxiv does not yet expose that link.
+pubmed_query: Kojetin[Author]
+author_family: Kojetin
+author_given:
+- Douglas
+- Doug
+- D
+extra_pmids: []
+biorxiv_dois:
+- 10.1101/2020.05.05.079277
+- 10.1101/2020.05.22.109017
+- 10.1101/2020.06.15.153270
+- 10.1101/2020.07.30.229864
+- 10.1101/2020.09.22.298109
+- 10.1101/2022.07.13.499031
+- 10.1101/2022.11.08.515219
+- 10.1101/2024.02.16.580656
+- 10.1101/2024.04.23.590805
+- 10.1101/2024.05.15.594037
+- 10.1101/2024.07.19.604348
+- 10.1101/2025.03.04.640448
+- 10.1101/2025.03.19.642122
+- 10.1101/2025.05.04.651770
+- 10.1101/245852
+- 10.1101/252817
+- 10.1101/278440
+- 10.1101/351346
+- 10.1101/617100
+- 10.64898/2026.09.13.751256
+published_doi_overrides:
+  10.1101/2020.07.30.229864: 10.1038/s41586-021-03421-6

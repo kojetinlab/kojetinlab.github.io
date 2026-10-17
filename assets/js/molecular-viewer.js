@@ -117,8 +117,14 @@
       scrollOptions[mobile ? "mobile" : "desktop"]?.action_lead_vh ?? 20,
     );
     const lead = clamp(Number.isFinite(configuredLead) ? configuredLead : 20, 0, 60) / 100;
-    // Stretch the window, then shift the whole window earlier. The separate
-    // lead preserves its length while establishing the action as text arrives.
+    // Keep the full cell through the fourth topic. Discovery starts only when
+    // its own heading enters, and extra scroll distance extends AFTER that
+    // start. The shared early-action lead applies only to the earlier scenes.
+    if (config === discoveryOptions) {
+      const laterEnd = start - (start - end) * multiplier;
+      return 1 - smooth(laterEnd, start, heading.getBoundingClientRect().top / innerHeight);
+    }
+    // Earlier scenes stretch backward, then shift the whole window earlier.
     const earlierStart = end + (start - end) * multiplier + lead;
     return 1 - smooth(end + lead, earlierStart, heading.getBoundingClientRect().top / innerHeight);
   }

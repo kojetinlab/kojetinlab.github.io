@@ -1,22 +1,42 @@
 ---
-id: "2012-synthesis-and-sar-of-tetrahydroisoquinolines-as-rev-erbalpha-agonists"
-title: "Synthesis and SAR of tetrahydroisoquinolines as Rev-erbalpha agonists"
-authors: ["Noel R", "Song X", "Shin Y", "Banerjee S", "Kojetin D", "Lin L", "Ruiz CH", "Cameron MD", "Burris TP", "Kamenecka TM"]
-journal: "Bioorganic & medicinal chemistry letters"
+id: 2012-synthesis-and-sar-of-tetrahydroisoquinolines-as-rev-erbalpha-agonists
+title: Synthesis and SAR of tetrahydroisoquinolines as Rev-erbα agonists
+authors:
+- Romain Noel
+- Xinyi Song
+- Youseung Shin
+- Subhashis Banerjee
+- Douglas Kojetin
+- Li Lin
+- Claudia H Ruiz
+- Michael D Cameron
+- Thomas P Burris
+- Theodore M Kamenecka
+journal: Bioorganic & medicinal chemistry letters
 year: 2012
-date: "2012-01-01"
-date_precision: "year"
-doi: ""
-pmid: ""
-topics: ["REV-ERB"]
+date: '2012-06-01'
+date_precision: day
+doi: 10.1016/j.bmcl.2012.04.023
+pmid: '22560469'
+topics:
+- REV-ERB
 featured: false
-image: ""
-image_alt: ""
+image: ''
+image_alt: ''
 pdb: []
-source_url: "https://www.kojetinlab.org/publications-2"
-source_citation: "Noel R, Song X, Shin Y, Banerjee S, Kojetin D, Lin L, Ruiz CH, Cameron MD, Burris TP, and Kamenecka TM. (2012) Synthesis and SAR of tetrahydroisoquinolines as Rev-erbalpha agonists. Bioorganic & medicinal chemistry letters 22(11):3739-3742"
-volume: "22"
-issue: "11"
-pages: "3739-3742"
+volume: '22'
+issue: '11'
+pages: 3739-42
+online_date: '2012-04-13'
+pmcid: PMC3488456
+publication_type: article
+abstract: The design and synthesis of a novel series of Rev-erbα agonists is described. The development
+  and optimization of the tetrahydroisoquinoline series was carried out from an earlier acyclic series
+  of Rev-erbα agonists. Through the optimization of the scaffold 1, several potent compounds with good
+  in vivo profiles were discovered.
+abstract_source: https://pubmed.ncbi.nlm.nih.gov/22560469/
+metadata_source: https://pubmed.ncbi.nlm.nih.gov/22560469/
+metadata_verified: '2026-10-17'
+pubmed_relations: {}
 ---
 

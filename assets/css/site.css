@@ -557,6 +557,19 @@ small,
 .selected-publications {
   padding-bottom: 105px;
 }
+.publication-group + .publication-group {
+  margin-top: 64px;
+}
+.publication-group > h2 {
+  margin-bottom: 12px;
+}
+.publication-group-note {
+  color: var(--muted);
+  margin: 0 0 24px;
+}
+.publication-abstract {
+  margin-top: 36px;
+}
 .publication-row {
   display: grid;
   grid-template-columns: 250px 1fr;
