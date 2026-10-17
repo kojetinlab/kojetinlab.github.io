@@ -1,5 +1,5 @@
 ---
-name: Camron Lewis
+name: Cameron Lewis
 last_name: Lewis
 role: Graduate Student
 category: Graduate Students
