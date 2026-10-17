@@ -151,8 +151,76 @@ def from_biorxiv(payload):
 def fetch_pubmed(pmid):
     return from_pubmed(fetch('https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&retmode=xml&id='+str(pmid)))
 
+def prefer_full_authors(abbreviated, candidates):
+    """Expand initials only when author count, order, surnames and first initials agree."""
+    def key(value):
+        return ''.join(c for c in unicodedata.normalize('NFKD',value).casefold() if c.isalpha())
+    if not abbreviated or len(abbreviated) != len(candidates): return abbreviated
+    expanded=[]
+    for short, full in zip(abbreviated, candidates):
+        if key(short) == key(full):
+            expanded.append(full)
+            continue
+        words=short.split()
+        initials=[]
+        while words:
+            tokens=re.findall(r'[^\W\d_]+',words[0],flags=re.UNICODE)
+            if not tokens or any(len(t)!=1 for t in tokens): break
+            initials.extend(tokens)
+            words.pop(0)
+        family=key(' '.join(words))
+        full_key=key(full)
+        if (not initials or not family or not full_key.endswith(family)
+                or full_key[0] != key(initials[0]) or len(full_key)<=len(key(short))):
+            return abbreviated
+        expanded.append(full)
+    return expanded
+
+def authors_from_jats(xml, doi):
+    root=ET.fromstring(xml)
+    # Ignore XML namespaces while retaining the front-matter author scope.
+    for node in root.iter(): node.tag=node.tag.rsplit('}',1)[-1]
+    meta=root.find('./front/article-meta')
+    if meta is None or normalize_doi(text(meta,'article-id[@pub-id-type="doi"]'))!=normalize_doi(doi):
+        raise ValueError('Manuscript XML DOI does not match the requested preprint.')
+    names=[]
+    for author in meta.findall('.//contrib[@contrib-type="author"]'):
+        name=author.find('name')
+        if name is None: name=author.find('string-name')
+        value=' '.join(x for x in (text(name,'given-names'),text(name,'surname'),text(name,'suffix')) if x)
+        names.append(value or text(author,'collab'))
+    return names
+
 def fetch_biorxiv(doi):
-    return from_biorxiv(json.loads(fetch('https://api.biorxiv.org/details/biorxiv/'+normalize_doi(doi))))
+    doi=normalize_doi(doi)
+    payload=json.loads(fetch('https://api.biorxiv.org/details/biorxiv/'+doi))
+    record=from_biorxiv(payload)
+    # Journal records get their full author list from PubMed during resolution.
+    if record.get('published_doi'): return record
+    latest=max(payload['collection'],key=lambda item:int(item.get('version',0)))
+    xml_url=latest.get('jatsxml','')
+    candidates=[]
+    if urllib.parse.urlparse(xml_url).hostname in ('www.biorxiv.org','biorxiv.org'):
+        try: candidates=authors_from_jats(fetch(xml_url),doi)
+        except (ValueError,OSError,ET.ParseError): pass
+    expanded=prefer_full_authors(record['authors'],candidates)
+    if expanded!=record['authors']:
+        record.update(authors=expanded,authors_source=xml_url)
+        return record
+    # The DOI deposit carries full names even when manuscript XML is unavailable.
+    crossref_url='https://api.crossref.org/works/'+urllib.parse.quote(doi,safe='')
+    try:
+        message=json.loads(fetch(crossref_url))['message']
+        if normalize_doi(message.get('DOI'))==doi:
+            candidates=[' '.join(x for x in (a.get('given'),a.get('family')) if x) or a.get('name','')
+                        for a in message.get('author',[])]
+            expanded=prefer_full_authors(record['authors'],candidates)
+            if expanded!=record['authors']:
+                record.update(authors=expanded,authors_source=crossref_url)
+                return record
+    except (ValueError,OSError,KeyError,TypeError): pass
+    print('Full author names unavailable for '+doi+'; retaining source names or matching existing full names.',file=sys.stderr)
+    return record
 
 def published_from_doi(doi):
     terms = ' OR '.join('"'+d+'"[DOI]' for d in sorted({normalize_doi(doi),doi_key(doi)}))
@@ -237,7 +305,12 @@ def main():
             elif record['publication_type'] == 'preprint' and 'biorxiv' in record['journal'].lower():
                 bio = fetch_biorxiv(record['doi'])
                 if bio.get('published_doi'): record=resolve_biorxiv_record(bio)
-                else: record.update(bio)
+                else:
+                    pubmed_authors=record['authors']
+                    author_source=record['metadata_source']
+                    record.update(bio)
+                    record['authors']=prefer_full_authors(bio['authors'],pubmed_authors)
+                    if record['authors']!=bio['authors']: record['authors_source']=author_source
             records=[record]
         elif args.biorxiv:
             doi=normalize_doi(args.biorxiv)

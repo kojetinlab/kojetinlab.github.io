@@ -19,33 +19,33 @@ pmid: '42779649'
 pmcid: PMC13596297
 title: Ileitis abolishes tolerogenic functions of the enterohepatic bile acid pool
 authors:
-- Z. Xiao
-- K. Sudo
-- A. Delmas-Eliason
-- J. LIU
-- P. A. Munoz-Tello
-- H. D. Dionne
-- F. Nguyen
-- A. D. Hondros
-- H. Yang
-- B. J. Hamilton
-- A. Balasubramanian
-- C. L. Hegner
-- G. Jacobsen
-- E. M. Tonzi
-- I. K. Kaul
-- S. Soucy
-- C. A. Siegel
-- G. A. O'Toole
-- D. Schultz
-- C. T. Weaver
-- A. Rodriguez-Palacios
-- F. Cominelli
-- H. Krause
-- M. T. Abreu
-- P. A. Dawson
-- D. Kojetin
-- M. S. Sundrud
+- Zhiping Xiao
+- Koichi Sudo
+- Amber Delmas-Eliason
+- Jiabao Liu
+- Paola Munoz-Tello
+- Henry D. Dionne
+- Fiona Nguyen
+- Alexander D. Hondros
+- Huijuan Yang
+- B. JoNell Hamilton
+- Akshaya Balasubramanian
+- Courtney L. Hegner
+- Gillian Jacobsen
+- Erin M. Tonzi
+- Ila K. Kaul
+- Shannon Soucy
+- Corey A. Siegel
+- George A. O’Toole
+- Daniel Schultz
+- Casey T. Weaver
+- Alex Rodriguez-Palacios
+- Fabio Cominelli
+- Henry M. Krause
+- Maria T. Abreu
+- Paul A. Dawson
+- Douglas J. Kojetin
+- Mark S. Sundrud
 journal: bioRxiv
 year: 2026
 date: '2026-09-18'
@@ -71,5 +71,6 @@ abstract: Bile acids (BAs) regulate lipid uptake, epithelial integrity, and immu
 abstract_source: https://doi.org/10.64898/2026.09.13.751256
 metadata_source: https://api.biorxiv.org/details/biorxiv/10.64898/2026.09.13.751256
 metadata_verified: '2026-10-17'
+authors_source: https://api.crossref.org/works/10.64898/2026.09.13.751256
 ---
 

@@ -10,12 +10,12 @@ import time
 import urllib.parse
 import xml.etree.ElementTree as ET
 import yaml
-from add_publication import (ROOT, all_from_pubmed, doi_key, existing_records, fetch,
+from add_publication import (ROOT, all_from_pubmed, doi_key, existing_records, fetch, prefer_full_authors,
                              fetch_biorxiv, from_biorxiv, new_record, normalize_doi, title_key)
 
 METADATA_FIELDS = set('title authors journal year date date_precision online_date doi pmid pmcid '
     'volume issue pages publication_type abstract abstract_source metadata_source metadata_verified '
-    'pubmed_relations preprint preprint_doi preprint_version first_posted published_doi correction_urls'.split())
+    'pubmed_relations preprint preprint_doi preprint_version first_posted published_doi correction_urls authors_source'.split())
 
 def matches_author(record, config):
     family = config.get('author_family', 'Kojetin').casefold()
@@ -61,7 +61,10 @@ def reconcile(pubmed, biorxiv, config):
         elif published_doi:
             raise ValueError('Journal version '+published_doi+' is not in the PubMed results. Add its PMID to extra_pmids in _data/publications.yml before refreshing.')
         else:
-            preprints.append({**{k:pm[k] for k in ('pmid','pmcid') if pm.get(k)}, **bio})
+            preprint={**{k:pm[k] for k in ('pmid','pmcid') if pm.get(k)}, **bio}
+            preprint['authors']=prefer_full_authors(bio['authors'],pm.get('authors',[]))
+            if preprint['authors']!=bio['authors']: preprint['authors_source']=pm['metadata_source']
+            preprints.append(preprint)
     # Do not classify an unchecked bioRxiv entry as unpublished.
     missing = [r['doi'] for r in pubmed if r['publication_type']=='preprint' and doi_key(r['doi']) not in handled]
     if missing: raise ValueError('Missing bioRxiv metadata for: '+', '.join(missing))
@@ -115,6 +118,11 @@ def plan_updates(records, directory):
             used.add(path)
             result=dict(old)
             result.update({k:v for k,v in record.items() if k in METADATA_FIELDS})
+            if 'authors_source' not in record: result.pop('authors_source',None)
+            if record['publication_type']=='preprint':
+                result['authors']=prefer_full_authors(record['authors'],old.get('authors',[]))
+                if result['authors']!=record['authors'] and old.get('authors_source'):
+                    result['authors_source']=old['authors_source']
             if record['publication_type']=='article':
                 for k in ('published_doi','first_posted'): result.pop(k,None)
             if 'kojetinlab.org' in str(result.get('source_url','')):

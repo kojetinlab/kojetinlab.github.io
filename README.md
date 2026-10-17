@@ -17,7 +17,9 @@ Markdown and YAML for editable content and settings
 
 The site builds into static files. People, publications, research, and news are editable collections; no database or CMS subscription is required.
 
-## Publication update (v5.16.0)
+## Publication update (v5.16.2)
+
+Unpublished preprints now show full author names from manuscript XML or DOI-deposit metadata. The importer and refresh workflow preserve those names when a lookup is temporarily unavailable.
 
 The collection now contains 82 published papers from PubMed and 2 unpublished bioRxiv preprints, with source abstracts on all individual publication pages. Preprints appear first; published papers follow, newest first. Metadata was refreshed October 17, 2026.
 

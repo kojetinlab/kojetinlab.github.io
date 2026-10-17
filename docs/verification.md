@@ -378,3 +378,10 @@ This pass does not constitute a full cross-browser or accessibility audit. Unsup
 - Controller regression checks passed for both PDBs on desktop and mobile, including the fourth-topic hold, maximum lead/multiplier, forward/reverse scrolling, pause, loading, reduced motion and fallback behavior. These checks execute the real controller with deterministic layout fixtures; this revision has not received a live browser scroll review.
 - Production Jekyll build and content checks passed: 84 publications; 149 generated HTML pages; zero broken internal references or structural errors.
 - A trial upgrade of an isolated copy of the actual v5.15.2 clone preserved 32 locally modified/added files plus the resolved subtitle styling and discovery caption. All 84 abstracts rendered; all 150 generated pages passed link/structure checks. The controller suite also passed with the retained local settings. The real clone was inspected and previewed only; it was not modified or published.
+
+
+## Version 5.16.2 — full preprint author names
+
+- Expanded 15 PPARγ-preprint names from its latest bioRxiv manuscript XML and 27 ileitis-preprint names from its Crossref DOI deposit (manuscript XML was rate-limited). Source names and ordering are retained, including supplied middle initials. Names are not inferred from other papers.
+- Updated bioRxiv imports to prefer manuscript XML, with a DOI-deposit fallback. Author count, order, surnames, first initials and DOI are checked. Matching existing or PubMed full names are retained if the additional source is unavailable; changed author membership is not replaced with an older list.
+- All 18 publication/author regression tests passed. Jekyll build and content validation passed; all 149 generated pages passed internal-reference checks. All 42 full preprint author names were verified in the publication list and the two individual pages.

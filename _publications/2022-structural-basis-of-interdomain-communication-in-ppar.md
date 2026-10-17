@@ -2,21 +2,21 @@
 id: 2022-structural-basis-of-interdomain-communication-in-ppar
 title: Structural basis of interdomain communication in PPARγ
 authors:
-- S. A. Mosure
-- P. Munoz-Tello
-- K.-T. Kuo
-- B. MacTavish
-- X. Yu
-- D. Scholl
-- C. C. Williams
-- T. S. Strutzenberg
-- J. Li
-- J. Bass
-- R. Brust
-- E. Kalkhoven
-- A. A. Deniz
-- P. R. Griffin
-- D. Kojetin
+- Sarah A. Mosure
+- Paola Munoz-Tello
+- Kuang-Ting Kuo
+- Brian MacTavish
+- Xiaoyu Yu
+- Daniel Scholl
+- Christopher C. Williams
+- Timothy S. Strutzenberg
+- Jess Li
+- Jared Bass
+- Richard Brust
+- Eric Kalkhoven
+- Ashok A. Deniz
+- Patrick R. Griffin
+- Douglas J. Kojetin
 journal: bioRxiv
 year: 2022
 date: '2024-09-20'
@@ -52,4 +52,5 @@ abstract: 'The nuclear receptor peroxisome proliferator-activated receptor gamma
 abstract_source: https://doi.org/10.1101/2022.07.13.499031
 metadata_source: https://api.biorxiv.org/details/biorxiv/10.1101/2022.07.13.499031
 metadata_verified: '2026-10-17'
+authors_source: https://www.biorxiv.org/content/early/2024/09/20/2022.07.13.499031.source.xml
 ---
