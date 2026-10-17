@@ -3,7 +3,7 @@ name: Alexander Hondros
 last_name: Hondros
 role: Postdoctoral Fellow
 category: Postdoctoral Fellows
-photo: /assets/images/people/alexander-hondros.jpg
+photo: /assets/images/people/alexander-hondros-2.png
 status: current
 seniority: 30
 joined_year: 2025

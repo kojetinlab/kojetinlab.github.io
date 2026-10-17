@@ -62,7 +62,7 @@ layout: default
         </span>
         <span class="molecule-label label-ligand">
           <span class="component-name">{{ molecule.ligand }}</span>
-          <small>ligand</small>
+          <small>{{ molecule.ligand_role | default: 'ligand' }}</small>
         </span>
         <span class="molecule-label label-receptor">
           <span class="component-name">{{ molecule.receptor }}</span>

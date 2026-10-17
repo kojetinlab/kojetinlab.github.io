@@ -1,0 +1,12 @@
+/* Keep label dimensions stable as their molecular anchors move. */
+.molecule-label {
+  width: max-content;
+  max-width: calc(100% - 24px);
+}
+
+/* Also keep the ligand caption above the lower edge in static fallback views. */
+.label-ligand {
+  left: 8%;
+  top: 56%;
+  bottom: auto;
+}

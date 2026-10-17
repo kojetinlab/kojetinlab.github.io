@@ -1,6 +1,10 @@
+#!/bin/bash
+set -e
+
+version="5.13.4"
+release_dir="/Users/dkojetin/Downloads/Kojetin-Lab-Website-v${version}/kojetinlab-website"
+
 cd "/Users/dkojetin/Documents/GitHub/kojetinlab.github.io"
 
-#bash "/Users/dkojetin/Downloads/Kojetin-Lab-Website-v5.13.1/kojetinlab-website/update-site.sh" --apply
-
-cp "/Users/dkojetin/Downloads/Kojetin-Lab-Website-v5.13.1/kojetinlab-website/_config.yml" "./_config.yml"
-bash "/Users/dkojetin/Downloads/Kojetin-Lab-Website-v5.13.1/kojetinlab-website/update-site.sh" --apply
+cp "$release_dir/_config.yml" "./_config.yml"
+bash "$release_dir/update-site.sh" --apply

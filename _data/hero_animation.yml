@@ -4,7 +4,10 @@ presentation:
   enable_peptide_separation: true
   enable_ligand_separation: true
   enable_labels: true
+  # Drawing pixels per CSS pixel, capped at the device's own pixel density.
+  # Mobile means the narrow layout (700 px or less). Try 2 if 3 feels slow.
   max_pixel_ratio: 1.7
+  mobile_max_pixel_ratio: 3.0
   # Noticeable, smooth motion during “Beyond a single structure”.
   # Mol* procedural wiggle is illustrative, not an MD trajectory.
   enable_domain_motion: true

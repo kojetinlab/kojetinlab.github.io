@@ -12,12 +12,23 @@ window.KojetinRenderers.molstar = async function ({
   await loadScript("js/vendor/molstar/molstar.js");
   const { plugin: api, structure: structureApi, math } = window.molstar.lib;
   const { Mat4 } = math.LinearAlgebra;
+  function pixelScale() {
+    const mobile = matchMedia("(max-width: 700px)").matches;
+    const configured = Number(settings[mobile ? "mobile_max_pixel_ratio" : "max_pixel_ratio"]);
+    const limit =
+      Number.isFinite(configured) && configured > 0
+        ? Math.max(1, Math.min(3, configured))
+        : mobile
+          ? 3
+          : 1.7;
+    return Math.min(1, limit / (devicePixelRatio || 1));
+  }
   const spec = api.DefaultPluginSpec();
   spec.config = [
-    [
-      api.PluginConfig.General.PixelScale,
-      Math.min(1, (settings.max_pixel_ratio || 1.7) / devicePixelRatio),
-    ],
+    // Mol* "auto" divides by devicePixelRatio again on mobile. Use native
+    // resolution so our explicit density cap is applied exactly once.
+    [api.PluginConfig.General.ResolutionMode, "native"],
+    [api.PluginConfig.General.PixelScale, pixelScale()],
     [api.PluginConfig.General.AllowMajorPerformanceCaveat, true],
   ];
   const plugin = new api.PluginContext(spec);
@@ -317,7 +328,12 @@ window.KojetinRenderers.molstar = async function ({
         await setPalette(colors);
       },
       setAppearance,
-      resize: () => plugin.handleResize(),
+      resize() {
+        // Recalculate on rotation, responsive resizing, or a display-DPR change.
+        plugin.canvas3dContext.setProps({ resolutionMode: "native", pixelScale: pixelScale() });
+        plugin.handleResize();
+        requestDraw();
+      },
       dispose() {
         disposed = true;
         cancelAnimationFrame(drawFrame);

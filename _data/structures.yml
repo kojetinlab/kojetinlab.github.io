@@ -5,12 +5,13 @@
 # Each PDB has its own view. Camera edits apply to Mol* on the next Jekyll build.
 6onj:
   pdb_id: 6ONJ
-  label: 6ONJ · rosiglitazone / TRAP220
+  label: 6ONJ · rosiglitazone / MED1
   receptor: PPARγ
-  peptide: TRAP220
+  peptide: MED1
   peptide_role: coactivator peptide
   ligand: Rosiglitazone
-  interaction_text: Here, a TRAP220 coactivator peptide meets the receptor’s AF-2 surface.
+  ligand_role: agonist
+  interaction_text: Here, a MED1 coactivator peptide meets the receptor’s AF-2 surface.
   note: Experimental structure. Separation is schematic.
   receptor_chain: A
   peptide_chain: C
@@ -25,6 +26,16 @@
   resolution: 2.3
   allow_ligand_separation: true
   view:
+    # Positions blend as each component separates. Offsets are percentages
+    # of panel width/height: [right, down]; negative values move left/up.
+    # anchor is the corner of the label placed at that offset from the molecule.
+    label_layout:
+      ligand:
+        initial: {offset: [6, -6], anchor: top-left}
+        separated: {offset: [-2, -7], anchor: bottom-right}
+      peptide:
+        initial: {offset: [6, -2], anchor: bottom-left}
+        separated: {offset: [2, 3], anchor: top-left}
     rotation_xyz: [0, 0, 0]
     # null derives the framing from the copied Mol* camera. Set a number to override zoom.
     camera_span: null
@@ -47,6 +58,7 @@
   peptide: N-CoR
   peptide_role: corepressor peptide
   ligand: T0070907
+  ligand_role: inverse agonist
   interaction_text: Here, an N-CoR corepressor peptide binds PPARγ in its repressive conformation.
   note: Experimental structure. Peptide separation is schematic; the covalent ligand stays attached.
   receptor_chain: B
@@ -62,6 +74,9 @@
   resolution: 1.8
   allow_ligand_separation: false
   view:
+    label_offsets:
+      # This camera places the ligand near N-CoR; move its label farther left.
+      ligand: [-38, -8]
     rotation_xyz: [0, 0, 0]
     camera_span: null
     camera:

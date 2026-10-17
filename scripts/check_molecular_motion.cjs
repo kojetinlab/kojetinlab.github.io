@@ -58,6 +58,8 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
       dataset: {},
       children: [],
       hidden: false,
+      offsetWidth: cell.mobile ? 150 : 190,
+      offsetHeight: 42,
       textContent: "",
       classList: {
         add(name) {
@@ -319,6 +321,100 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
 }
 
 (async () => {
+  // Full label boxes stay inside the panel, including a short phone landscape view.
+  for (const mobile of [false, true]) {
+    for (const structure of ["6onj", "6oni"]) {
+      const f = await fixture("molstar", structure, true, { mobile });
+      assert.equal(
+        f.parts.get(".label-ligand small").textContent,
+        structure === "6onj" ? "agonist" : "inverse agonist",
+      );
+      assert.equal(
+        f.parts.get(".label-peptide .component-name").textContent,
+        structure === "6onj" ? "MED1" : "N-CoR",
+      );
+      for (const height of [f.host.clientHeight, 156]) {
+        f.host.clientHeight = height;
+        f.event("resize");
+        for (const y of [0, 900, 1600, 2400, 3400]) {
+          await f.scrollStory(y);
+          for (const name of ["peptide", "ligand"]) {
+            const el = f.parts.get(`.label-${name}`);
+            const x = parseFloat(el.style.left),
+              top = parseFloat(el.style.top);
+            assert(x >= 12 && x + el.offsetWidth <= f.host.clientWidth - 12);
+            assert(top >= 12 && top + el.offsetHeight <= f.host.clientHeight - 12);
+          }
+        }
+      }
+    }
+  }
+  // Labels must remain distinct before, during, and after ligand separation.
+  for (const [width, height] of [
+    [280, 260],
+    [350, 329],
+    [642, 640],
+  ]) {
+    const mobile = width < 400;
+    const f = await fixture("molstar", "6onj", true, { mobile });
+    f.host.clientWidth = width;
+    f.host.clientHeight = height;
+    const labelHeight = mobile ? 36.4 : 42;
+    for (const [name, labelWidth] of [
+      ["peptide", mobile ? 124 : 141],
+      ["ligand", mobile ? 108 : 120],
+    ]) {
+      const el = f.parts.get(`.label-${name}`);
+      el.offsetWidth = labelWidth;
+      el.offsetHeight = labelHeight;
+    }
+    f.event("resize");
+    const box = (name) => {
+      const el = f.parts.get(`.label-${name}`);
+      return {
+        x: parseFloat(el.style.left),
+        y: parseFloat(el.style.top),
+        width: el.offsetWidth,
+        height: el.offsetHeight,
+      };
+    };
+    const separate = (a, b) =>
+      a.x + a.width <= b.x ||
+      b.x + b.width <= a.x ||
+      a.y + a.height <= b.y ||
+      b.y + b.height <= a.y;
+    const receptorWidth = mobile ? 141 : 164;
+    const receptor = {
+      x: width * (mobile ? 1 : 0.92) - receptorWidth,
+      y: height * 0.88 - labelHeight,
+      width: receptorWidth,
+      height: labelHeight,
+    };
+    await f.scrollStory(0);
+    const initial = box("ligand");
+    for (let y = 0; y <= 2400; y += 50) {
+      await f.scrollStory(y);
+      assert(
+        separate(box("ligand"), box("peptide")),
+        `Ligand/peptide overlap at ${width}px, scroll ${y}`,
+      );
+      assert(
+        separate(box("ligand"), receptor),
+        `Ligand/receptor overlap at ${width}px, scroll ${y}`,
+      );
+    }
+    assert(box("ligand").x < initial.x - 30, "Separated ligand label shifts clearly left");
+    await f.scrollStory(0);
+    assert.deepEqual(
+      box("ligand"),
+      initial,
+      "Reverse scrolling restores the initial label position",
+    );
+  }
+  console.log(
+    "Initial label spacing, separation sweep, leftward anchor, and reverse positions passed",
+  );
+
   // Move the whole story together. Check actions as each heading ENTERS the
   // viewport, rather than only after it has reached the middle or left it.
   for (const mobile of [false, true]) {
@@ -599,12 +695,15 @@ async function fixture(renderer = "molstar", structure = "6onj", motion = true, 
   await covalent.event("displaychange");
   await covalent.tick(5);
   assert.equal(covalent.figure.dataset.structure, "6onj");
+  assert.equal(covalent.parts.get(".label-ligand small").textContent, "agonist");
+  assert.equal(covalent.parts.get(".label-peptide .component-name").textContent, "MED1");
   assert.notDeepEqual(covalent.settingsHistory.at(-1).orientation, camera6oni);
   assert.equal(covalent.settingsHistory.at(-1).ligand_moves_with_domain, false);
   covalent.display.state.structure = "6oni";
   await covalent.event("displaychange");
   await covalent.tick(5);
   assert.deepEqual(covalent.settingsHistory.at(-1).orientation, camera6oni);
+  assert.equal(covalent.parts.get(".label-ligand small").textContent, "inverse agonist");
   covalent.host.webglcontextlost({ preventDefault() {} });
   await covalent.tick(3);
   assert.equal(covalent.figure.dataset.renderer, "static");

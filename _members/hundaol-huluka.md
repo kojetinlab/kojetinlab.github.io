@@ -7,7 +7,7 @@ status: current
 seniority: 50
 joined_year: 2025
 years: 2025–present
-photo: ''
+photo: '/assets/images/people/hundaol-huluka.jpg'
 lab_history:
 - role: Undergraduate Researcher, Biomedical Engineering
   years: 2025–2026

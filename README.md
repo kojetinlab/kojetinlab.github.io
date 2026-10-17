@@ -55,9 +55,9 @@ Open the down arrow after **Contact** to try palettes, PDB structures, illustrat
 | --- | --- |
 | Default palette, PDB, illustrative cartoon, SSGI, and visible controls | `_data/display.yml` |
 | Page and molecular colors | `_data/palettes.yml` |
-| Each PDB's camera, chain selections, and labels | `_data/structures.yml` |
+| Each PDB's camera, chain selections, label names/roles, and label offsets | `_data/structures.yml` |
 | Homepage section spacing, longer motion viewing, and transition pace | `_data/scroll_story.yml` |
-| Scroll movement, receptor/peptide/ligand wiggle, and receptor rocking | `_data/hero_animation.yml` |
+| Mobile rendering resolution, scroll movement, molecular wiggle, and rocking | `_data/hero_animation.yml` |
 | Zoom from the protein to an illustrated adipocyte | `_data/cell_scene.yml` |
 | Final cell pullback and incoming chemical sketches | `_data/discovery_scene.yml` |
 | Adipocyte illustration | `assets/images/science/adipocyte-cutaway.png` |

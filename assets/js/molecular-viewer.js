@@ -34,6 +34,7 @@
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   const scripts = new Map();
   const jsonCache = new Map();
+  const labelSizes = new Map();
   let adapter,
     scene,
     cameraView,
@@ -250,6 +251,8 @@
     for (const name of ["receptor", "peptide", "ligand"])
       figure.querySelector(`.label-${name} .component-name`).textContent = config[name];
     figure.querySelector(".label-peptide small").textContent = config.peptide_role;
+    figure.querySelector(".label-ligand small").textContent = config.ligand_role || "ligand";
+    labelSizes.clear();
     figure.querySelector(".figure-note").textContent = config.note;
     const link = figure.querySelector(".pdb-link");
     link.href = `https://www.rcsb.org/structure/${config.pdb_id}`;
@@ -311,10 +314,46 @@
     const distance = state.span / Math.tan(cameraView.fov / 2);
     const projection = cameraView.mode === "perspective" ? distance / (distance - z) : 1;
     const aspect = host.clientWidth / host.clientHeight;
-    const left = 50 + ((x * projection) / (2 * state.span * aspect)) * 100;
-    const top = 50 - ((y * projection) / (2 * state.span)) * 100;
-    element.style.left = `${clamp(left, 5, 78)}%`;
-    element.style.top = `${clamp(top, 5, 88)}%`;
+    const view = preset().view || {};
+    const layout = view.label_layout?.[name] || {};
+    const initial = layout.initial || {};
+    const separated = layout.separated || initial;
+    const initialOffset = initial.offset || view.label_offsets?.[name] || [0, 0];
+    const separatedOffset = separated.offset || initialOffset;
+    const anchors = {
+      "top-left": [0, 0],
+      "top-right": [1, 0],
+      "bottom-left": [0, 1],
+      "bottom-right": [1, 1],
+    };
+    const initialAnchor = anchors[initial.anchor] || anchors["top-left"];
+    const separatedAnchor = anchors[separated.anchor] || initialAnchor;
+    // Follow each component's own separation, including when the story reverses.
+    const t = name === "peptide" ? state.peptideT : state.ligandT;
+    const blend = (a, b) => a + (b - a) * t;
+    const number = (n) => (Number.isFinite(Number(n)) ? Number(n) : 0);
+    const shiftX = blend(number(initialOffset[0]), number(separatedOffset[0]));
+    const shiftY = blend(number(initialOffset[1]), number(separatedOffset[1]));
+    const left = 50 + ((x * projection) / (2 * state.span * aspect)) * 100 + shiftX;
+    const top = 50 - ((y * projection) / (2 * state.span)) * 100 + shiftY;
+    // Clamp the entire label, not just its anchor. Cache measurements so the
+    // wiggle clock does not need a layout read on every frame.
+    if (!labelSizes.has(name))
+      labelSizes.set(name, { width: element.offsetWidth, height: element.offsetHeight });
+    const size = labelSizes.get(name);
+    const anchorX = blend(initialAnchor[0], separatedAnchor[0]);
+    const anchorY = blend(initialAnchor[1], separatedAnchor[1]);
+    const padding = 12;
+    element.style.left = `${clamp(
+      (left / 100) * host.clientWidth - anchorX * size.width,
+      padding,
+      Math.max(padding, host.clientWidth - size.width - padding),
+    )}px`;
+    element.style.top = `${clamp(
+      (top / 100) * host.clientHeight - anchorY * size.height,
+      padding,
+      Math.max(padding, host.clientHeight - size.height - padding),
+    )}px`;
     element.style.right = element.style.bottom = "auto";
   }
 
@@ -550,10 +589,17 @@
     button.setAttribute("aria-pressed", String(paused));
     requestRender();
   });
-  new ResizeObserver(() => {
+  function resizeRenderer() {
+    labelSizes.clear();
     adapter?.resize();
     requestRender();
-  }).observe(host);
+  }
+  new ResizeObserver(resizeRenderer).observe(host);
+  addEventListener("resize", resizeRenderer, { passive: true });
+  document.fonts?.ready.then(() => {
+    labelSizes.clear();
+    requestRender();
+  });
   new IntersectionObserver(
     (entries) => {
       visible = entries[0].isIntersecting;

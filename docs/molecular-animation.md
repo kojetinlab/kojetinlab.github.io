@@ -20,6 +20,49 @@ Both structures come from Shang et al., *Nature Communications* (2020), DOI [10.
 
 6ONI's ligand is covalently attached to Cys285. Its preset therefore disables ligand separation. The receptor cartoon and ligand sticks do not explicitly draw the cross-component covalent bond. Peptide separation remains schematic. Neither animation is a dissociation simulation or a change in receptor conformation.
 
+## Molecular labels
+
+The 6ONJ display uses **MED1**, **Rosiglitazone / agonist**, and **PPARγ**. The 6ONI display uses **N-CoR**, **T0070907 / inverse agonist**, and **PPARγ**. MED1 is also known as TRAP220; this is a display-name change, not a different peptide selection or coordinate file.
+
+Edit `peptide`, `peptide_role`, `ligand`, and `ligand_role` in each PDB entry in `_data/structures.yml`. The initial page and PDB switching both use these values.
+
+Inside 6ONJ's existing `view:` block, `label_layout` gives each label separate positions before and after its component moves:
+
+```yaml
+    label_layout:
+      ligand:
+        initial: {offset: [6, -6], anchor: top-left}
+        separated: {offset: [-2, -7], anchor: bottom-right}
+      peptide:
+        initial: {offset: [6, -2], anchor: bottom-left}
+        separated: {offset: [2, 3], anchor: top-left}
+```
+
+`offset` is `[horizontal, vertical]` in percentages of panel width/height. Negative values move left/up; positive values move right/down. `anchor` selects the corner of the label placed at that offset from its molecular component. For example, `bottom-right` places the label's lower-right corner there, making the text extend to the left and upward. Supported corners are `top-left`, `top-right`, `bottom-left`, and `bottom-right`.
+
+Offsets and anchors blend smoothly with **that component's own separation**. Rosiglitazone starts farther down/right than in v5.13.3, while MED1 starts up/right, leaving the labels apart and clearing the ligand/peptide. As rosiglitazone moves out, its caption shifts farther left with the lower-right anchor. MED1's final caption sits beside the separated peptide, clear of the floating menu in the tested phone layouts. Reverse scrolling restores the starting positions; pause holds the current positions.
+
+The viewer keeps each complete moving label at least 12 pixels inside the panel, so an anchor may shift slightly near an edge. 6ONI retains its single fixed `label_offsets.ligand: [-38, -8]` setting; the older `label_offsets` form remains supported when no `label_layout` is supplied. Save, let Jekyll rebuild, and refresh. Static fallback views use `assets/css/molecular-labels.css`.
+
+## Sharper molecular rendering on mobile
+
+Version 5.13.2 fixes a double reduction in rendering resolution: Mol*'s automatic mobile mode and the site's pixel-density cap were both scaling the canvas down. The viewer now uses Mol*'s native resolution mode with the cap applied once. Existing antialiasing and high-quality molecular geometry are retained.
+
+In `_data/hero_animation.yml`, inside the existing `presentation:` block:
+
+```yaml
+  max_pixel_ratio: 1.7
+  mobile_max_pixel_ratio: 3.0
+```
+
+`mobile_max_pixel_ratio` applies to viewport widths of 700 CSS pixels or less. `max_pixel_ratio` applies to wider layouts, including a phone in a sufficiently wide landscape orientation. Values are drawing pixels per CSS pixel, limited to the device's own pixel density. A 3× phone uses up to three drawing pixels in each direction; a 2× device uses two. Supported caps are 1–3; missing or invalid settings use the defaults above.
+
+Use **3.0** for the sharpest supported mobile rendering. Try **2.0** if animation feels sluggish on an older phone; this still fixes the unintended extra reduction. Lower values reduce GPU work. These settings affect the live protein, peptide, and ligand canvas; they do not change text size, the adipocyte artwork, camera presets, or scroll timing. The 30-fps drawing limit and pause/offscreen behavior remain in place.
+
+Save and let Jekyll rebuild, then refresh. After importing this release, restart Jekyll once because `_config.yml` changes the asset cache version. On the public site, commit/push and wait for the Pages build before refreshing on the phone.
+
+A browser test at a 390 × 844 viewport with a simulated mobile user agent and 3× pixel density reproduced a 198 × 186 canvas in a 350 × 329 CSS-pixel area. The corrected version rendered 1050 × 987 in that same area. Both PDBs rendered successfully, and resizing to the desktop layout restored the 1.7 cap. This checks actual WebGL rendering in the test browser; sustained frame rate and battery use on physical phones have not been measured.
+
 ## Set a different orientation for each PDB
 
 Open `_data/structures.yml`. Each preset has an independent `view` section. The 6ONJ preset now uses your copied Mol* camera:
