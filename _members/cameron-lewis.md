@@ -7,7 +7,7 @@ status: current
 seniority: 40
 joined_year: 2026
 years: 2026–present
-photo: ''
+photo: '/assets/images/people/cameron-lewis.jpg'
 lab_history:
 - role: Graduate Student
   years: 2026–present
