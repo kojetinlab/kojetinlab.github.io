@@ -1,6 +1,7 @@
 title: Kojetin Laboratory
 description: Structural biology and molecular pharmacology of nuclear receptors at Vanderbilt University.
 url: "https://kojetinlab.github.io"
+social_preview_image: "/assets/images/social-preview.png"
 baseurl: ""
 timezone: America/Chicago
 markdown: kramdown
